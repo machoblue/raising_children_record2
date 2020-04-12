@@ -10,6 +10,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  List<String> _appBarTitles = ["Home", "Settings"];
   List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     HomePage2(),
@@ -26,12 +27,9 @@ class _MainViewState extends State<MainView> {
             builder: (context, snapshot) {
               return Scaffold(
                 appBar: AppBar(
-                  title: StreamBuilder(
-                    stream: Provider.of<MainViewModel>(context).appBarTitle,
-                    builder: (context, snapshot) => Text(snapshot.hasData ? snapshot.data : ""),
-                  ),
+                  title: Text(_appBarTitles[snapshot.data ?? 0]),
                 ),
-                body: _widgetOptions.elementAt(snapshot.hasData ? snapshot.data : 0),
+                body: _widgetOptions.elementAt(snapshot.data ?? 0),
                 bottomNavigationBar: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
@@ -43,7 +41,7 @@ class _MainViewState extends State<MainView> {
                       title: Text('Settings'),
                     ),
                   ],
-                  currentIndex: snapshot.hasData ? snapshot.data : 0,
+                  currentIndex: snapshot.data ?? 0,
                   selectedItemColor: Colors.amber[800],
                   onTap: (index) {
                     print("### $index");
