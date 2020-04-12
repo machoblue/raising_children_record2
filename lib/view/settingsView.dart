@@ -9,6 +9,6 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
-    return Text('home body2');
+    return Text('settings body');
   }
 }

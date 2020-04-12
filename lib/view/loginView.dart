@@ -78,13 +78,11 @@ class _LoginButtonState extends State<LoginButton> {
         return;
       }
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return MainView();
-            }
-          )
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainView()
+        )
       );
     });
     _viewModel.errorMessage.listen((String errorMessage) {
