@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raisingchildrenrecord2/view/login.dart';
+import 'package:raisingchildrenrecord2/view/loginView.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 //      home: MyHomePage(title: 'MM/dd'),
-      home: LoginPage(),
+      home: LoginView(),
     );
   }
 }

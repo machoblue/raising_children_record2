@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:raisingchildrenrecord2/view/home.dart';
+import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginView extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Provider<LoginViewModel>(
@@ -82,7 +82,7 @@ class _LoginButtonState extends State<LoginButton> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return MyHomePage();
+              return MainView();
             }
           )
       );
