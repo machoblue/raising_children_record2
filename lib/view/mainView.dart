@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,27 @@ class _MainViewState extends State<MainView> {
             builder: (context, snapshot) {
               return Scaffold(
                 appBar: AppBar(
+                  leading: Container(
+                    padding: EdgeInsets.fromLTRB(8, 0, 0, 4),
+                    child: GestureDetector(
+                      onTap: () => Provider.of<MainViewModel>(context).onBabyButtonTapped.add(null),
+                      child: StreamBuilder(
+                        stream: Provider.of<MainViewModel>(context).babyIconImageURL,
+                        builder: (context, snapshot) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.fitHeight,
+                                image: CachedNetworkImageProvider(snapshot.data ?? 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a'),
+                              )
+                            ),
+                          );
+                        },
+                      ),
+                    )
+
+                  ),
                   title: Text(_appBarTitles[snapshot.data ?? 0]),
                 ),
                 body: _widgetOptions.elementAt(snapshot.data ?? 0),
