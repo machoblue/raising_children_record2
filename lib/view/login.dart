@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/view/home.dart';
-import 'package:raisingchildrenrecord2/viewmodel/login_viewmodel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _LoginButtonState extends State<LoginButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return RaisedButton(
       onPressed: _onLoginButtonTapped,
       child: Text(
           'SIGN IN WITH GOOGLE',

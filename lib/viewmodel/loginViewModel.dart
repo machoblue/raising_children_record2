@@ -27,11 +27,11 @@ class LoginViewModel {
   }
 
   void _bindInputAndOutput() {
-    _onLoginPageAppearStreamController.stream.listen((_) => _getUserIdIfSignIn());
-    _onSignInButtonTappedStreamController.stream.listen((_) => _signIn());
+    _onLoginPageAppearStreamController.stream.listen(_getUserIdIfSignIn);
+    _onSignInButtonTappedStreamController.stream.listen(_signIn);
   }
 
-  void _getUserIdIfSignIn() async {
+  void _getUserIdIfSignIn(_) async {
     print("### getUserIdIfSignIn");
     bool isSignIn = await googleSignIn.isSignedIn();
     if (isSignIn) {
@@ -43,7 +43,7 @@ class LoginViewModel {
     }
   }
 
-  void _signIn() async {
+  void _signIn(_) async {
     print("### _signIn()");
     final GoogleSignInAccount account = await googleSignIn.signIn();
     final GoogleSignInAuthentication auth = await account.authentication;
