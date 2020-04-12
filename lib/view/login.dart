@@ -18,9 +18,27 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text('Login')
         ),
-        body: Center(
-          child: LoginButton(),
-        ),
+        body: Stack(
+          children: <Widget>[
+            Center(
+              child: LoginButton(),
+            ),
+            Builder(
+              builder: (context) => StreamBuilder(
+                stream: Provider.of<LoginViewModel>(context).showIndicator,
+                builder: (context, snapshot) {
+                  return Positioned(
+                    child: (snapshot.hasData && snapshot.data) ? Container(
+                      child: Center(
+                        child: CircularProgressIndicator()
+                      ),
+                    ) : Container()
+                  );
+                }
+              )
+            )
+          ]
+        )
       ),
     );
   }

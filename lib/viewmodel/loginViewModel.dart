@@ -19,8 +19,10 @@ class LoginViewModel {
   // output
   final _signInUserStreamController = StreamController<String>();
   final _errorMessageStreamController = StreamController<String>();
+  final _showIndicatorStreamController = StreamController<bool>();
   Stream<String> get signInUser => _signInUserStreamController.stream;
   Stream<String> get errorMessage => _errorMessageStreamController.stream;
+  Stream<bool> get showIndicator => _showIndicatorStreamController.stream;
 
   LoginViewModel() {
     _bindInputAndOutput();
@@ -33,6 +35,7 @@ class LoginViewModel {
 
   void _getUserIdIfSignIn(_) async {
     print("### getUserIdIfSignIn");
+    _showIndicatorStreamController.sink.add(true);
     bool isSignIn = await googleSignIn.isSignedIn();
     if (isSignIn) {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -41,10 +44,12 @@ class LoginViewModel {
     } else {
       _signInUserStreamController.sink.add(null);
     }
+    _showIndicatorStreamController.sink.add(false);
   }
 
   void _signIn(_) async {
     print("### _signIn()");
+    _showIndicatorStreamController.sink.add(true);
     final GoogleSignInAccount account = await googleSignIn.signIn();
     final GoogleSignInAuthentication auth = await account.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
@@ -83,6 +88,8 @@ class LoginViewModel {
       _signInUserStreamController.sink.add(null);
       _errorMessageStreamController.sink.add("Failed to sign in.");
     }
+
+    _showIndicatorStreamController.sink.add(false);
   }
 
   void dispose() {
