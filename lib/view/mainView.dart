@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/view/settingsView.dart';
+import 'package:raisingchildrenrecord2/view/homeView.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -12,8 +14,8 @@ class _MainViewState extends State<MainView> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<String> _appBarTitles = ["Home", "Settings"];
   List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    HomePage2(),
+    HomeView(),
+    SettingsView(),
   ];
 
   @override
@@ -57,29 +59,5 @@ class _MainViewState extends State<MainView> {
         }
       )
     );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Text('home body');
-  }
-}
-
-class HomePage2 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _HomePageState2();
-}
-
-class _HomePageState2 extends State<HomePage2> {
-  @override
-  Widget build(BuildContext context) {
-    return Text('home body2');
   }
 }
