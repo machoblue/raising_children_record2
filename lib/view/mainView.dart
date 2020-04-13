@@ -35,14 +35,14 @@ class _MainViewState extends State<MainView> {
                     child: GestureDetector(
                       onTap: () => Provider.of<MainViewModel>(context).onBabyButtonTapped.add(null),
                       child: StreamBuilder(
-                        stream: Provider.of<MainViewModel>(context).babyIconImageURL,
+                        stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
                         builder: (context, snapshot) {
                           return Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.fitHeight,
-                                image: CachedNetworkImageProvider(snapshot.data ?? 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a'),
+                                image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
                               )
                             ),
                           );
