@@ -31,7 +31,7 @@ class _MainViewState extends State<MainView> {
               return Scaffold(
                 appBar: AppBar(
                   leading: Container(
-                    padding: EdgeInsets.fromLTRB(8, 0, 0, 4),
+                    padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
                     child: GestureDetector(
                       onTap: () => Provider.of<MainViewModel>(context).onBabyButtonTapped.add(null),
                       child: StreamBuilder(
@@ -49,7 +49,6 @@ class _MainViewState extends State<MainView> {
                         },
                       ),
                     )
-
                   ),
                   title: Text(_appBarTitles[snapshot.data ?? 0]),
                 ),
