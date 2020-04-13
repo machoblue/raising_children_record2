@@ -28,9 +28,10 @@ class _MainViewState extends State<MainView> {
           return StreamBuilder(
             stream: Provider.of<MainViewModel>(context).selectedIndex,
             builder: (context, snapshot) {
+              final selectedIndex = snapshot.data ?? 0;
               return Scaffold(
                 appBar: AppBar(
-                  leading: Container(
+                  leading: selectedIndex == 0 ? Container(
                     padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
                     child: GestureDetector(
                       onTap: () => Provider.of<MainViewModel>(context).onBabyButtonTapped.add(null),
@@ -49,10 +50,10 @@ class _MainViewState extends State<MainView> {
                         },
                       ),
                     )
-                  ),
-                  title: Text(_appBarTitles[snapshot.data ?? 0]),
+                  ) : Container(),
+                  title: Text(_appBarTitles[selectedIndex]),
                 ),
-                body: _widgetOptions.elementAt(snapshot.data ?? 0),
+                body: _widgetOptions.elementAt(selectedIndex),
                 bottomNavigationBar: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
@@ -64,7 +65,7 @@ class _MainViewState extends State<MainView> {
                       title: Text('Settings'),
                     ),
                   ],
-                  currentIndex: snapshot.data ?? 0,
+                  currentIndex: selectedIndex,
                   selectedItemColor: Colors.amber[800],
                   onTap: (index) {
                     print("### $index");
