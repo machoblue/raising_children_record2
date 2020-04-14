@@ -115,5 +115,6 @@ class LoginViewModel {
     _onSignInButtonTappedStreamController.close();
     _signInUserStreamController.close();
     _errorMessageStreamController.close();
+    _showIndicatorStreamController.close();
   }
 }
