@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class LoginViewModel {
 
@@ -61,16 +62,32 @@ class LoginViewModel {
           .getDocuments();
       final List<DocumentSnapshot> snapshots = querySnapshot.documents;
       if (snapshots.length == 0) {
+
+        final familyId = Uuid().v1();
         Firestore.instance.collection('users').document(user.uid).setData({
           'id': user.uid,
           'name': user.displayName,
           'photoUrl': user.photoUrl,
+          'familyId': familyId,
+        });
+
+        final babyId = Uuid().v1();
+        final defaultBabyIconUrl = 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a';
+        Firestore.instance.collection('families').document(familyId).setData({
+          'users': { user.uid : true, },
+          'babies': {
+            'id': babyId,
+            'name': 'Baby',
+            'photoUrl': defaultBabyIconUrl,
+            'birthday': DateTime.now().millisecondsSinceEpoch,
+          }
         });
 
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('id', user.uid);
         await sharedPreferences.setString('name', user.displayName);
         await sharedPreferences.setString('photoUrl', user.photoUrl);
+        await sharedPreferences.setString('familyId', familyId);
 
         _signInUserStreamController.sink.add(user.uid);
 
@@ -80,6 +97,7 @@ class LoginViewModel {
         await sharedPreferences.setString('id', snapshot['id']);
         await sharedPreferences.setString('name', snapshot['name']);
         await sharedPreferences.setString('photoUrl', snapshot['photoUrl']);
+        await sharedPreferences.setString('familyId', snapshot['familyId']);
 
         _signInUserStreamController.sink.add(snapshot['id']);
       }
