@@ -88,6 +88,8 @@ class LoginViewModel {
         await sharedPreferences.setString('name', user.displayName);
         await sharedPreferences.setString('photoUrl', user.photoUrl);
         await sharedPreferences.setString('familyId', familyId);
+        await sharedPreferences.setStringList('babies', [babyId]);
+        await sharedPreferences.setString('selectedBaby', babyId);
 
         _signInUserStreamController.sink.add(user.uid);
 
