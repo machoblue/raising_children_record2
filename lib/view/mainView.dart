@@ -40,6 +40,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
   void initState() {
     super.initState();
     _viewModel = Provider.of<MainViewModel>(context, listen: false);
+    _viewModel.onInitState.add(null);
   }
 
   @override

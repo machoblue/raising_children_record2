@@ -64,7 +64,7 @@ class LoginViewModel {
     }
 
     final userSnapshot = await Firestore.instance.collection('users').document(user.uid).get();
-    if (userSnapshot != null && userSnapshot.exists) {
+    if (userSnapshot.exists ?? false) {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('userId', userSnapshot['id']);
       await sharedPreferences.setString('userName', userSnapshot['name']);
