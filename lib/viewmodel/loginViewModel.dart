@@ -55,60 +55,60 @@ class LoginViewModel {
     final GoogleSignInAuthentication auth = await account.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
     final user = (await firebaseAuth.signInWithCredential(credential)).user;
-    if (user != null) {
-      final QuerySnapshot querySnapshot = await Firestore.instance
-          .collection('users')
-          .where('id', isEqualTo: user.uid)
-          .getDocuments();
-      final List<DocumentSnapshot> snapshots = querySnapshot.documents;
-      if (snapshots.length == 0) {
 
-        final familyId = Uuid().v1();
-        Firestore.instance.collection('users').document(user.uid).setData({
-          'id': user.uid,
-          'name': user.displayName,
-          'photoUrl': user.photoUrl,
-          'familyId': familyId,
-        });
-
-        final babyId = Uuid().v1();
-        final defaultBabyIconUrl = 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a';
-        Firestore.instance.collection('families').document(familyId).setData({
-          'users': { user.uid : true, },
-          'babies': {
-            'id': babyId,
-            'name': 'Baby',
-            'photoUrl': defaultBabyIconUrl,
-            'birthday': DateTime.now().millisecondsSinceEpoch,
-          }
-        });
-
-        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        await sharedPreferences.setString('id', user.uid);
-        await sharedPreferences.setString('name', user.displayName);
-        await sharedPreferences.setString('photoUrl', user.photoUrl);
-        await sharedPreferences.setString('familyId', familyId);
-        await sharedPreferences.setStringList('babies', [babyId]);
-        await sharedPreferences.setString('selectedBaby', babyId);
-
-        _signInUserStreamController.sink.add(user.uid);
-
-      } else {
-        final snapshot = snapshots[0];
-        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        await sharedPreferences.setString('id', snapshot['id']);
-        await sharedPreferences.setString('name', snapshot['name']);
-        await sharedPreferences.setString('photoUrl', snapshot['photoUrl']);
-        await sharedPreferences.setString('familyId', snapshot['familyId']);
-
-        _signInUserStreamController.sink.add(snapshot['id']);
-      }
-
-    } else {
+    if (user == null) {
       _signInUserStreamController.sink.add(null);
       _errorMessageStreamController.sink.add("Failed to sign in.");
+      _showIndicatorStreamController.sink.add(false);
+      return;
     }
 
+    final userSnapshot = await Firestore.instance.collection('users').document(user.uid).get();
+    if (userSnapshot != null && userSnapshot.exists) {
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('userId', userSnapshot['id']);
+      await sharedPreferences.setString('userName', userSnapshot['name']);
+      await sharedPreferences.setString('userPhotoUrl', userSnapshot['photoUrl']);
+      await sharedPreferences.setString('familyId', userSnapshot['familyId']);
+
+      _signInUserStreamController.sink.add(user.uid);
+      _showIndicatorStreamController.sink.add(false);
+
+      return;
+    }
+
+    final familyId = Uuid().v1();
+    Firestore.instance.collection('users').document(user.uid).setData({
+      'id': user.uid,
+      'name': user.displayName,
+      'photoUrl': user.photoUrl,
+      'familyId': familyId,
+    });
+
+    final babyId = Uuid().v1();
+    final defaultBabyIconUrl = 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a';
+    
+    final familyDocumentReference = Firestore.instance.collection('families').document(familyId);
+//    familyDocumentReference.updateData({'users': FieldValue.arrayUnion('some user id'));
+    familyDocumentReference.setData({
+      'userIds': [user.uid],
+    });
+    familyDocumentReference.collection('babies').document(babyId).setData({
+      'id': babyId,
+      'name': 'Baby',
+      'photoUrl': defaultBabyIconUrl,
+      'birthday': DateTime.now().millisecondsSinceEpoch,
+    });
+
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('userId', user.uid);
+    await sharedPreferences.setString('userName', user.displayName);
+    await sharedPreferences.setString('userPhotoUrl', user.photoUrl);
+    await sharedPreferences.setString('familyId', familyId);
+    await sharedPreferences.setStringList('babyIds', [babyId]);
+    await sharedPreferences.setString('selectedBabyId', babyId);
+
+    _signInUserStreamController.sink.add(user.uid);
     _showIndicatorStreamController.sink.add(false);
   }
 
