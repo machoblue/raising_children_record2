@@ -23,7 +23,7 @@ class _HomeContainer extends StatefulWidget {
   _HomeContainerState createState() => _HomeContainerState();
 }
 
-class _HomeContainerState extends State<_HomeContainer> {
+class _HomeContainerState extends State<_HomeContainer> with TickerProviderStateMixin {
 
   HomeViewModel _viewModel;
 
@@ -61,23 +61,27 @@ class _HomeContainerState extends State<_HomeContainer> {
               stream: _viewModel.expand,
               builder: (context, snapshot) {
                 final expand = snapshot.data ?? false;
-                return  ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: expand ? 200 : 100),
+                return AnimatedSize(
+                  curve: Curves.easeInOut,
+                  vsync: this,
+                  duration: Duration(milliseconds: 200),
+                  child: Container(
+                    height: expand ? 200 : 100,
                     child: Column(
-                        children: <Widget>[
-//                  Text("aaa"),
-                          RaisedButton(
-                            child: Text("▲"),
-                            onPressed: () => _viewModel.onButtonTapped.add(null),
-                          ),
-                          Expanded(
-                              child: SingleChildScrollView(
-                                  child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
-                              )
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text("▲"),
+                          onPressed: () => _viewModel.onButtonTapped.add(null),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
                           )
-                        ]
-                    ),
-                  );
+                        )
+                      ]
+                    )
+                  )
+                );
               }
             )
 
