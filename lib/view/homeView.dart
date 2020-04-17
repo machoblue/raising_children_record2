@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
@@ -42,20 +44,23 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Column(
-                  children: <Widget>[
-                    Text("aaa"),
-                    Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, int) {
-                            return ListTile(
-                              title: Text("AAA"),
-                            );
-                          },
-                        )
-                    )
-                  ]
-              ),
+//              child: Column(
+//                  children: <Widget>[
+//                    Text("aaa"),
+//                    Expanded(
+//                        child: ListView.builder(
+//                          itemBuilder: (context, int) {
+//                            return ListTile(
+//                              title: Text("AAA"),
+//                            );
+//                          },
+//                        )
+//                    )
+//                  ]
+//              ),
+              child: PageView.builder(
+                itemBuilder: _buildPage,
+              )
             ),
             StreamBuilder(
               stream: _viewModel.expand,
@@ -89,4 +94,14 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
         )
     );
   }
+
+  Widget _buildPage(context, position) {
+    print("### _buildPage");
+    final value = Random().nextInt(5);
+    final colors = <Color>[Colors.red, Colors.yellow, Colors.blue, Colors.green, Colors.orange];
+    return Container(
+      color: colors[value],
+    );
+  }
+
 }
