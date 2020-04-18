@@ -26,6 +26,7 @@ class _HomeContainer extends StatefulWidget {
 }
 
 class _HomeContainerState extends State<_HomeContainer> with TickerProviderStateMixin {
+  final _pageOffset = 1000; // value enough big
 
   HomeViewModel _viewModel;
 
@@ -40,26 +41,15 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   Widget build(BuildContext context) {
 
     return Container(
-        decoration: BoxDecoration(color: Colors.yellow),
+        decoration: BoxDecoration(color: Colors.white54),
         child: Column(
           children: <Widget>[
             Expanded(
-//              child: Column(
-//                  children: <Widget>[
-//                    Text("aaa"),
-//                    Expanded(
-//                        child: ListView.builder(
-//                          itemBuilder: (context, int) {
-//                            return ListTile(
-//                              title: Text("AAA"),
-//                            );
-//                          },
-//                        )
-//                    )
-//                  ]
-//              ),
               child: PageView.builder(
-                itemBuilder: _buildPage,
+                controller: PageController(
+                  initialPage: _pageOffset,
+                ),
+                itemBuilder: (context, position) => _buildPage(context, position - _pageOffset),
               )
             ),
             StreamBuilder(
@@ -96,12 +86,49 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   Widget _buildPage(context, position) {
-    print("### _buildPage");
-    final value = Random().nextInt(5);
-    final colors = <Color>[Colors.red, Colors.yellow, Colors.blue, Colors.green, Colors.orange];
-    return Container(
-      color: colors[value],
-    );
+    return _Page(dateTime: DateTime.now());
   }
 
+}
+
+class _Page extends StatefulWidget {
+  final _biggerFont = const TextStyle(fontSize: 24.0);
+
+  _Page({Key key, this.dateTime}) : super(key: key);
+
+  final DateTime dateTime;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PageState();
+  }
+}
+
+
+class _PageState extends State<_Page> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "$widget.dateTime",
+                style: widget._biggerFont,
+              ),
+            ),
+            Expanded(
+                child: ListView.builder(
+                  itemBuilder: (context, int) {
+                    return ListTile(
+                      title: Text("AAA"),
+                    );
+                  },
+                )
+            )
+          ],
+        )
+    );
+  }
 }
