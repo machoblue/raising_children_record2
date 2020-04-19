@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
@@ -16,7 +17,7 @@ class _LoginViewState extends State<LoginView> {
       create: (_) => LoginViewModel(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Login')
+          title: Text(L10n.of(context).loginTitle)
         ),
         body: Stack(
           children: <Widget>[

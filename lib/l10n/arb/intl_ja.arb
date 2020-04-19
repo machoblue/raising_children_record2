@@ -1,0 +1,9 @@
+{
+  "@@locale": "ja",
+  "@@last_modified": "2020-04-19T18:42:34.808805",
+  "loginTitle": "Login",
+  "@loginTitle": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
