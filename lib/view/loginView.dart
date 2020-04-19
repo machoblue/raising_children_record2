@@ -59,7 +59,7 @@ class _LoginButtonState extends State<LoginButton> {
     return RaisedButton(
       onPressed: _onLoginButtonTapped,
       child: Text(
-          'SIGN IN WITH GOOGLE',
+          L10n.of(context).loginButtonLabel,
           style: TextStyle(fontSize: 16.0),
       ),
     );

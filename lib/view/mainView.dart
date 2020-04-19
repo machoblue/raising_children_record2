@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/settingsView.dart';
@@ -28,7 +29,7 @@ class _MainScaffold extends StatefulWidget {
 
 class _MainScaffoldState extends State<_MainScaffold> {
 
-  List<String> _appBarTitles = ["Home", "Settings"];
+  List<String> _appBarTitles;
   List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     SettingsView(),
@@ -45,6 +46,9 @@ class _MainScaffoldState extends State<_MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    _appBarTitles = [l10n.homeTitle, l10n.settingsTitle];
+
     return StreamBuilder(
       stream: _viewModel.selectedIndex,
       builder: (context, snapshot) {
@@ -75,14 +79,14 @@ class _MainScaffoldState extends State<_MainScaffold> {
           ),
           body: _widgetOptions.elementAt(selectedIndex),
           bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  title: Text('Home'),
+                  title: Text(l10n.homeTitle),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  title: Text(l10n.settingsTitle),
                 ),
               ],
               currentIndex: selectedIndex,

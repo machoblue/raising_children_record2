@@ -1,8 +1,23 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-04-19T18:42:34.808805",
+  "@@last_modified": "2020-04-20T06:48:38.690282",
   "loginTitle": "Login",
   "@loginTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginButtonLabel": "Sign in with Google",
+  "@loginButtonLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeTitle": "Home",
+  "@homeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
     "type": "text",
     "placeholders": {}
   }

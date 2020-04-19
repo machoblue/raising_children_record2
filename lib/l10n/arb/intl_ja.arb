@@ -5,5 +5,20 @@
   "@loginTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "loginButtonLabel": "Googleでログイン",
+  "@loginButtonLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeTitle": "ホーム",
+  "@homeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingsTitle": "設定",
+  "@settingsTitle": {
+    "type": "text",
+    "placeholders": {}
   }
 }

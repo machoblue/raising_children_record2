@@ -5,5 +5,20 @@
   "@loginTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "loginButtonLabel": "Sign in with Google",
+  "@loginButtonLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeTitle": "Home",
+  "@homeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "type": "text",
+    "placeholders": {}
   }
 }
