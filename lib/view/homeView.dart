@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -41,7 +40,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   Widget build(BuildContext context) {
 
     return Container(
-        decoration: BoxDecoration(color: Colors.white54),
+        color: Colors.white,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -59,21 +58,39 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
                 return AnimatedSize(
                   curve: Curves.easeInOut,
                   vsync: this,
-                  duration: Duration(milliseconds: 200),
-                  child: Container(
-                    height: expand ? 200 : 100,
-                    child: Column(
-                      children: <Widget>[
-                        FlatButton(
-                          child: Text("▲"),
-                          onPressed: () => _viewModel.onButtonTapped.add(null),
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
+                  duration: Duration(milliseconds: 150),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: expand ? 200 : 100),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black45,
+                            blurRadius: 20.0,
+                            spreadRadius: 5.0,
+                            offset: Offset(
+                              10.0,
+                              10.0,
+                            ),
                           )
-                        )
-                      ]
+                        ],
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          FlatButton(
+                            child: Text(expand ? "▼" : "▲"),
+                            onPressed: () => _viewModel.onButtonTapped.add(null),
+                          ),
+                          Expanded(
+                              child: SingleChildScrollView(
+                                  child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
+                              )
+                          )
+                        ]
+                      )
                     )
                   )
                 );
@@ -86,7 +103,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   Widget _buildPage(context, position) {
-    return _Page(dateTime: DateTime.now());
+    return _Page(dateTime: DateTime.now().add(Duration(days: position)));
   }
 
 }
@@ -114,7 +131,7 @@ class _PageState extends State<_Page> {
             Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                "$widget.dateTime",
+                DateFormat().add_yMd().format(widget.dateTime),
                 style: widget._biggerFont,
               ),
             ),
