@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
+import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
 //    return _HomeContainer();
     return Provider<HomeViewModel>(
-      create: (_) => HomeViewModel(),
+      create: (_) => HomeViewModel(Provider.of<MainViewModel>(context).baby),
       child: _HomeContainer(),
     );
   }
