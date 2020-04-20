@@ -19,7 +19,7 @@ class MainViewModel {
   StreamSink<void> get onBabyButtonTapped => _onBabyButtonTappedStreamController.sink;
 
   // OUTPUT
-  final _babyStreamController = StreamController<Baby>();
+  final _babyStreamController = BehaviorSubject<Baby>.seeded(null);
   Stream<Baby> get baby => _babyStreamController.stream;
 
   final _babyIconImageProvider = BehaviorSubject<ImageProvider>.seeded(AssetImage("assets/default_baby_icon.png"));

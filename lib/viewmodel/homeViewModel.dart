@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class HomeViewModel {
 
-  Stream<Baby> baby;
+  BehaviorSubject<Baby> baby;
 
   final _onButtonTappedStreamController = StreamController<void>();
   get onButtonTapped => _onButtonTappedStreamController.sink;
@@ -19,6 +19,7 @@ class HomeViewModel {
       print("### onButtonTapped");
       _expandStreamController.sink.add(!_expandStreamController.value);
     });
+
   }
 
   void dispose() {

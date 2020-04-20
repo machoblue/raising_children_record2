@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -104,7 +105,11 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   Widget _buildPage(context, position) {
-    return _Page(dateTime: DateTime.now().add(Duration(days: position)));
+    final DateTime dateTime = DateTime.now().add(Duration(days: position));
+    return Provider(
+      create: (_) => HomePageViewModel(dateTime, Provider.of<MainViewModel>(context).baby),
+      child: _Page(dateTime: dateTime),
+    );
   }
 
 }
@@ -124,6 +129,14 @@ class _Page extends StatefulWidget {
 
 
 class _PageState extends State<_Page> {
+  HomePageViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = Provider.of<HomePageViewModel>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
