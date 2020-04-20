@@ -37,4 +37,5 @@ class L10n {
   String get loginButtonLabel => Intl.message('Sign in with Google', name: 'loginButtonLabel');
   String get homeTitle => Intl.message('Home', name: 'homeTitle');
   String get settingsTitle => Intl.message('Settings', name: 'settingsTitle');
+  String get milkLabel => Intl.message('Milk', name: 'milkLabel');
 }

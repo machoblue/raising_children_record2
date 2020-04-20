@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
@@ -141,6 +143,7 @@ class _PageState extends State<_Page> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Container(
         child: Column(
           children: <Widget>[
@@ -159,9 +162,8 @@ class _PageState extends State<_Page> {
                   return ListView.builder(
                     itemCount: records.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(records[index].type ?? ''),
-                      );
+                      final record = records[index];
+                      return RecordListTile(record, l10n);
                     },
                   );
                 },
@@ -169,6 +171,39 @@ class _PageState extends State<_Page> {
             )
           ],
         )
+    );
+  }
+}
+
+class RecordListTile extends StatelessWidget {
+
+  Record record;
+  L10n l10n;
+
+  RecordListTile(this.record, this.l10n);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Image.asset(record.assetName),
+              Text(record.title(l10n)),
+              Text(record.description),
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          Row(
+            children: <Widget>[
+              Image(image: CachedNetworkImageProvider(record.user.photoUrl),),
+              Text(record.user.name),
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-04-20T06:48:38.690282",
+  "@@last_modified": "2020-04-21T07:29:18.114743",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -18,6 +18,11 @@
   },
   "settingsTitle": "Settings",
   "@settingsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "milkLabel": "Milk",
+  "@milkLabel": {
     "type": "text",
     "placeholders": {}
   }

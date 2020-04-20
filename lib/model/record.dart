@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 
 class Record {
@@ -20,4 +21,49 @@ class Record {
       snapshot['note'],
       User.fromMap(snapshot['user'])
   );
+
+  String get assetName {
+    switch (type) {
+      case 'milk': {
+        print("### milk");
+        return "assets/milk_icon.png";
+      }
+      break;
+      default: {
+        print("### default");
+        return null;
+      }
+      break;
+    }
+  }
+
+  String title(L10n l10n) {
+    switch (type) {
+      case 'milk': {
+        print("### milk");
+        return l10n.milkLabel;
+      }
+      break;
+      default: {
+        print("### default");
+        return null;
+      }
+      break;
+    }
+  }
+
+  String get description {
+    switch (type) {
+      case 'milk': {
+        print("### milk");
+        return "$option1 ml";
+      }
+      break;
+      default: {
+        print("### default");
+        return null;
+      }
+      break;
+    }
+  }
 }

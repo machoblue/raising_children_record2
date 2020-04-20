@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
+    "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings")
   };
 }

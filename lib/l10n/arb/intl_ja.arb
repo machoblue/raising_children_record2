@@ -20,5 +20,10 @@
   "@settingsTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "milkLabel": "ミルク",
+  "@milkLabel": {
+    "type": "text",
+    "placeholders": {}
   }
 }
