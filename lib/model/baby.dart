@@ -7,11 +7,12 @@ class Baby {
   DateTime birthday;
   String photoUrl;
 
-  Baby(this.id, this.name, this.birthday);
-  Baby.fromSnapshot(DocumentSnapshot snapshot) {
-    this.id = snapshot['id'].toString();
-    this.name = snapshot['name'].toString();
-    this.photoUrl = snapshot['photoUrl'].toString();
-    this.birthday = DateTime.fromMillisecondsSinceEpoch(snapshot['birthday']); // snapshot['birthday']はObject型だけど、int型に自動でキャストされるっぽい。静的に型安全でじゃなくてイマイチに感じる
-  }
+  Baby(this.id, this.name, this.birthday, this.photoUrl);
+
+  Baby.fromSnapshot(DocumentSnapshot snapshot): this(
+      snapshot['id'].toString(),
+      snapshot['name'].toString(),
+      DateTime.fromMillisecondsSinceEpoch(snapshot['birthday']),
+      snapshot['photoUrl'].toString(),
+  );
 }

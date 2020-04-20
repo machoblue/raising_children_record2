@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
@@ -135,6 +136,7 @@ class _PageState extends State<_Page> {
   void initState() {
     super.initState();
     _viewModel = Provider.of<HomePageViewModel>(context, listen: false);
+    _viewModel.initState.add(null);
   }
 
   @override
@@ -150,13 +152,20 @@ class _PageState extends State<_Page> {
               ),
             ),
             Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, int) {
-                    return ListTile(
-                      title: Text("AAA"),
-                    );
-                  },
-                )
+              child: StreamBuilder(
+                stream: _viewModel.records,
+                builder: (context, snapshot) {
+                  final List<Record> records = snapshot.data ?? [];
+                  return ListView.builder(
+                    itemCount: records.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(records[index].type ?? ''),
+                      );
+                    },
+                  );
+                },
+              )
             )
           ],
         )

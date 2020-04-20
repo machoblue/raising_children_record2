@@ -37,7 +37,12 @@ class MainViewModel {
       _getBaby();
     });
 
-    _babyStreamController.stream.listen((baby) => _babyIconImageProvider.sink.add(CachedNetworkImageProvider(baby.photoUrl)));
+    _babyStreamController.stream.listen((baby) {
+      if (baby == null) {
+        return;
+      }
+      _babyIconImageProvider.sink.add(CachedNetworkImageProvider(baby.photoUrl));
+    });
 
     _onTabItemTappedStreamController.stream.listen((index) {
       _selectedIndex.sink.add(index);
