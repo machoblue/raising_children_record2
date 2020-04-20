@@ -40,26 +40,25 @@ class HomePageViewModel {
     }
 
     final sharedPreference = await SharedPreferences.getInstance();
-//    final userId = sharedPreference.getString("userId");
     final familyId = sharedPreference.getString("familyId");
-//    final babyId = sharedPreference.getString("selectedBabyId");
-//    print("### userId:$userId, familyId:$familyId, babyId:$babyId");
+    final fromDateTime = DateTime(dateTime.year, dateTime.month, dateTime.day).millisecondsSinceEpoch;
+    final toDateTime = fromDateTime + 1000 * 60 * 60 * 24;
+    print(fromDateTime);
+    print(toDateTime);
+
     final QuerySnapshot recordsQuerySnapshot = await Firestore.instance
         .collection('families')
         .document(familyId)
         .collection('babies')
         .document(baby.id)
         .collection('records')
-        .where('dateTime', isGreaterThanOrEqualTo: 0, isLessThan: DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60 * 24)
+        .where('dateTime', isGreaterThanOrEqualTo: fromDateTime, isLessThan: toDateTime)
         .getDocuments();
+
 
     final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
     recordSnapshotList.forEach((snapshot) => print(snapshot['note']));
     final List<Record> records = recordSnapshotList.map((snapshot) => Record.fromSnapshot(snapshot)).toList();
-    print("### ");
-    print(records.length);
-    print(records[0].note);
-    print(records[0].type);
     _recordsStreamController.sink.add(records);
   }
 
