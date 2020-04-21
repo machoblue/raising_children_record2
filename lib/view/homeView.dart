@@ -16,7 +16,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-//    return _HomeContainer();
     return Provider<HomeViewModel>(
       create: (_) => HomeViewModel(Provider.of<MainViewModel>(context).baby),
       child: _HomeContainer(),
@@ -163,7 +162,7 @@ class _PageState extends State<_Page> {
                     itemCount: records.length,
                     itemBuilder: (context, index) {
                       final record = records[index];
-                      return RecordListTile(record, l10n);
+                      return _RecordListTile(record, l10n);
                     },
                   );
                 },
@@ -175,30 +174,88 @@ class _PageState extends State<_Page> {
   }
 }
 
-class RecordListTile extends StatelessWidget {
+class _RecordListTile extends StatelessWidget {
+  final _titleFont = TextStyle(fontSize: 22, fontWeight: FontWeight.normal,);
+  final _descriptionFont = TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Color(0x0088000000));
+  final _userNameFont = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Color(0x0088000000));
 
   Record record;
   L10n l10n;
 
-  RecordListTile(this.record, this.l10n);
+  _RecordListTile(this.record, this.l10n);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(12),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
+        ),
+      ),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              Image.asset(record.assetName),
-              Text(record.title(l10n)),
-              Text(record.description),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(record.assetName),
+                  ),
+                ),
+                height: 48,
+                width: 48,
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                  child: Text(
+                    record.title(l10n),
+                    style: _titleFont,
+                  ),
+                )
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  record.description,
+                  style: _descriptionFont,
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.start,
           ),
           Row(
             children: <Widget>[
-              Image(image: CachedNetworkImageProvider(record.user.photoUrl),),
-              Text(record.user.name),
+              Spacer(flex: 2),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: CachedNetworkImageProvider(record.user.photoUrl),
+                        ),
+                      ),
+                      height: 24,
+                      width: 24,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      child: Text(
+                        record.user.name,
+                        style: _userNameFont,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
           ),
