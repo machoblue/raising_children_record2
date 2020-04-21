@@ -83,17 +83,30 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
                         ],
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          FlatButton(
-                            child: Text(expand ? "▼" : "▲"),
-                            onPressed: () => _viewModel.onButtonTapped.add(null),
+                          Container(
+                            child: FlatButton(
+                              onPressed: () => _viewModel.onButtonTapped.add(null),
+                              child: Image(
+                                height: 14,
+                                width: 80,
+                                image: AssetImage(expand ? "assets/close.png" : "assets/open.png"),
+                                color: Color.fromARGB(36, 0, 0, 0),
+                              ),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                           ),
                           Expanded(
+                            child: Container(
                               child: SingleChildScrollView(
                                   child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
-                              )
+                              ),
+                              padding: EdgeInsets.all(8),
+                            ),
                           )
-                        ]
+                        ],
                       )
                     )
                   )
