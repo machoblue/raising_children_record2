@@ -30,6 +30,8 @@ class _HomeContainer extends StatefulWidget {
 
 class _HomeContainerState extends State<_HomeContainer> with TickerProviderStateMixin {
   final _pageOffset = 1000; // value enough big
+  AnimationController _animationController;
+  Animation _animation;
 
   HomeViewModel _viewModel;
 
@@ -38,6 +40,10 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     super.initState();
 
     _viewModel = Provider.of<HomeViewModel>(context, listen: false);
+
+    _animationController = AnimationController(duration: Duration(milliseconds: 250), vsync: this);
+    _animation = IntTween(begin: 1, end: 25).animate(_animationController);
+    _animation.addListener(() => setState(() {}));
   }
 
   @override
@@ -48,6 +54,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
         child: Column(
           children: <Widget>[
             Expanded(
+              flex: 5,
               child: PageView.builder(
                 controller: PageController(
                   initialPage: _pageOffset,
@@ -55,65 +62,58 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
                 itemBuilder: (context, position) => _buildPage(context, position - _pageOffset),
               )
             ),
-            StreamBuilder(
-              stream: _viewModel.expand,
-              builder: (context, snapshot) {
-                final expand = snapshot.data ?? false;
-                return AnimatedSize(
-                  curve: Curves.easeInOut,
-                  vsync: this,
-                  duration: Duration(milliseconds: 150),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: expand ? 200 : 100),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
-
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black45,
-                            blurRadius: 20.0,
-                            spreadRadius: 5.0,
-                            offset: Offset(
-                              10.0,
-                              10.0,
-                            ),
-                          )
-                        ],
+            Expanded(
+              flex: _animation.value,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Image(
+                        height: 14,
+                        width: 80,
+                        image: AssetImage(_animation.value == 1 ? "assets/open.png" : "assets/close.png"),
+                        color: Color.fromARGB(36, 0, 0, 0),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            child: FlatButton(
-                              onPressed: () => _viewModel.onButtonTapped.add(null),
-                              child: Image(
-                                height: 14,
-                                width: 80,
-                                image: AssetImage(expand ? "assets/close.png" : "assets/open.png"),
-                                color: Color.fromARGB(36, 0, 0, 0),
-                              ),
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: SingleChildScrollView(
-                                  child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
-                              ),
-                              padding: EdgeInsets.all(8),
-                            ),
-                          )
-                        ],
-                      )
-                    )
-                  )
-                );
-              }
-            )
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      onPressed: () {
+                        if (_animation.value == 1) {
+                          _animationController.forward();
+                        } else {
+                          _animationController.reverse();
+                        }
+                      },
 
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: SingleChildScrollView(
+                            child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
+                        ),
+                        padding: EdgeInsets.all(8),
+                      ),
+                    )
+
+                  ]
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 20.0,
+                      spreadRadius: 5.0,
+                      offset: Offset(
+                        10.0,
+                        10.0,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            )
           ],
         )
     );
