@@ -88,17 +88,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
                     Expanded(
                       child: GridView.count(
                         crossAxisCount: 4,
-                        children: <Widget>[
-                          FlatButton(
-                            child: Image.asset(
-                              "assets/milk_icon.png",
-                              width: 64,
-                              height: 64,
-                            ),
-                            onPressed: () {
-                            },
-                          ),
-                        ],
+                        children: _buildGridItems(),
                       )
                     )
 
@@ -134,6 +124,24 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       create: (_) => HomePageViewModel(dateTime, Provider.of<MainViewModel>(context).baby),
       child: _Page(dateTime: dateTime),
     );
+  }
+
+  List<Widget> _buildGridItems() {
+    final List<String> recordTypes = [ "milk" ];
+    return recordTypes.map((recordType) {
+      return FlatButton(
+        child: Image.asset(
+          "assets/${recordType}_icon.png",
+          width: 64,
+          height: 64,
+        ),
+        onPressed: () => _addRecord(recordType)
+      );
+    }).toList();
+  }
+
+  void _addRecord(String recordType) {
+    print("### _addRecord: $recordType");
   }
 
 }
