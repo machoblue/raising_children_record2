@@ -86,16 +86,40 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
 
                     ),
                     Expanded(
-                      child: Container(
-                        child: SingleChildScrollView(
-                            child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
-                        ),
-                        padding: EdgeInsets.all(8),
-                      ),
+//                      child: SingleChildScrollView(
+//                          child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
+//                      ),
+                      child: GridView.count(
+                        crossAxisCount: 4,
+                        children: <Widget>[
+
+//                          Container(
+//                            decoration: BoxDecoration(
+//                              shape: BoxShape.circle,
+//                              image: DecorationImage(
+//                                fit: BoxFit.fitHeight,
+//                                image: AssetImage("assets/milk_icon.png"),
+//                              ),
+//                            ),
+//                            height: 48,
+//                            width: 48,
+//                          ),
+                          FlatButton(
+                            child: Image.asset(
+                              "assets/milk_icon.png",
+                              width: 64,
+                              height: 64,
+                            ),
+                            onPressed: () {
+                            },
+                          ),
+                        ],
+                      )
                     )
 
                   ]
                 ),
+                padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
