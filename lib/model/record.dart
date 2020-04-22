@@ -3,67 +3,76 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 
-class Record {
+abstract class Record {
   String id;
   DateTime dateTime;
   String type;
-  int option1;
   String note;
   User user;
 
-  Record(this.id, this.dateTime, this.type, this.option1, this.note, this.user);
+  Record(this.id, this.dateTime, this.type, this.note, this.user);
 
-  Record.fromSnapshot(DocumentSnapshot snapshot): this(
-      snapshot['id'],
-      DateTime.fromMillisecondsSinceEpoch(snapshot['dateTime']),
-      snapshot['type'],
-      snapshot['option1'],
-      snapshot['note'],
-      User.fromMap(snapshot['user'])
-  );
-
-  String get assetName {
+  factory Record.fromSnapshot(DocumentSnapshot snapshot) {
+    final String id = snapshot['id'];
+    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(snapshot['dateTime']);
+    final String type = snapshot['type'];
+    final String note = snapshot['note'];
+    final User user = User.fromMap(snapshot['user']);
     switch (type) {
       case 'milk': {
-        print("### milk");
-        return "assets/milk_icon.png";
+        final int amount = (snapshot['details'] as Map)['amount'];
+        return MilkRecord(id, dateTime, type, note, user, amount);
       }
       break;
       default: {
-        print("### default");
         return null;
       }
-      break;
     }
   }
 
-  String title(L10n l10n) {
-    switch (type) {
-      case 'milk': {
-        print("### milk");
-        return l10n.milkLabel;
-      }
-      break;
-      default: {
-        print("### default");
-        return null;
-      }
-      break;
-    }
-  }
+  String get assetName;
+  String title(L10n l10n);
+  String get description;
 
-  String get description {
-    switch (type) {
-      case 'milk': {
-        print("### milk");
-        return "$option1 ml";
+  Map get map {
+    Map map = {
+      'id': id,
+      'dateTime': dateTime.millisecondsSinceEpoch,
+      'type': type,
+      'note': note,
+      'user': user.map,
+    };
+    switch (this.runtimeType) {
+      case MilkRecord: {
+        final MilkRecord milkRecord = this as MilkRecord;
+        map['detail'] = { 'amount': milkRecord.amount };
       }
       break;
       default: {
-        print("### default");
         return null;
       }
-      break;
     }
+    return map;
   }
+}
+
+class MilkRecord extends Record {
+  int amount;
+
+  MilkRecord(
+      String id,
+      DateTime dateTime,
+      String type,
+      String note,
+      User user,
+      this.amount): super(id, dateTime, type, note, user);
+
+  @override
+  String get assetName => "assets/milk_icon.png";
+
+  @override
+  String title(L10n l10n) => l10n.milkLabel;
+
+  @override
+  String get description => "${this.amount}ml";
 }

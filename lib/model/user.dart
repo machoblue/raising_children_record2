@@ -11,4 +11,12 @@ class User {
       map['name'],
       map['photoUrl']
   );
+
+  Map get map {
+    return {
+      'id': id,
+      'name': name,
+      'photoUrl': photoUrl,
+    };
+  }
 }
