@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
+import 'package:raisingchildrenrecord2/view/recordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
@@ -141,7 +142,14 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   void _addRecord(String recordType) {
-    print("### _addRecord: $recordType");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return RecordView(recordType);
+        }
+      )
+    );
   }
 
 }
