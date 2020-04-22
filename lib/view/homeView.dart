@@ -42,7 +42,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     _viewModel = Provider.of<HomeViewModel>(context, listen: false);
 
     _animationController = AnimationController(duration: Duration(milliseconds: 250), vsync: this);
-    _animation = IntTween(begin: 1, end: 25).animate(_animationController);
+    _animation = IntTween(begin: 1, end: 4).animate(_animationController);
     _animation.addListener(() => setState(() {}));
   }
 
@@ -54,7 +54,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 5,
+              flex: 2,
               child: PageView.builder(
                 controller: PageController(
                   initialPage: _pageOffset,
@@ -86,24 +86,9 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
 
                     ),
                     Expanded(
-//                      child: SingleChildScrollView(
-//                          child: Text('a\na\na\na\na\na\na\na\na\na\na\na\na\na\n')
-//                      ),
                       child: GridView.count(
                         crossAxisCount: 4,
                         children: <Widget>[
-
-//                          Container(
-//                            decoration: BoxDecoration(
-//                              shape: BoxShape.circle,
-//                              image: DecorationImage(
-//                                fit: BoxFit.fitHeight,
-//                                image: AssetImage("assets/milk_icon.png"),
-//                              ),
-//                            ),
-//                            height: 48,
-//                            width: 48,
-//                          ),
                           FlatButton(
                             child: Image.asset(
                               "assets/milk_icon.png",
