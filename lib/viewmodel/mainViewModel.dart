@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,9 @@ class MainViewModel {
   final _selectedIndex = BehaviorSubject<int>.seeded(0);
   Stream<int> get selectedIndex => _selectedIndex.stream;
 
+  final StreamController<User> _userStreamController = BehaviorSubject<User>.seeded(null);
+  Stream<User> get user => _userStreamController.stream;
+
   MainViewModel() {
     bindInputAndOutput();
   }
@@ -35,6 +39,7 @@ class MainViewModel {
   void bindInputAndOutput() {
     _onInitStateStreamController.stream.listen((_) {
       _getBaby();
+      _getUser();
     });
 
     _babyStreamController.stream.listen((baby) {
@@ -67,6 +72,17 @@ class MainViewModel {
     }
   }
 
+  void _getUser() async {
+    final sharedPreference = await SharedPreferences.getInstance();
+    final userId = sharedPreference.getString("userId");
+    final DocumentSnapshot userSnapshot = await Firestore.instance.collection('users').document(userId).get();
+
+    if (userSnapshot?.exists ?? false) {
+      final user = User.fromSnapshot(userSnapshot);
+      _userStreamController.sink.add(user);
+    }
+  }
+
   dispose() {
     _onInitStateStreamController.close();
     _onTabItemTappedStreamController.close();
@@ -74,5 +90,6 @@ class MainViewModel {
     _onBabyButtonTappedStreamController.close();
     _babyIconImageProvider.close();
     _selectedIndex.close();
+    _userStreamController.close();
   }
 }

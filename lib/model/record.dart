@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class Record {
   String id;
@@ -11,6 +12,10 @@ abstract class Record {
   User user;
 
   Record(this.id, this.dateTime, this.type, this.note, this.user);
+
+  Record.newInstance(this.dateTime, this.type, this.note, this.user) {
+    this.id = Uuid().v1();
+  }
 
   factory Record.fromSnapshot(DocumentSnapshot snapshot) {
     final String id = snapshot['id'];
@@ -66,6 +71,8 @@ class MilkRecord extends Record {
       String note,
       User user,
       this.amount): super(id, dateTime, type, note, user);
+
+  MilkRecord.newInstance(DateTime dateTime, String note, User user, this.amount): super.newInstance(dateTime, "milk", note, user);
 
   @override
   String get assetName => "assets/milk_icon.png";

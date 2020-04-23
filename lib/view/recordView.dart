@@ -2,15 +2,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/viewmodel/recordViewModel.dart';
 import 'package:intl/intl.dart';
 
 class RecordView extends StatefulWidget {
   String recordType;
   Record record;
+  User user;
+  Baby baby;
 
-  RecordView({ Key key, this.recordType, this.record }): super(key: key);
+  RecordView({ Key key, this.recordType, this.record, this.user, this.baby }): super(key: key);
 
   @override
   _RecordViewState createState() => _RecordViewState();
@@ -20,7 +24,7 @@ class _RecordViewState extends State<RecordView> {
   @override
   Widget build(BuildContext context) {
     return Provider<RecordViewModel>(
-      create: (_) => RecordViewModel(),
+      create: (_) => RecordViewModel(widget.user, widget.baby),
       child: _RecordScaffold(recordType: widget.recordType, record: widget.record),
     );
   }
@@ -67,16 +71,13 @@ class _RecordForm extends StatefulWidget {
 class _RecordFormState extends State<_RecordForm> {
   final _biggerFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
-  TextEditingController _noteController;
 
-  RecordViewModel _recordViewModel;
+  RecordViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _noteController = TextEditingController();
-    _recordViewModel = Provider.of<RecordViewModel>(context, listen: false);
-    print("### recordviewmodel $_recordViewModel");
+    _viewModel = Provider.of<RecordViewModel>(context, listen: false);
   }
 
   @override
@@ -86,7 +87,7 @@ class _RecordFormState extends State<_RecordForm> {
       child: Column(
         children: <Widget>[
           StreamBuilder(
-            stream: _recordViewModel.dateTime,
+            stream: _viewModel.dateTime,
             builder: (context, snapshot) {
               final dateTime = snapshot.data ?? DateTime.now();
               return FlatButton(
@@ -106,9 +107,7 @@ class _RecordFormState extends State<_RecordForm> {
               border: OutlineInputBorder(),
               labelText: 'メモ',
             ),
-            onSubmitted: (value) {
-              print("### $value");
-            },
+            onChanged: (text) => _viewModel.onNoteChanged.add(text),
           )
         ],
       ),
@@ -143,6 +142,6 @@ class _RecordFormState extends State<_RecordForm> {
     }
 
     DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
-    _recordViewModel.onDateTimeSelected.add(selectedDateTime);
+    _viewModel.onDateTimeSelected.add(selectedDateTime);
   }
 }

@@ -1,4 +1,6 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   String id;
   String name;
@@ -10,6 +12,12 @@ class User {
       map['id'],
       map['name'],
       map['photoUrl']
+  );
+
+  User.fromSnapshot(DocumentSnapshot snapshot) : this(
+    snapshot['id'],
+    snapshot['name'],
+    snapshot['photoUrl'],
   );
 
   Map get map {
