@@ -146,7 +146,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       context,
       MaterialPageRoute(
         builder: (context) {
-          return RecordView(recordType);
+          return RecordView(recordType: recordType);
         }
       )
     );
@@ -224,81 +224,95 @@ class _RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.fitHeight,
-                    image: AssetImage(record.assetName),
-                  ),
-                ),
-                height: 48,
-                width: 48,
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                  child: Text(
-                    record.title(l10n),
-                    style: _titleFont,
-                  ),
-                )
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  record.description,
-                  style: _descriptionFont,
-                ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.start,
+    return GestureDetector(
+      onTap: () => _editRecord(context, record),
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
           ),
-          Row(
-            children: <Widget>[
-              Spacer(flex: 2),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: CachedNetworkImageProvider(record.user.photoUrl),
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.fitHeight,
+                      image: AssetImage(record.assetName),
+                    ),
+                  ),
+                  height: 48,
+                  width: 48,
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                      child: Text(
+                        record.title(l10n),
+                        style: _titleFont,
+                      ),
+                    )
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    record.description,
+                    style: _descriptionFont,
+                  ),
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.start,
+            ),
+            Row(
+              children: <Widget>[
+                Spacer(flex: 2),
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fitHeight,
+                            image: CachedNetworkImageProvider(record.user.photoUrl),
+                          ),
+                        ),
+                        height: 24,
+                        width: 24,
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: Text(
+                          record.user.name,
+                          style: _userNameFont,
                         ),
                       ),
-                      height: 24,
-                      width: 24,
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: Text(
-                        record.user.name,
-                        style: _userNameFont,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
-          ),
-        ],
+              ],
+              mainAxisAlignment: MainAxisAlignment.end,
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  void _editRecord(BuildContext context, Record record) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return RecordView(record: record);
+            }
+        )
     );
   }
 }
