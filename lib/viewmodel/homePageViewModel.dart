@@ -59,20 +59,20 @@ class HomePageViewModel {
     print(fromDateTime);
     print(toDateTime);
 
-    final QuerySnapshot recordsQuerySnapshot = await Firestore.instance
-        .collection('families')
-        .document(familyId)
-        .collection('babies')
-        .document(baby.id)
-        .collection('records')
-        .where('dateTime', isGreaterThanOrEqualTo: fromDateTime, isLessThan: toDateTime)
-        .getDocuments();
-
-
-    final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
-    recordSnapshotList.forEach((snapshot) => print(snapshot['note']));
-    final List<Record> records = recordSnapshotList.map((snapshot) => Record.fromSnapshot(snapshot)).toList();
-    _recordsStreamController.sink.add(records);
+    Firestore.instance
+      .collection('families')
+      .document(familyId)
+      .collection('babies')
+      .document(baby.id)
+      .collection('records')
+      .where('dateTime', isGreaterThanOrEqualTo: fromDateTime, isLessThan: toDateTime)
+      .snapshots()
+      .listen((recordsQuerySnapshot) {
+        final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
+        recordSnapshotList.forEach((snapshot) => print(snapshot['note']));
+        final List<Record> records = recordSnapshotList.map((snapshot) => Record.fromSnapshot(snapshot)).toList();
+        _recordsStreamController.sink.add(records);
+      });
   }
 
   void _navigateToEditRecord(Tuple3<Record, User, Baby> tuple3) {
