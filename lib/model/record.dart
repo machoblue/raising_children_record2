@@ -39,24 +39,14 @@ abstract class Record {
   String title(L10n l10n);
   String get description;
 
-  Map get map {
-    Map map = {
+  Map<String, dynamic> get map {
+    Map<String, dynamic> map = {
       'id': id,
       'dateTime': dateTime.millisecondsSinceEpoch,
       'type': type,
       'note': note,
       'user': user.map,
     };
-    switch (this.runtimeType) {
-      case MilkRecord: {
-        final MilkRecord milkRecord = this as MilkRecord;
-        map['detail'] = { 'amount': milkRecord.amount };
-      }
-      break;
-      default: {
-        return null;
-      }
-    }
     return map;
   }
 }
@@ -73,6 +63,14 @@ class MilkRecord extends Record {
       this.amount): super(id, dateTime, type, note, user);
 
   MilkRecord.newInstance(DateTime dateTime, String note, User user, this.amount): super.newInstance(dateTime, "milk", note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'amount': amount };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
 
   @override
   String get assetName => "assets/milk_icon.png";

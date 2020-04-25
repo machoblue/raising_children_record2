@@ -5,19 +5,22 @@ class User {
   String id;
   String name;
   String photoUrl;
+  String familyId;
 
-  User(this.id, this.name, this.photoUrl);
+  User(this.id, this.name, this.photoUrl, this.familyId);
 
   User.fromMap(Map map): this(
       map['id'],
       map['name'],
-      map['photoUrl']
+      map['photoUrl'],
+      map['familyId'],
   );
 
   User.fromSnapshot(DocumentSnapshot snapshot) : this(
     snapshot['id'],
     snapshot['name'],
     snapshot['photoUrl'],
+    snapshot['familyId'],
   );
 
   Map get map {

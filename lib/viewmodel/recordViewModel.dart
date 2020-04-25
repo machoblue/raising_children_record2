@@ -1,14 +1,12 @@
 
 import 'dart:async';
-import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RecordViewModel {
-  DateFormat _dateFormat = DateFormat().add_yMd().add_Hms();
-
   User user;
   Baby baby;
 
@@ -38,6 +36,14 @@ class RecordViewModel {
 
   void _save(MilkRecord milkRecord) async {
     print("### save $milkRecord");
+    Firestore.instance
+        .collection('families')
+        .document(user.familyId)
+        .collection("babies")
+        .document(baby.id)
+        .collection("records")
+        .document(milkRecord.id)
+        .setData(milkRecord.map);
   }
 
   void dispose() {

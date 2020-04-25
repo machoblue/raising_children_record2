@@ -20,8 +20,8 @@ class MainViewModel {
   StreamSink<void> get onBabyButtonTapped => _onBabyButtonTappedStreamController.sink;
 
   // OUTPUT
-  final _babyStreamController = BehaviorSubject<Baby>.seeded(null);
-  Stream<Baby> get baby => _babyStreamController.stream;
+  final _babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
+  Stream<Baby> get baby => _babyBehaviorSubject.stream;
 
   final _babyIconImageProvider = BehaviorSubject<ImageProvider>.seeded(AssetImage("assets/default_baby_icon.png"));
   Stream<ImageProvider> get babyIconImageProvider => _babyIconImageProvider.stream;
@@ -29,8 +29,8 @@ class MainViewModel {
   final _selectedIndex = BehaviorSubject<int>.seeded(0);
   Stream<int> get selectedIndex => _selectedIndex.stream;
 
-  final StreamController<User> _userStreamController = BehaviorSubject<User>.seeded(null);
-  Stream<User> get user => _userStreamController.stream;
+  final _userBehaviorSubject = BehaviorSubject<User>.seeded(null);
+  Stream<User> get user => _userBehaviorSubject.stream;
 
   MainViewModel() {
     bindInputAndOutput();
@@ -42,7 +42,7 @@ class MainViewModel {
       _getUser();
     });
 
-    _babyStreamController.stream.listen((baby) {
+    _babyBehaviorSubject.stream.listen((baby) {
       if (baby == null) {
         return;
       }
@@ -68,7 +68,7 @@ class MainViewModel {
 
     if (babySnapshot?.exists ?? false) {
       final baby = Baby.fromSnapshot(babySnapshot);
-      _babyStreamController.sink.add(baby);
+      _babyBehaviorSubject.sink.add(baby);
     }
   }
 
@@ -79,17 +79,18 @@ class MainViewModel {
 
     if (userSnapshot?.exists ?? false) {
       final user = User.fromSnapshot(userSnapshot);
-      _userStreamController.sink.add(user);
+      print("### user: ${user.id}");
+      _userBehaviorSubject.sink.add(user);
     }
   }
 
   dispose() {
     _onInitStateStreamController.close();
     _onTabItemTappedStreamController.close();
-    _babyStreamController.close();
+    _babyBehaviorSubject.close();
     _onBabyButtonTappedStreamController.close();
     _babyIconImageProvider.close();
     _selectedIndex.close();
-    _userStreamController.close();
+    _userBehaviorSubject.close();
   }
 }

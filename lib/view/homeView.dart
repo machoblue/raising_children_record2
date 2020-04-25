@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/recordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
@@ -18,7 +20,10 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Provider<HomeViewModel>(
-      create: (_) => HomeViewModel(Provider.of<MainViewModel>(context).baby),
+      create: (_) {
+        MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
+        return HomeViewModel(mainViewModel.user, mainViewModel.baby);
+      },
       child: _HomeContainer(),
     );
   }
@@ -41,6 +46,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     super.initState();
 
     _viewModel = Provider.of<HomeViewModel>(context, listen: false);
+    _viewModel.navigationToAddRecord.listen((tuple3) => _addRecord(tuple3.item1, tuple3.item2, tuple3.item3));
 
     _animationController = AnimationController(duration: Duration(milliseconds: 250), vsync: this);
     _animation = IntTween(begin: 1, end: 4).animate(_animationController);
@@ -122,7 +128,10 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   Widget _buildPage(context, position) {
     final DateTime dateTime = DateTime.now().add(Duration(days: position));
     return Provider(
-      create: (_) => HomePageViewModel(dateTime, Provider.of<MainViewModel>(context).baby),
+      create: (_) {
+        MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
+        return HomePageViewModel(dateTime, mainViewModel.user, mainViewModel.baby);
+      },
       child: _Page(dateTime: dateTime),
     );
   }
@@ -136,17 +145,17 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
           width: 64,
           height: 64,
         ),
-        onPressed: () => _addRecord(recordType)
+        onPressed: () => _viewModel.addRecord.add(recordType),
       );
     }).toList();
   }
 
-  void _addRecord(String recordType) {
+  void _addRecord(String recordType, User user, Baby baby) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return RecordView(recordType: recordType);
+          return RecordView(recordType: recordType, user: user, baby: baby);
         }
       )
     );
@@ -176,6 +185,7 @@ class _PageState extends State<_Page> {
     super.initState();
     _viewModel = Provider.of<HomePageViewModel>(context, listen: false);
     _viewModel.initState.add(null);
+    _viewModel.navigationToEditRecord.listen((tuple3) => _editRecord(tuple3.item1, tuple3.item2, tuple3.item3));
   }
 
   @override
@@ -200,13 +210,27 @@ class _PageState extends State<_Page> {
                     itemCount: records.length,
                     itemBuilder: (context, index) {
                       final record = records[index];
-                      return _RecordListTile(record, l10n);
+                      return GestureDetector(
+                        onTap: () => _viewModel.editRecord.add(record),
+                        child: _RecordListTile(record, l10n),
+                      );
                     },
                   );
                 },
               )
             )
           ],
+        )
+    );
+  }
+
+  void _editRecord(Record record, User user, Baby baby) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return RecordView(record: record, user: user, baby: baby);
+            }
         )
     );
   }
@@ -224,95 +248,81 @@ class _RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _editRecord(context, record),
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
-          ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.fitHeight,
-                      image: AssetImage(record.assetName),
-                    ),
-                  ),
-                  height: 48,
-                  width: 48,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                      child: Text(
-                        record.title(l10n),
-                        style: _titleFont,
-                      ),
-                    )
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    record.description,
-                    style: _descriptionFont,
-                  ),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.start,
-            ),
-            Row(
-              children: <Widget>[
-                Spacer(flex: 2),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fitHeight,
-                            image: CachedNetworkImageProvider(record.user.photoUrl),
-                          ),
-                        ),
-                        height: 24,
-                        width: 24,
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
-                          record.user.name,
-                          style: _userNameFont,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.end,
-            ),
-          ],
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
         ),
       ),
-    );
-  }
-
-  void _editRecord(BuildContext context, Record record) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) {
-              return RecordView(record: record);
-            }
-        )
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(record.assetName),
+                  ),
+                ),
+                height: 48,
+                width: 48,
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                    child: Text(
+                      record.title(l10n),
+                      style: _titleFont,
+                    ),
+                  )
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  record.description,
+                  style: _descriptionFont,
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          Row(
+            children: <Widget>[
+              Spacer(flex: 2),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: CachedNetworkImageProvider(record.user.photoUrl),
+                        ),
+                      ),
+                      height: 24,
+                      width: 24,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      child: Text(
+                        record.user.name,
+                        style: _userNameFont,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
+          ),
+        ],
+      ),
     );
   }
 }
