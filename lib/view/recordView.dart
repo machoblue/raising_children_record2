@@ -41,9 +41,14 @@ class _RecordScaffold extends StatefulWidget {
 }
 
 class _RecordScaffoldState extends State<_RecordScaffold> {
+
+  RecordViewModel _viewModel;
+
   @override
   void initState() {
     super.initState();
+    _viewModel = Provider.of<RecordViewModel>(context, listen: false);
+    _viewModel.onSaveComplete.listen((_) => _pop());
   }
 
   @override
@@ -54,12 +59,16 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
-              onPressed: () => Provider.of<RecordViewModel>(context).onSaveButtonTapped.add(null),
+              onPressed: () => _viewModel.onSaveButtonTapped.add(null),
             ),
           ]
       ),
       body: _RecordForm(),
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 }
 

@@ -22,7 +22,7 @@ class RecordViewModel {
   Stream<String> get note => _noteStreamController.stream;
 
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
-  Stream<void> get onSaveComplete => _onSaveButtonTappedStreamController.stream;
+  Stream<void> get onSaveComplete => _onSaveCompleteStreamController.stream;
 
   RecordViewModel(this.user, this.baby) {
     CombineLatestStream.combine3(
@@ -44,6 +44,8 @@ class RecordViewModel {
         .collection("records")
         .document(milkRecord.id)
         .setData(milkRecord.map);
+
+      _onSaveCompleteStreamController.sink.add(null);
   }
 
   void dispose() {
