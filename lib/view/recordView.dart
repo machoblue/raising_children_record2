@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -12,7 +13,7 @@ class RecordView extends StatefulWidget {
   Record record;
   User user;
   Baby baby;
-  bool isNew = false;
+  bool isNew;
 
   RecordView({ Key key, this.record, this.user, this.baby, this.isNew }): super(key: key);
 
@@ -24,7 +25,7 @@ class _RecordViewState extends State<RecordView> {
   @override
   Widget build(BuildContext context) {
     return Provider<RecordViewModel>(
-      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby),
+      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby, L10n.of(context)),
       child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }
@@ -55,7 +56,7 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.isNew ? "新規追加" : "編集"),
+          title: Text(widget.isNew ?? false ? "新規追加" : "編集"),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
@@ -78,7 +79,8 @@ class _RecordForm extends StatefulWidget {
 }
 
 class _RecordFormState extends State<_RecordForm> {
-  final _biggerFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
+  final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
+  final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
@@ -100,16 +102,63 @@ class _RecordFormState extends State<_RecordForm> {
       padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
       child: Column(
         children: <Widget>[
+          Row(
+            children: <Widget>[
+              StreamBuilder(
+                stream: _viewModel.assetName,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: AssetImage(snapshot.data),
+                      ),
+                    ),
+                    height: 48,
+                    width: 48,
+                  );
+                }
+              ),
+              Expanded(
+                child: StreamBuilder(
+                  stream: _viewModel.title,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                      child: Text(
+                        snapshot.data,
+                        style: _recordTypeFont,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          Container(
+            height: 36,
+          ),
           StreamBuilder(
             stream: _viewModel.dateTime,
             builder: (context, snapshot) {
               final dateTime = snapshot.data ?? DateTime.now();
-              return FlatButton(
-                child: Text(
-                  _dateFormat.format(dateTime),
-                  style: _biggerFont,
-                ),
-                onPressed: () => _onDateTimeButtonPressed(dateTime),
+              return Container(
+                alignment: Alignment.centerLeft,
+                child: FlatButton(
+                  child: Text(
+                    _dateFormat.format(dateTime),
+                    style: _dateButtonFont,
+                  ),
+                  onPressed: () => _onDateTimeButtonPressed(dateTime),
+                )
               );
             },
           ),

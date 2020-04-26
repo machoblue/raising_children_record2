@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -10,6 +11,10 @@ class RecordViewModel {
   BehaviorSubject<Record> recordBehaviorSubject;
   User user;
   Baby baby;
+  L10n l10n;
+
+  Stream<String> get assetName => recordBehaviorSubject.stream.map((record) => record.assetName);
+  Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.title(l10n));
 
   final StreamController<void> _onSaveButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onSaveButtonTapped => _onSaveButtonTappedStreamController.sink;
@@ -25,7 +30,7 @@ class RecordViewModel {
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
   Stream<void> get onSaveComplete => _onSaveCompleteStreamController.stream;
 
-  RecordViewModel(record, this.user, this.baby) {
+  RecordViewModel(record, this.user, this.baby, this.l10n) {
     print("### record.note: ${record.note}");
     recordBehaviorSubject = BehaviorSubject.seeded(record);
 
