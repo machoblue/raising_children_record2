@@ -240,10 +240,21 @@ class _PageState extends State<_Page> {
         context,
         MaterialPageRoute(
             builder: (context) {
-              return RecordView(record: record, user: user, baby: baby);
+              return _buildRecordView(record, user, baby);
             }
         )
     );
+  }
+
+  Widget _buildRecordView(Record record, User user, Baby baby) {
+    switch(record.runtimeType) {
+      case MilkRecord: {
+        return RecordView(record: record, user: user, baby: baby);
+      }
+      default: {
+        return null;
+      }
+    }
   }
 }
 
