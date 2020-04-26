@@ -9,12 +9,11 @@ import 'package:raisingchildrenrecord2/viewmodel/recordViewModel.dart';
 import 'package:intl/intl.dart';
 
 class RecordView extends StatefulWidget {
-  String recordType;
   Record record;
   User user;
   Baby baby;
 
-  RecordView({ Key key, this.recordType, this.record, this.user, this.baby }): super(key: key);
+  RecordView({ Key key, this.record, this.user, this.baby }): super(key: key);
 
   @override
   _RecordViewState createState() => _RecordViewState();
@@ -24,17 +23,16 @@ class _RecordViewState extends State<RecordView> {
   @override
   Widget build(BuildContext context) {
     return Provider<RecordViewModel>(
-      create: (_) => RecordViewModel(widget.user, widget.baby),
-      child: _RecordScaffold(recordType: widget.recordType, record: widget.record),
+      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby),
+      child: _RecordScaffold(record: widget.record),
     );
   }
 }
 
 class _RecordScaffold extends StatefulWidget {
-  String recordType;
   Record record;
 
-  _RecordScaffold({ Key key, this.recordType, this.record }): super(key: key);
+  _RecordScaffold({ Key key, this.record }): super(key: key);
 
   @override
   _RecordScaffoldState createState() => _RecordScaffoldState();
@@ -81,12 +79,17 @@ class _RecordFormState extends State<_RecordForm> {
   final _biggerFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
+  TextEditingController _noteController;
   RecordViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
+    _noteController = TextEditingController();
     _viewModel = Provider.of<RecordViewModel>(context, listen: false);
+    _viewModel.note.listen((note) {
+      _noteController.text = note;
+    });
   }
 
   @override
@@ -117,6 +120,7 @@ class _RecordFormState extends State<_RecordForm> {
               labelText: 'メモ',
             ),
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
+            controller: _noteController,
           )
         ],
       ),

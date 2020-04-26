@@ -155,7 +155,8 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       context,
       MaterialPageRoute(
         builder: (context) {
-          return RecordView(recordType: recordType, user: user, baby: baby);
+          Record record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
+          return RecordView(record: record, user: user, baby: baby);
         }
       )
     );

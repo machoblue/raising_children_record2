@@ -7,51 +7,67 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RecordViewModel {
+  BehaviorSubject<Record> recordBehaviorSubject;
   User user;
   Baby baby;
 
   final StreamController<void> _onSaveButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onSaveButtonTapped => _onSaveButtonTappedStreamController.sink;
 
-  final StreamController<DateTime> _dateTimeStreamController = BehaviorSubject.seeded(DateTime.now());
-  StreamSink<DateTime> get onDateTimeSelected => _dateTimeStreamController.sink;
-  Stream<DateTime> get dateTime => _dateTimeStreamController.stream;
+  Stream<DateTime> get dateTime => recordBehaviorSubject.stream.map((record) => record.dateTime);
+  final StreamController<DateTime> _onDateTimeSelectedStreamController = StreamController<DateTime>();
+  StreamSink<DateTime> get onDateTimeSelected => _onDateTimeSelectedStreamController.sink;
 
-  final StreamController<String> _noteStreamController = BehaviorSubject.seeded("");
-  StreamSink<String> get onNoteChanged => _noteStreamController.sink;
-  Stream<String> get note => _noteStreamController.stream;
+  Stream<String> get note => recordBehaviorSubject.stream.map((record) => record.note);
+  final StreamController<String> _onNoteChangedStreamController = StreamController<String>();
+  StreamSink<String> get onNoteChanged => _onNoteChangedStreamController.sink;
 
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
   Stream<void> get onSaveComplete => _onSaveCompleteStreamController.stream;
 
-  RecordViewModel(this.user, this.baby) {
-    CombineLatestStream.combine3(
+  RecordViewModel(record, this.user, this.baby) {
+    print("### record.note: ${record.note}");
+    recordBehaviorSubject = BehaviorSubject.seeded(record);
+
+    _onDateTimeSelectedStreamController.stream.listen((date) {
+      Record record = recordBehaviorSubject.value;
+      record.dateTime = date;
+      recordBehaviorSubject.add(record);
+    });
+
+    _onNoteChangedStreamController.stream.listen((note) {
+      Record record = recordBehaviorSubject.value;
+      record.note = note;
+      recordBehaviorSubject.add(record);
+    });
+
+    CombineLatestStream.combine2(
+      recordBehaviorSubject,
       _onSaveButtonTappedStreamController.stream,
-      _dateTimeStreamController.stream,
-      _noteStreamController.stream,
-      (_, dateTime, note) => MilkRecord.newInstance(dateTime, note, user, 0),
+      (record, _) => record
     )
-    .listen(_save);
+    .listen((record) => _save(record));
   }
 
-  void _save(MilkRecord milkRecord) async {
-    print("### save $milkRecord");
+  void _save(Record record) async {
+    print("### save $record");
     Firestore.instance
         .collection('families')
         .document(user.familyId)
         .collection("babies")
         .document(baby.id)
         .collection("records")
-        .document(milkRecord.id)
-        .setData(milkRecord.map);
+        .document(record.id)
+        .setData(record.map);
 
       _onSaveCompleteStreamController.sink.add(null);
   }
 
   void dispose() {
+    recordBehaviorSubject.close();
     _onSaveButtonTappedStreamController.close();
-    _dateTimeStreamController.close();
-    _noteStreamController.close();
+    _onDateTimeSelectedStreamController.close();
+    _onNoteChangedStreamController.close();
     _onSaveCompleteStreamController.close();
   }
 }
