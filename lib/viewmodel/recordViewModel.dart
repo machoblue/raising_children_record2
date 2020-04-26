@@ -33,6 +33,10 @@ class RecordViewModel {
   final StreamController<void> _onDeleteButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
 
+  Stream<int> get amount => recordBehaviorSubject.stream.map((record) => (record as MilkRecord)?.amount ?? 0);
+  final StreamController<int> _onAmountSelectedStreamController = StreamController<int>();
+  StreamSink<int> get onAmountSelected => _onAmountSelectedStreamController.sink;
+
   RecordViewModel(record, this.user, this.baby, this.l10n) {
     print("### record.note: ${record.note}");
     recordBehaviorSubject = BehaviorSubject.seeded(record);
@@ -46,6 +50,12 @@ class RecordViewModel {
     _onNoteChangedStreamController.stream.listen((note) {
       Record record = recordBehaviorSubject.value;
       record.note = note;
+      recordBehaviorSubject.add(record);
+    });
+
+    _onAmountSelectedStreamController.stream.listen((amount) {
+      Record record = recordBehaviorSubject.value;
+      (record as MilkRecord)?.amount = amount;
       recordBehaviorSubject.add(record);
     });
 
@@ -98,5 +108,6 @@ class RecordViewModel {
     _onNoteChangedStreamController.close();
     _onSaveCompleteStreamController.close();
     _onDeleteButtonTappedStreamController.close();
+    _onAmountSelectedStreamController.close();
   }
 }

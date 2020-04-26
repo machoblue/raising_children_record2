@@ -86,6 +86,7 @@ class _RecordFormState extends State<_RecordForm> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
+  final _listItemFont = const TextStyle(fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
@@ -99,6 +100,12 @@ class _RecordFormState extends State<_RecordForm> {
     _viewModel.note.listen((note) {
       _noteController.text = note;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
   }
 
   @override
@@ -163,10 +170,57 @@ class _RecordFormState extends State<_RecordForm> {
                     _dateFormat.format(dateTime),
                     style: _dateButtonFont,
                   ),
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   onPressed: () => _onDateTimeButtonPressed(dateTime),
-                )
+                ),
               );
             },
+          ),
+          Container(
+            height: 14,
+          ),
+          Row(
+            children: <Widget>[
+              StreamBuilder(
+                stream: _viewModel.amount,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+                  return DropdownButton<int>(
+                    value: snapshot.data ?? 0,
+                    items: List<int>.generate(36, (i) => i * 10).map((value) {
+                      return DropdownMenuItem<int>(
+                          value: value,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 12, 0),
+                              child: Text(
+                                "$value",
+                                style: _listItemFont,
+                              )
+                          )
+                      );
+                    }).toList(),
+                    icon: Icon(Icons.expand_more),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.black54,
+                    ),
+                    onChanged: (int newValue) => _viewModel.onAmountSelected.add(newValue),
+                  );
+                }
+              ),
+
+              Container(width: 10),
+              Text(
+                "ml",
+                style: TextStyle(
+                  fontSize: 20,
+                )
+              ),
+            ],
           ),
           Container(
             height: 24,
