@@ -12,8 +12,9 @@ class RecordView extends StatefulWidget {
   Record record;
   User user;
   Baby baby;
+  bool isNew = false;
 
-  RecordView({ Key key, this.record, this.user, this.baby }): super(key: key);
+  RecordView({ Key key, this.record, this.user, this.baby, this.isNew }): super(key: key);
 
   @override
   _RecordViewState createState() => _RecordViewState();
@@ -24,15 +25,16 @@ class _RecordViewState extends State<RecordView> {
   Widget build(BuildContext context) {
     return Provider<RecordViewModel>(
       create: (_) => RecordViewModel(widget.record, widget.user, widget.baby),
-      child: _RecordScaffold(record: widget.record),
+      child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }
 }
 
 class _RecordScaffold extends StatefulWidget {
   Record record;
+  bool isNew;
 
-  _RecordScaffold({ Key key, this.record }): super(key: key);
+  _RecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
 
   @override
   _RecordScaffoldState createState() => _RecordScaffoldState();
@@ -53,7 +55,7 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.record == null ? "新規追加" : "編集"),
+          title: Text(widget.isNew ? "新規追加" : "編集"),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),

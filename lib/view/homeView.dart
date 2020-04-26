@@ -165,7 +165,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     switch (recordType) {
       case "milk": {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
-        return RecordView(record: record, user: user, baby: baby);
+        return RecordView(record: record, user: user, baby: baby, isNew: true);
       }
       default: {
         return null;
