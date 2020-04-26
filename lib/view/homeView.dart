@@ -155,13 +155,23 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       context,
       MaterialPageRoute(
         builder: (context) {
-          Record record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
-          return RecordView(record: record, user: user, baby: baby);
+          return _buildRecordView(recordType, user, baby);
         }
       )
     );
   }
 
+  Widget _buildRecordView(String recordType, User user, Baby baby) {
+    switch (recordType) {
+      case "milk": {
+        MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
+        return RecordView(record: record, user: user, baby: baby);
+      }
+      default: {
+        return null;
+      }
+    }
+  }
 }
 
 class _Page extends StatefulWidget {
