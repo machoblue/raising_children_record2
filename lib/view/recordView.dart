@@ -54,9 +54,10 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    L10n l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.isNew ?? false ? "新規追加" : "編集"),
+          title: Text(widget.isNew ?? false ? l10n.recordTitleNew : l10n.recordTitleEdit),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
@@ -102,6 +103,7 @@ class _RecordFormState extends State<_RecordForm> {
 
   @override
   Widget build(BuildContext context) {
+    L10n l10n = L10n.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
       child: Column(
@@ -172,7 +174,7 @@ class _RecordFormState extends State<_RecordForm> {
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'メモ',
+              labelText: l10n.recordLabelNote,
             ),
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
@@ -182,7 +184,7 @@ class _RecordFormState extends State<_RecordForm> {
           ),
           !(widget.isNew ?? false) ? FlatButton(
             child: Text(
-              "削除",
+              l10n.recordDeleteButtonLabel,
               style: _deleteButtonFont,
             ),
             onPressed: () => _viewModel.onDeleteButtonTapped.add(null),

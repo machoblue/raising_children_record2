@@ -25,5 +25,25 @@
   "@milkLabel": {
     "type": "text",
     "placeholders": {}
+  },
+  "recordTitleNew": "新規作成",
+  "@recordTitleNew": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordTitleEdit": "編集",
+  "@recordTitleEdit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordLabelNote": "メモ",
+  "@recordLabelNote": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordDeleteButtonLabel": "削除",
+  "@recordDeleteButtonLabel": {
+    "type": "text",
+    "placeholders": {}
   }
 }

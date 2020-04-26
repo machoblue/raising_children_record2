@@ -25,5 +25,25 @@
   "@milkLabel": {
     "type": "text",
     "placeholders": {}
+  },
+  "recordTitleNew": "New",
+  "@recordTitleNew": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordTitleEdit": "Edit",
+  "@recordTitleEdit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordLabelNote": "Note",
+  "@recordLabelNote": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordDeleteButtonLabel": "Delete",
+  "@recordDeleteButtonLabel": {
+    "type": "text",
+    "placeholders": {}
   }
 }

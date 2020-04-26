@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
+    "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("Delete"),
+    "recordLabelNote" : MessageLookupByLibrary.simpleMessage("Note"),
+    "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),
+    "recordTitleNew" : MessageLookupByLibrary.simpleMessage("New"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings")
   };
 }

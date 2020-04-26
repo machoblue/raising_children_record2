@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
+    "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("削除"),
+    "recordLabelNote" : MessageLookupByLibrary.simpleMessage("メモ"),
+    "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("編集"),
+    "recordTitleNew" : MessageLookupByLibrary.simpleMessage("新規作成"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定")
   };
 }

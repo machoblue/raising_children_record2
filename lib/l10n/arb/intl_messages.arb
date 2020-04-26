@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-04-21T07:29:18.114743",
+  "@@last_modified": "2020-04-26T19:43:21.289509",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -23,6 +23,26 @@
   },
   "milkLabel": "Milk",
   "@milkLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordTitleNew": "New",
+  "@recordTitleNew": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordTitleEdit": "Edit",
+  "@recordTitleEdit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordLabelNote": "Note",
+  "@recordLabelNote": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordDeleteButtonLabel": "Delete",
+  "@recordDeleteButtonLabel": {
     "type": "text",
     "placeholders": {}
   }
