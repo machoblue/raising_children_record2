@@ -64,7 +64,7 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
             ),
           ]
       ),
-      body: _RecordForm(),
+      body: _RecordForm(isNew: widget.isNew),
     );
   }
 
@@ -74,6 +74,9 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
 }
 
 class _RecordForm extends StatefulWidget {
+  bool isNew;
+
+  _RecordForm({ Key key, this.isNew }): super(key: key);
   @override
   _RecordFormState createState() => _RecordFormState();
 }
@@ -81,6 +84,7 @@ class _RecordForm extends StatefulWidget {
 class _RecordFormState extends State<_RecordForm> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
+  final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
@@ -172,7 +176,17 @@ class _RecordFormState extends State<_RecordForm> {
             ),
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
-          )
+          ),
+          Container(
+            height: 24,
+          ),
+          !(widget.isNew ?? false) ? FlatButton(
+            child: Text(
+              "削除",
+              style: _deleteButtonFont,
+            ),
+            onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+          ) : Container()
         ],
       ),
     );

@@ -30,6 +30,9 @@ class RecordViewModel {
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
   Stream<void> get onSaveComplete => _onSaveCompleteStreamController.stream;
 
+  final StreamController<void> _onDeleteButtonTappedStreamController = StreamController<void>();
+  StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
+
   RecordViewModel(record, this.user, this.baby, this.l10n) {
     print("### record.note: ${record.note}");
     recordBehaviorSubject = BehaviorSubject.seeded(record);
@@ -47,11 +50,18 @@ class RecordViewModel {
     });
 
     CombineLatestStream.combine2(
-      recordBehaviorSubject,
-      _onSaveButtonTappedStreamController.stream,
-      (record, _) => record
+        recordBehaviorSubject,
+        _onSaveButtonTappedStreamController.stream,
+            (record, _) => record
     )
     .listen((record) => _save(record));
+
+    CombineLatestStream.combine2(
+      recordBehaviorSubject,
+      _onDeleteButtonTappedStreamController.stream,
+      (record, _) => record
+    )
+    .listen((record) => _delete(record));
   }
 
   void _save(Record record) async {
@@ -65,7 +75,20 @@ class RecordViewModel {
         .document(record.id)
         .setData(record.map);
 
-      _onSaveCompleteStreamController.sink.add(null);
+    _onSaveCompleteStreamController.sink.add(null);
+  }
+
+  void _delete(Record record) async {
+    Firestore.instance
+        .collection('families')
+        .document(user.familyId)
+        .collection("babies")
+        .document(baby.id)
+        .collection("records")
+        .document(record.id)
+        .delete();
+
+    _onSaveCompleteStreamController.sink.add(null);
   }
 
   void dispose() {
@@ -74,5 +97,6 @@ class RecordViewModel {
     _onDateTimeSelectedStreamController.close();
     _onNoteChangedStreamController.close();
     _onSaveCompleteStreamController.close();
+    _onDeleteButtonTappedStreamController.close();
   }
 }
