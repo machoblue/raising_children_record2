@@ -257,6 +257,9 @@ class _PageState extends State<_Page> {
       case MilkRecord: {
         return RecordView(record: record, user: user, baby: baby);
       }
+      case SnackRecord: {
+        return PlainRecordView(record: record, user: user, baby: baby);
+      }
       default: {
         return null;
       }
