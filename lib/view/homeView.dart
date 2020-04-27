@@ -189,6 +189,7 @@ class _Page extends StatefulWidget {
 
 
 class _PageState extends State<_Page> {
+  final DateFormat _timeFormat = DateFormat().add_Hm();
   HomePageViewModel _viewModel;
 
   @override
@@ -223,7 +224,7 @@ class _PageState extends State<_Page> {
                       final record = records[index];
                       return GestureDetector(
                         onTap: () => _viewModel.editRecord.add(record),
-                        child: _RecordListTile(record, l10n),
+                        child: _RecordListTile(record, l10n, _timeFormat),
                       );
                     },
                   );
@@ -259,14 +260,16 @@ class _PageState extends State<_Page> {
 }
 
 class _RecordListTile extends StatelessWidget {
-  final _titleFont = TextStyle(fontSize: 22, fontWeight: FontWeight.normal,);
-  final _descriptionFont = TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Color(0x0088000000));
+  final _timeFont = TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Color(0x0088000000));
+  final _mainDescriptionFont = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0x0088000000));
+  final _subDescriptionFont = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Color(0x0088000000));
   final _userNameFont = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Color(0x0088000000));
 
   Record record;
   L10n l10n;
+  DateFormat timeFormat;
 
-  _RecordListTile(this.record, this.l10n);
+  _RecordListTile(this.record, this.l10n, this.timeFormat);
 
   @override
   Widget build(BuildContext context) {
@@ -277,9 +280,16 @@ class _RecordListTile extends StatelessWidget {
           bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
         ),
       ),
-      child: Column(
+      child: Row(
         children: <Widget>[
-          Row(
+          Text(
+            timeFormat.format(record.dateTime),
+            style: _timeFont,
+          ),
+          Container(
+            width: 16,
+          ),
+          Column(
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -292,59 +302,129 @@ class _RecordListTile extends StatelessWidget {
                 height: 48,
                 width: 48,
               ),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                    child: Text(
-                      record.title(l10n),
-                      style: _titleFont,
-                    ),
-                  )
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  record.description,
-                  style: _descriptionFont,
-                ),
-              ),
+              Text(
+                record.typeName(l10n),
+              )
             ],
-            mainAxisAlignment: MainAxisAlignment.start,
           ),
-          Row(
-            children: <Widget>[
-              Spacer(flex: 2),
-              Expanded(
-                flex: 1,
-                child: Row(
+          Container(
+            width: 16
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  record.mainDescription,
+                  style: _mainDescriptionFont,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  record.subDescription ?? "",
+                  style: _subDescriptionFont,
+                  textAlign: TextAlign.start,
+                ),
+                Row(
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: CachedNetworkImageProvider(record.user.photoUrl),
+                    Spacer(flex: 2),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.fitHeight,
+                              image: CachedNetworkImageProvider(record.user.photoUrl),
+                            ),
+                          ),
+                          height: 24,
+                          width: 24,
                         ),
-                      ),
-                      height: 24,
-                      width: 24,
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: Text(
-                        record.user.name,
-                        style: _userNameFont,
-                      ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: Text(
+                            record.user.name,
+                            style: _userNameFont,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
+                  mainAxisAlignment: MainAxisAlignment.end,
                 ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
+              ],
+            )
           ),
-        ],
+        ]
       ),
+//      child: Column(
+//        children: <Widget>[
+//          Row(
+//            children: <Widget>[
+//              Container(
+//                decoration: BoxDecoration(
+//                  shape: BoxShape.circle,
+//                  image: DecorationImage(
+//                    fit: BoxFit.fitHeight,
+//                    image: AssetImage(record.assetName),
+//                  ),
+//                ),
+//                height: 48,
+//                width: 48,
+//              ),
+//              Expanded(
+//                  flex: 2,
+//                  child: Container(
+//                    padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+//                    child: Text(
+//                      record.title(l10n),
+//                      style: _titleFont,
+//                    ),
+//                  )
+//              ),
+//              Expanded(
+//                flex: 3,
+//                child: Text(
+//                  record.description,
+//                  style: _descriptionFont,
+//                ),
+//              ),
+//            ],
+//            mainAxisAlignment: MainAxisAlignment.start,
+//          ),
+//          Row(
+//            children: <Widget>[
+//              Spacer(flex: 2),
+//              Expanded(
+//                flex: 1,
+//                child: Row(
+//                  children: <Widget>[
+//                    Container(
+//                      decoration: BoxDecoration(
+//                        shape: BoxShape.circle,
+//                        image: DecorationImage(
+//                          fit: BoxFit.fitHeight,
+//                          image: CachedNetworkImageProvider(record.user.photoUrl),
+//                        ),
+//                      ),
+//                      height: 24,
+//                      width: 24,
+//                    ),
+//                    Container(
+//                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+//                      child: Text(
+//                        record.user.name,
+//                        style: _userNameFont,
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//            ],
+//            mainAxisAlignment: MainAxisAlignment.end,
+//          ),
+//        ],
+//      ),
     );
   }
 }

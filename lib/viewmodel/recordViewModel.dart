@@ -14,7 +14,7 @@ class RecordViewModel {
   L10n l10n;
 
   Stream<String> get assetName => recordBehaviorSubject.stream.map((record) => record.assetName);
-  Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.title(l10n));
+  Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.typeName(l10n));
 
   final StreamController<void> _onSaveButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onSaveButtonTapped => _onSaveButtonTappedStreamController.sink;

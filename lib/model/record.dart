@@ -36,8 +36,9 @@ abstract class Record {
   }
 
   String get assetName;
-  String title(L10n l10n);
-  String get description;
+  String typeName(L10n l10n);
+  String get mainDescription;
+  String get subDescription;
 
   Map<String, dynamic> get map {
     Map<String, dynamic> map = {
@@ -76,8 +77,11 @@ class MilkRecord extends Record {
   String get assetName => "assets/milk_icon.png";
 
   @override
-  String title(L10n l10n) => l10n.milkLabel;
+  String typeName(L10n l10n) => l10n.milkLabel;
 
   @override
-  String get description => "${this.amount}ml";
+  String get mainDescription => "${this.amount}ml";
+
+  @override
+  String get subDescription => note;
 }
