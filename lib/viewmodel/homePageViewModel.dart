@@ -70,7 +70,10 @@ class HomePageViewModel {
       .listen((recordsQuerySnapshot) {
         final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
         recordSnapshotList.forEach((snapshot) => print(snapshot['note']));
-        final List<Record> records = recordSnapshotList.map((snapshot) => Record.fromSnapshot(snapshot)).toList();
+        final List<Record> records = recordSnapshotList
+            .map((snapshot) => Record.fromSnapshot(snapshot))
+            .where((record) => record != null)
+            .toList();
         _recordsStreamController.sink.add(records);
       });
   }
