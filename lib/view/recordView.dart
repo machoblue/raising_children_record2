@@ -25,7 +25,7 @@ class _RecordViewState extends State<RecordView> {
   @override
   Widget build(BuildContext context) {
     return Provider<RecordViewModel>(
-      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby, L10n.of(context)),
+      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby),
       child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }

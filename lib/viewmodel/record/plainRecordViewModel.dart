@@ -1,7 +1,6 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -11,10 +10,9 @@ class PlainRecordViewModel {
   BehaviorSubject<Record> recordBehaviorSubject;
   User user;
   Baby baby;
-  L10n l10n;
 
-  Stream<String> get assetName => recordBehaviorSubject.stream.map((record) => record.assetName);
-  Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.typeName(l10n));
+  Stream<String> get assetName => recordBehaviorSubject.stream.map((record) => record.type.assetName);
+  Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.type.localizedName);
 
   final StreamController<void> _onSaveButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onSaveButtonTapped => _onSaveButtonTappedStreamController.sink;
@@ -33,7 +31,7 @@ class PlainRecordViewModel {
   final StreamController<void> _onDeleteButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
 
-  PlainRecordViewModel(record, this.user, this.baby, this.l10n) {
+  PlainRecordViewModel(record, this.user, this.baby) {
     print("### record.note: ${record.note}");
     recordBehaviorSubject = BehaviorSubject.seeded(record);
 

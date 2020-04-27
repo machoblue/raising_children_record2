@@ -25,7 +25,7 @@ class _PlainRecordViewState extends State<PlainRecordView> {
   @override
   Widget build(BuildContext context) {
     return Provider<PlainRecordViewModel>(
-      create: (_) => PlainRecordViewModel(widget.record, widget.user, widget.baby, L10n.of(context)),
+      create: (_) => PlainRecordViewModel(widget.record, widget.user, widget.baby),
       child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }

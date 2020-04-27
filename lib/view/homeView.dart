@@ -138,11 +138,10 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   List<Widget> _buildGridItems() {
-    final List<String> recordTypes = [ "milk", "snack", ];
-    return recordTypes.map((recordType) {
+    return RecordType.values.map((recordType) {
       return FlatButton(
         child: Image.asset(
-          "assets/${recordType}_icon.png",
+          recordType.assetName,
           width: 64,
           height: 64,
         ),
@@ -151,7 +150,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     }).toList();
   }
 
-  void _addRecord(String recordType, User user, Baby baby) {
+  void _addRecord(RecordType recordType, User user, Baby baby) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -162,18 +161,18 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     );
   }
 
-  Widget _buildRecordView(String recordType, User user, Baby baby) {
+  Widget _buildRecordView(RecordType recordType, User user, Baby baby) {
     switch (recordType) {
-      case "milk": {
+      case RecordType.milk: {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
         return RecordView(record: record, user: user, baby: baby, isNew: true);
       }
-      case "snack": {
+      case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
         return PlainRecordView(record: record, user: user, baby: baby, isNew: true);
       }
       default: {
-        return null;
+        throw("This line shouldn't be reached.");
       }
     }
   }
@@ -261,7 +260,7 @@ class _PageState extends State<_Page> {
         return PlainRecordView(record: record, user: user, baby: baby);
       }
       default: {
-        return null;
+        throw("This line shouldn't be reached.");
       }
     }
   }
@@ -304,14 +303,14 @@ class _RecordListTile extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     fit: BoxFit.fitHeight,
-                    image: AssetImage(record.assetName),
+                    image: AssetImage(record.type.assetName),
                   ),
                 ),
                 height: 48,
                 width: 48,
               ),
               Text(
-                record.typeName(l10n),
+                record.type.localizedName,
               )
             ],
           ),
