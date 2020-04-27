@@ -5,6 +5,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/recordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
@@ -137,7 +138,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   }
 
   List<Widget> _buildGridItems() {
-    final List<String> recordTypes = [ "milk" ];
+    final List<String> recordTypes = [ "milk", "snack", ];
     return recordTypes.map((recordType) {
       return FlatButton(
         child: Image.asset(
@@ -166,6 +167,10 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       case "milk": {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
         return RecordView(record: record, user: user, baby: baby, isNew: true);
+      }
+      case "snack": {
+        SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
+        return PlainRecordView(record: record, user: user, baby: baby, isNew: true);
       }
       default: {
         return null;

@@ -29,6 +29,10 @@ abstract class Record {
         return MilkRecord(id, dateTime, type, note, user, amount);
       }
       break;
+      case 'snack': {
+        return SnackRecord(id, dateTime, type, note, user);
+      }
+      break;
       default: {
         return null;
       }
@@ -84,4 +88,29 @@ class MilkRecord extends Record {
 
   @override
   String get subDescription => note;
+}
+
+class SnackRecord extends Record {
+  @override
+  String get assetName => "assets/snack_icon.png";
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  @override
+  String typeName(L10n l10n) {
+    return l10n.snackLabel;
+  }
+
+  SnackRecord(
+      String id,
+      DateTime dateTime,
+      String type,
+      String note,
+      User user): super(id, dateTime, type, note, user);
+
+  SnackRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, "snack", note, user);
 }
