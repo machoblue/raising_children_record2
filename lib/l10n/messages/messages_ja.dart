@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("メモ"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("編集"),
     "recordTitleNew" : MessageLookupByLibrary.simpleMessage("新規作成"),
-    "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定")
+    "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定"),
+    "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ")
   };
 }

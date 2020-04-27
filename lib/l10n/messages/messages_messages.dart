@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("Note"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "recordTitleNew" : MessageLookupByLibrary.simpleMessage("New"),
-    "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings")
+    "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack")
   };
 }
