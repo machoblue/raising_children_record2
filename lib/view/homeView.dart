@@ -6,7 +6,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
-import 'package:raisingchildrenrecord2/view/recordView.dart';
+import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
@@ -165,7 +165,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     switch (recordType) {
       case RecordType.milk: {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
-        return RecordView(record: record, user: user, baby: baby, isNew: true);
+        return MilkRecordView(record: record, user: user, baby: baby, isNew: true);
       }
       case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
@@ -254,7 +254,7 @@ class _PageState extends State<_Page> {
   Widget _buildRecordView(Record record, User user, Baby baby) {
     switch(record.runtimeType) {
       case MilkRecord: {
-        return RecordView(record: record, user: user, baby: baby);
+        return MilkRecordView(record: record, user: user, baby: baby);
       }
       case SnackRecord: {
         return PlainRecordView(record: record, user: user, baby: baby);

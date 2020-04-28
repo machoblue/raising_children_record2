@@ -6,7 +6,7 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RecordViewModel {
+class MilkRecordViewModel {
   BehaviorSubject<Record> recordBehaviorSubject;
   User user;
   Baby baby;
@@ -35,7 +35,7 @@ class RecordViewModel {
   final StreamController<int> _onAmountSelectedStreamController = StreamController<int>();
   StreamSink<int> get onAmountSelected => _onAmountSelectedStreamController.sink;
 
-  RecordViewModel(record, this.user, this.baby) {
+  MilkRecordViewModel(record, this.user, this.baby) {
     print("### record.note: ${record.note}");
     recordBehaviorSubject = BehaviorSubject.seeded(record);
 

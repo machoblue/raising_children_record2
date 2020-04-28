@@ -8,49 +8,49 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
-import 'package:raisingchildrenrecord2/viewmodel/record/recordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
-class RecordView extends StatefulWidget {
+class MilkRecordView extends StatefulWidget {
   Record record;
   User user;
   Baby baby;
   bool isNew;
 
-  RecordView({ Key key, this.record, this.user, this.baby, this.isNew }): super(key: key);
+  MilkRecordView({ Key key, this.record, this.user, this.baby, this.isNew }): super(key: key);
 
   @override
-  _RecordViewState createState() => _RecordViewState();
+  _MilkRecordViewState createState() => _MilkRecordViewState();
 }
 
-class _RecordViewState extends State<RecordView> {
+class _MilkRecordViewState extends State<MilkRecordView> {
   @override
   Widget build(BuildContext context) {
-    return Provider<RecordViewModel>(
-      create: (_) => RecordViewModel(widget.record, widget.user, widget.baby),
-      child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
+    return Provider<MilkRecordViewModel>(
+      create: (_) => MilkRecordViewModel(widget.record, widget.user, widget.baby),
+      child: _MilkRecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }
 }
 
-class _RecordScaffold extends StatefulWidget {
+class _MilkRecordScaffold extends StatefulWidget {
   Record record;
   bool isNew;
 
-  _RecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
+  _MilkRecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
 
   @override
-  _RecordScaffoldState createState() => _RecordScaffoldState();
+  _MilkRecordScaffoldState createState() => _MilkRecordScaffoldState();
 }
 
-class _RecordScaffoldState extends State<_RecordScaffold> {
+class _MilkRecordScaffoldState extends State<_MilkRecordScaffold> {
 
-  RecordViewModel _viewModel;
+  MilkRecordViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Provider.of<RecordViewModel>(context, listen: false);
+    _viewModel = Provider.of<MilkRecordViewModel>(context, listen: false);
     _viewModel.onSaveComplete.listen((_) => _pop());
   }
 
@@ -67,7 +67,7 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
             ),
           ]
       ),
-      body: _RecordForm(isNew: widget.isNew),
+      body: _MilkRecordForm(isNew: widget.isNew),
     );
   }
 
@@ -76,15 +76,15 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
   }
 }
 
-class _RecordForm extends StatefulWidget {
+class _MilkRecordForm extends StatefulWidget {
   bool isNew;
 
-  _RecordForm({ Key key, this.isNew }): super(key: key);
+  _MilkRecordForm({ Key key, this.isNew }): super(key: key);
   @override
-  _RecordFormState createState() => _RecordFormState();
+  _MilkRecordFormState createState() => _MilkRecordFormState();
 }
 
-class _RecordFormState extends State<_RecordForm> {
+class _MilkRecordFormState extends State<_MilkRecordForm> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
@@ -92,13 +92,13 @@ class _RecordFormState extends State<_RecordForm> {
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
-  RecordViewModel _viewModel;
+  MilkRecordViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
     _noteController = TextEditingController();
-    _viewModel = Provider.of<RecordViewModel>(context, listen: false);
+    _viewModel = Provider.of<MilkRecordViewModel>(context, listen: false);
     StreamSubscription subscription;
     subscription = _viewModel.note.listen((note) {
       _noteController.text = note;
