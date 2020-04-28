@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class MainViewModel {
 
@@ -64,12 +65,41 @@ class MainViewModel {
     final familyId = sharedPreference.getString("familyId");
     final babyId = sharedPreference.getString("selectedBabyId");
     print("### userId:$userId, familyId:$familyId, babyId:$babyId");
-    final DocumentSnapshot babySnapshot = await Firestore.instance.collection('families').document(familyId).collection('babies').document(babyId).get();
+    final CollectionReference babiesCollectionReference = await Firestore.instance
+        .collection('families')
+        .document(familyId)
+        .collection('babies');
 
-    if (babySnapshot?.exists ?? false) {
-      final baby = Baby.fromSnapshot(babySnapshot);
-      _babyBehaviorSubject.sink.add(baby);
+    if (babyId != null) {
+      final DocumentSnapshot babySnapshot = await babiesCollectionReference.document(babyId).get();
+      if (babySnapshot?.exists ?? false) {
+        _babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshot));
+      } else {
+        _createNewBabyAndSink(babiesCollectionReference);
+      }
+
+    } else {
+      final QuerySnapshot babiesQuerySnapshot = await babiesCollectionReference.getDocuments();
+      final List<DocumentSnapshot> babySnapshots = babiesQuerySnapshot.documents;
+      if (babySnapshots.length == 0) {
+        _createNewBabyAndSink(babiesCollectionReference);
+      } else {
+        _babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshots.first));
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        await sharedPreferences.setString('selectedBabyId', babyId);
+        await sharedPreferences.setStringList('babyIds', babySnapshots.map((snapshot) => snapshot['id']).where((id) => id != null).toList());
+      }
     }
+  }
+
+  void _createNewBabyAndSink(CollectionReference babiesCollectionReference) async {
+    final String babyId = Uuid().v1();
+    final Baby baby = Baby(babyId, "Baby", DateTime.now(), 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
+    babiesCollectionReference.document(babyId).setData(baby.map);
+    _babyBehaviorSubject.sink.add(baby);
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('selectedBabyId', babyId);
+    await sharedPreferences.setStringList('babyIds', [babyId]);
   }
 
   void _getUser() async {

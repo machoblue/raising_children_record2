@@ -15,4 +15,13 @@ class Baby {
       DateTime.fromMillisecondsSinceEpoch(snapshot['birthday']),
       snapshot['photoUrl'].toString(),
   );
+
+  Map get map {
+    return {
+      'id': id,
+      'name': name,
+      'birthday': birthday.millisecondsSinceEpoch,
+      'photoUrl': photoUrl,
+    };
+  }
 }

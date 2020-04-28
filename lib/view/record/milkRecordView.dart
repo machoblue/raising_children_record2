@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
-import 'package:raisingchildrenrecord2/viewmodel/recordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/recordViewModel.dart';
 import 'package:intl/intl.dart';
 
 class RecordView extends StatefulWidget {
