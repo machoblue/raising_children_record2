@@ -28,22 +28,22 @@ class _PlainRecordViewState extends State<PlainRecordView> {
   Widget build(BuildContext context) {
     return Provider<PlainRecordViewModel>(
       create: (_) => PlainRecordViewModel(widget.record, widget.user, widget.baby),
-      child: _RecordScaffold(record: widget.record, isNew: widget.isNew),
+      child: _PlainRecordScaffold(record: widget.record, isNew: widget.isNew),
     );
   }
 }
 
-class _RecordScaffold extends StatefulWidget {
+class _PlainRecordScaffold extends StatefulWidget {
   Record record;
   bool isNew;
 
-  _RecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
+  _PlainRecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
 
   @override
-  _RecordScaffoldState createState() => _RecordScaffoldState();
+  _PlainRecordScaffoldState createState() => _PlainRecordScaffoldState();
 }
 
-class _RecordScaffoldState extends State<_RecordScaffold> {
+class _PlainRecordScaffoldState extends State<_PlainRecordScaffold> {
 
   PlainRecordViewModel _viewModel;
 
@@ -67,7 +67,7 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
             ),
           ]
       ),
-      body: _RecordForm(isNew: widget.isNew),
+      body: _PlainRecordForm(isNew: widget.isNew),
     );
   }
 
@@ -76,29 +76,38 @@ class _RecordScaffoldState extends State<_RecordScaffold> {
   }
 }
 
-class _RecordForm extends StatefulWidget {
+class _PlainRecordForm extends StatefulWidget {
   bool isNew;
 
-  _RecordForm({ Key key, this.isNew }): super(key: key);
+  _PlainRecordForm({ Key key, this.isNew }): super(key: key);
   @override
-  _RecordFormState createState() => _RecordFormState();
+  _PlainRecordFormState createState() => _PlainRecordFormState<PlainRecordViewModel>();
 }
 
-class _RecordFormState extends State<_RecordForm> {
+class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_PlainRecordForm> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
-  final _listItemFont = const TextStyle(fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
-  PlainRecordViewModel _viewModel;
+  VM _viewModel;
+
+  // MARK: - Expected to be overridden. - START -
+  VM provideViewModel() {
+    return Provider.of<PlainRecordViewModel>(context, listen: false);
+  }
+
+  Widget buildContent() {
+    return Container();
+  }
+  // MARK: - Expected to be overridden. - END -
 
   @override
   void initState() {
     super.initState();
     _noteController = TextEditingController();
-    _viewModel = Provider.of<PlainRecordViewModel>(context, listen: false);
+    _viewModel = provideViewModel();
 
     StreamSubscription subscription;
     subscription = _viewModel.note.listen((note) {
@@ -193,6 +202,7 @@ class _RecordFormState extends State<_RecordForm> {
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
           ),
+          buildContent(),
           Container(
             height: 24,
           ),
