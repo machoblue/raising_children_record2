@@ -6,8 +6,8 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PlainRecordViewModel {
-  BehaviorSubject<Record> recordBehaviorSubject;
+class PlainRecordViewModel<R extends Record> {
+  BehaviorSubject<R> recordBehaviorSubject;
   User user;
   Baby baby;
 
