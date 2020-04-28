@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -97,8 +99,10 @@ class _RecordFormState extends State<_RecordForm> {
     super.initState();
     _noteController = TextEditingController();
     _viewModel = Provider.of<RecordViewModel>(context, listen: false);
-    _viewModel.note.listen((note) {
+    StreamSubscription subscription;
+    subscription = _viewModel.note.listen((note) {
       _noteController.text = note;
+      subscription.cancel(); // listen only first time
     });
   }
 
@@ -106,6 +110,7 @@ class _RecordFormState extends State<_RecordForm> {
   void dispose() {
     super.dispose();
     _viewModel.dispose();
+    _noteController.dispose();
   }
 
   @override
