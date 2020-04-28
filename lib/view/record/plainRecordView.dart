@@ -91,7 +91,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
-  VM _viewModel;
+  VM viewModel;
 
   // MARK: - Expected to be overridden. - START -
   VM provideViewModel() {
@@ -107,10 +107,10 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
   void initState() {
     super.initState();
     _noteController = TextEditingController();
-    _viewModel = provideViewModel();
+    viewModel = provideViewModel();
 
     StreamSubscription subscription;
-    subscription = _viewModel.note.listen((note) {
+    subscription = viewModel.note.listen((note) {
       _noteController.text = note;
       subscription.cancel(); // listen only first time
     });
@@ -119,7 +119,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
   @override
   void dispose() {
     super.dispose();
-    _viewModel.dispose();
+    viewModel.dispose();
     _noteController.dispose();
   }
 
@@ -133,7 +133,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
           Row(
             children: <Widget>[
               StreamBuilder(
-                  stream: _viewModel.assetName,
+                  stream: viewModel.assetName,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container();
@@ -153,7 +153,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               ),
               Expanded(
                 child: StreamBuilder(
-                  stream: _viewModel.title,
+                  stream: viewModel.title,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container();
@@ -175,7 +175,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
             height: 36,
           ),
           StreamBuilder(
-            stream: _viewModel.dateTime,
+            stream: viewModel.dateTime,
             builder: (context, snapshot) {
               final dateTime = snapshot.data ?? DateTime.now();
               return Container(
@@ -199,7 +199,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               border: OutlineInputBorder(),
               labelText: l10n.recordLabelNote,
             ),
-            onChanged: (text) => _viewModel.onNoteChanged.add(text),
+            onChanged: (text) => viewModel.onNoteChanged.add(text),
             controller: _noteController,
           ),
           buildContent(),
@@ -211,7 +211,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               l10n.recordDeleteButtonLabel,
               style: _deleteButtonFont,
             ),
-            onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+            onPressed: () => viewModel.onDeleteButtonTapped.add(null),
           ) : Container()
         ],
       ),
@@ -246,6 +246,6 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
     }
 
     DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
-    _viewModel.onDateTimeSelected.add(selectedDateTime);
+    viewModel.onDateTimeSelected.add(selectedDateTime);
   }
 }
