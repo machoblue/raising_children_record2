@@ -40,6 +40,7 @@ class L10n {
 
   String get milkLabel => Intl.message('Milk', name: 'milkLabel');
   String get snackLabel => Intl.message('Snack', name: 'snackLabel');
+  String get babyFoodLabel => Intl.message('Baby Food', name: 'babyFoodLabel');
 
   String get recordTitleNew => Intl.message('New', name: 'recordTitleNew');
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');

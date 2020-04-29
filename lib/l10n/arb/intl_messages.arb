@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-04-28T06:04:46.693804",
+  "@@last_modified": "2020-04-29T22:48:22.114227",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -28,6 +28,11 @@
   },
   "snackLabel": "Snack",
   "@snackLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyFoodLabel": "Baby Food",
+  "@babyFoodLabel": {
     "type": "text",
     "placeholders": {}
   },

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 enum RecordType {
   milk,
   snack,
+  babyFood,
 }
 
 extension RecordTypeExtension on RecordType {
@@ -35,8 +36,11 @@ extension RecordTypeExtension on RecordType {
       case SnackRecord: {
         return RecordType.snack;
       }
+      case BabyFoodRecord: {
+        return RecordType.babyFood;
+      }
       default: {
-        return null;
+        throw('This line should not be reached.');
       }
     }
   }
@@ -60,16 +64,17 @@ abstract class Record {
     final String type = snapshot['type'];
     final String note = snapshot['note'];
     final User user = User.fromMap(snapshot['user']);
-    switch (type) {
-      case 'milk': {
+    switch (RecordTypeExtension.fromString(type)) {
+      case RecordType.milk: {
         final int amount = (snapshot['details'] as Map)['amount'];
         return MilkRecord(id, dateTime, note, user, amount);
       }
-      break;
-      case 'snack': {
+      case RecordType.snack: {
         return SnackRecord(id, dateTime, note, user);
       }
-      break;
+      case RecordType.babyFood: {
+        return BabyFoodRecord(id, dateTime, note, user);
+      }
       default: {
         return null;
       }
@@ -134,4 +139,21 @@ class SnackRecord extends Record {
       User user): super(id, dateTime, note, user);
 
   SnackRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class BabyFoodRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  BabyFoodRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  BabyFoodRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
 }

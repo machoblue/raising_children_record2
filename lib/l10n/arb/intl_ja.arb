@@ -31,6 +31,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "babyFoodLabel": "離乳食",
+  "@babyFoodLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "新規作成",
   "@recordTitleNew": {
     "type": "text",

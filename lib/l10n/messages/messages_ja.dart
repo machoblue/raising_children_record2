@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),

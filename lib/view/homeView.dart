@@ -179,6 +179,13 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
           child: PlainRecordView(isNew: true),
         );
       }
+      case RecordType.babyFood: {
+        BabyFoodRecord record = BabyFoodRecord.newInstance(DateTime.now(), null, user);
+        return Provider<PlainRecordViewModel>(
+          create: (_) => PlainRecordViewModel(record, user, baby),
+          child: PlainRecordView(isNew: true),
+        );
+      }
       default: {
         throw("This line shouldn't be reached.");
       }
@@ -268,6 +275,12 @@ class _PageState extends State<_Page> {
         );
       }
       case SnackRecord: {
+        return Provider<PlainRecordViewModel>(
+          create: (_) => PlainRecordViewModel(record, user, baby),
+          child: PlainRecordView(),
+        );
+      }
+      case BabyFoodRecord: {
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby),
           child: PlainRecordView(),

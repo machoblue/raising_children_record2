@@ -31,6 +31,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "babyFoodLabel": "Baby Food",
+  "@babyFoodLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "New",
   "@recordTitleNew": {
     "type": "text",
