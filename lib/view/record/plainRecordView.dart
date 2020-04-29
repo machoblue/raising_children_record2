@@ -5,57 +5,59 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
-import 'package:raisingchildrenrecord2/model/baby.dart';
-import 'package:raisingchildrenrecord2/model/record.dart';
-import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
-class PlainRecordView extends StatefulWidget {
-  Record record;
-  User user;
-  Baby baby;
-  bool isNew;
+class PlainRecordView<VM extends PlainRecordViewModel> extends StatefulWidget {
+  final bool isNew;
 
-  PlainRecordView({ Key key, this.record, this.user, this.baby, this.isNew }): super(key: key);
+  PlainRecordView({ Key key, this.isNew }): super(key: key);
 
   @override
   _PlainRecordViewState createState() => _PlainRecordViewState();
 }
 
-class _PlainRecordViewState extends State<PlainRecordView> {
-  @override
-  Widget build(BuildContext context) {
-    return Provider<PlainRecordViewModel>(
-      create: (_) => PlainRecordViewModel(widget.record, widget.user, widget.baby),
-      child: _PlainRecordScaffold(record: widget.record, isNew: widget.isNew),
-    );
-  }
-}
+class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<PlainRecordView> {
+  final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
+  final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
+  final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
+  final _dateFormat = DateFormat().add_yMd().add_Hms();
 
-class _PlainRecordScaffold extends StatefulWidget {
-  Record record;
-  bool isNew;
-
-  _PlainRecordScaffold({ Key key, this.record, this.isNew }): super(key: key);
-
-  @override
-  _PlainRecordScaffoldState createState() => _PlainRecordScaffoldState();
-}
-
-class _PlainRecordScaffoldState extends State<_PlainRecordScaffold> {
-
-  PlainRecordViewModel _viewModel;
+  VM _viewModel;
+  TextEditingController _noteController;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Provider.of<PlainRecordViewModel>(context, listen: false);
+
+    _viewModel = Provider.of<VM>(context, listen: false);
     _viewModel.onSaveComplete.listen((_) => _pop());
+
+    StreamSubscription subscription;
+    subscription = _viewModel.note.listen((note) {
+      _noteController.text = note;
+      subscription.cancel(); // listen only first time
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
+    _noteController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return _plainRecordScaffold();
+  }
+
+  // MARK: - Template method
+  Widget buildContent() {
+    return Container();
+  }
+
+  Widget _plainRecordScaffold() {
     L10n l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -67,64 +69,11 @@ class _PlainRecordScaffoldState extends State<_PlainRecordScaffold> {
             ),
           ]
       ),
-      body: _PlainRecordForm(isNew: widget.isNew),
+      body: _plainRecordForm(),
     );
   }
 
-  void _pop() {
-    Navigator.pop(context);
-  }
-}
-
-class _PlainRecordForm extends StatefulWidget {
-  bool isNew;
-
-  _PlainRecordForm({ Key key, this.isNew }): super(key: key);
-  @override
-  _PlainRecordFormState createState() => _PlainRecordFormState<PlainRecordViewModel>();
-}
-
-class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_PlainRecordForm> {
-  final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
-  final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
-  final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
-  final _dateFormat = DateFormat().add_yMd().add_Hms();
-
-  TextEditingController _noteController;
-  VM viewModel;
-
-  // MARK: - Expected to be overridden. - START -
-  VM provideViewModel() {
-    return Provider.of<PlainRecordViewModel>(context, listen: false);
-  }
-
-  Widget buildContent() {
-    return Container();
-  }
-  // MARK: - Expected to be overridden. - END -
-
-  @override
-  void initState() {
-    super.initState();
-    _noteController = TextEditingController();
-    viewModel = provideViewModel();
-
-    StreamSubscription subscription;
-    subscription = viewModel.note.listen((note) {
-      _noteController.text = note;
-      subscription.cancel(); // listen only first time
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    viewModel.dispose();
-    _noteController.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _plainRecordForm() {
     L10n l10n = L10n.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
@@ -133,7 +82,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
           Row(
             children: <Widget>[
               StreamBuilder(
-                  stream: viewModel.assetName,
+                  stream: _viewModel.assetName,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container();
@@ -153,7 +102,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               ),
               Expanded(
                 child: StreamBuilder(
-                  stream: viewModel.title,
+                  stream: _viewModel.title,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container();
@@ -175,7 +124,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
             height: 36,
           ),
           StreamBuilder(
-            stream: viewModel.dateTime,
+            stream: _viewModel.dateTime,
             builder: (context, snapshot) {
               final dateTime = snapshot.data ?? DateTime.now();
               return Container(
@@ -199,7 +148,7 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               border: OutlineInputBorder(),
               labelText: l10n.recordLabelNote,
             ),
-            onChanged: (text) => viewModel.onNoteChanged.add(text),
+            onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
           ),
           buildContent(),
@@ -211,11 +160,15 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
               l10n.recordDeleteButtonLabel,
               style: _deleteButtonFont,
             ),
-            onPressed: () => viewModel.onDeleteButtonTapped.add(null),
+            onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
           ) : Container()
         ],
       ),
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _onDateTimeButtonPressed(DateTime currentDateTime) async {
@@ -246,6 +199,6 @@ class _PlainRecordFormState<VM extends PlainRecordViewModel> extends State<_Plai
     }
 
     DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
-    viewModel.onDateTimeSelected.add(selectedDateTime);
+    _viewModel.onDateTimeSelected.add(selectedDateTime);
   }
 }

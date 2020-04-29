@@ -11,6 +11,7 @@ import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -169,7 +170,10 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
       }
       case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
-        return PlainRecordView(record: record, user: user, baby: baby, isNew: true);
+        return Provider(
+          create: (_) => PlainRecordViewModel(record, user, baby),
+          child: PlainRecordView<PlainRecordViewModel>(isNew: true),
+        );
       }
       default: {
         throw("This line shouldn't be reached.");
@@ -257,7 +261,11 @@ class _PageState extends State<_Page> {
         return MilkRecordView(record: record, user: user, baby: baby);
       }
       case SnackRecord: {
-        return PlainRecordView(record: record, user: user, baby: baby);
+//        return PlainRecordView(record: record, user: user, baby: baby);
+        return Provider(
+          create: (_) => PlainRecordViewModel(record, user, baby),
+          child: PlainRecordView<PlainRecordViewModel>(),
+        );
       }
       default: {
         throw("This line shouldn't be reached.");
