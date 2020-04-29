@@ -176,7 +176,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby),
-          child: PlainRecordView<PlainRecordViewModel>(isNew: true),
+          child: PlainRecordView(isNew: true),
         );
       }
       default: {
@@ -270,7 +270,7 @@ class _PageState extends State<_Page> {
       case SnackRecord: {
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby),
-          child: PlainRecordView<PlainRecordViewModel>(),
+          child: PlainRecordView(),
         );
       }
       default: {

@@ -6,23 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
-import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/baseRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
-//class PlainRecordView<VM extends PlainRecordViewModel> extends StatefulWidget {
-class PlainRecordView extends BaseRecordView<PlainRecordViewModel> {
+abstract class BaseRecordView<VM extends BaseRecordViewModel> extends StatefulWidget {
+  final bool isNew;
 
-  PlainRecordView({ Key key, bool isNew }): super(key: key, isNew: isNew);
+  BaseRecordView({ Key key, this.isNew }): super(key: key);
 
   @override
-  Widget buildContent(BuildContext context) {
-    return Container();
-  }
+  _BaseRecordViewState createState() => _BaseRecordViewState<VM>();
+
+  Widget buildContent(BuildContext context);
 }
 
-/*
-class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<PlainRecordView> {
+class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRecordView> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
@@ -208,4 +207,3 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
     _viewModel.onDateTimeSelected.add(selectedDateTime);
   }
 }
-*/
