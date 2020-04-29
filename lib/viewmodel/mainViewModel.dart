@@ -87,7 +87,7 @@ class MainViewModel {
         _babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshots.first));
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('selectedBabyId', babyId);
-        await sharedPreferences.setStringList('babyIds', babySnapshots.map((snapshot) => snapshot['id']).where((id) => id != null).toList());
+        await sharedPreferences.setStringList('babyIds', babySnapshots.map((snapshot) => snapshot['id'] as String).where((id) => id != null).toList());
       }
     }
   }
