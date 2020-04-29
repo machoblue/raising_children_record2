@@ -56,7 +56,7 @@ abstract class Record {
 
   factory Record.fromSnapshot(DocumentSnapshot snapshot) {
     final String id = snapshot['id'];
-    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(snapshot['dateTime']);
+    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch((snapshot['dateTime'] as Timestamp).millisecondsSinceEpoch);
     final String type = snapshot['type'];
     final String note = snapshot['note'];
     final User user = User.fromMap(snapshot['user']);
@@ -83,7 +83,7 @@ abstract class Record {
   Map<String, dynamic> get map {
     Map<String, dynamic> map = {
       'id': id,
-      'dateTime': dateTime.millisecondsSinceEpoch,
+      'dateTime': dateTime,
       'type': RecordTypeExtension.fromModel(this).string,
       'note': note,
       'user': user.map,

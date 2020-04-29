@@ -12,15 +12,15 @@ class Baby {
   Baby.fromSnapshot(DocumentSnapshot snapshot): this(
       snapshot['id'].toString(),
       snapshot['name'].toString(),
-      DateTime.fromMillisecondsSinceEpoch(snapshot['birthday']),
+      DateTime((snapshot['birthday'] as Timestamp).millisecondsSinceEpoch),
       snapshot['photoUrl'].toString(),
   );
 
-  Map get map {
+  Map<String, dynamic> get map {
     return {
       'id': id,
       'name': name,
-      'birthday': birthday.millisecondsSinceEpoch,
+      'birthday': birthday,
       'photoUrl': photoUrl,
     };
   }

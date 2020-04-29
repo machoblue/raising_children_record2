@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,16 +90,10 @@ class LoginViewModel {
     final defaultBabyIconUrl = 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a';
     
     final familyDocumentReference = Firestore.instance.collection('families').document(familyId);
-//    familyDocumentReference.updateData({'users': FieldValue.arrayUnion('some user id'));
     familyDocumentReference.setData({
       'userIds': [user.uid],
     });
-    familyDocumentReference.collection('babies').document(babyId).setData({
-      'id': babyId,
-      'name': 'Baby',
-      'photoUrl': defaultBabyIconUrl,
-      'birthday': DateTime.now().millisecondsSinceEpoch,
-    });
+    familyDocumentReference.collection('babies').document(babyId).setData(Baby(babyId, 'Baby', DateTime.now(), defaultBabyIconUrl).map);
 
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userId', user.uid);

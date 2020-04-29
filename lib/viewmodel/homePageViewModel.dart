@@ -54,8 +54,8 @@ class HomePageViewModel {
 
     final sharedPreference = await SharedPreferences.getInstance();
     final familyId = sharedPreference.getString("familyId");
-    final fromDateTime = DateTime(dateTime.year, dateTime.month, dateTime.day).millisecondsSinceEpoch;
-    final toDateTime = fromDateTime + 1000 * 60 * 60 * 24;
+    final fromDateTime = Timestamp.fromMillisecondsSinceEpoch(DateTime(dateTime.year, dateTime.month, dateTime.day).millisecondsSinceEpoch);
+    final toDateTime = Timestamp.fromMillisecondsSinceEpoch(fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
     print(fromDateTime);
     print(toDateTime);
 
