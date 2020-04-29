@@ -80,94 +80,96 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
 
   Widget _plainRecordForm() {
     L10n l10n = L10n.of(context);
-    return Container(
-      padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              StreamBuilder(
-                  stream: _viewModel.assetName,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-                    return Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: AssetImage(snapshot.data),
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                StreamBuilder(
+                    stream: _viewModel.assetName,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fitHeight,
+                            image: AssetImage(snapshot.data),
+                          ),
                         ),
-                      ),
-                      height: 48,
-                      width: 48,
-                    );
-                  }
-              ),
-              Expanded(
-                child: StreamBuilder(
-                  stream: _viewModel.title,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
+                        height: 48,
+                        width: 48,
+                      );
                     }
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                      child: Text(
-                        snapshot.data,
-                        style: _recordTypeFont,
-                      ),
-                    );
-                  },
                 ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.start,
-          ),
-          Container(
-            height: 36,
-          ),
-          StreamBuilder(
-            stream: _viewModel.dateTime,
-            builder: (context, snapshot) {
-              final dateTime = snapshot.data ?? DateTime.now();
-              return Container(
-                alignment: Alignment.centerLeft,
-                child: FlatButton(
-                  child: Text(
-                    _dateFormat.format(dateTime),
-                    style: _dateButtonFont,
+                Expanded(
+                  child: StreamBuilder(
+                    stream: _viewModel.title,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                        child: Text(
+                          snapshot.data,
+                          style: _recordTypeFont,
+                        ),
+                      );
+                    },
                   ),
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  onPressed: () => _onDateTimeButtonPressed(dateTime),
                 ),
-              );
-            },
-          ),
-          widget.buildContent(context),
-          Container(
-            height: 24,
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: l10n.recordLabelNote,
+              ],
+              mainAxisAlignment: MainAxisAlignment.start,
             ),
-            onChanged: (text) => _viewModel.onNoteChanged.add(text),
-            controller: _noteController,
-          ),
-          Container(
-            height: 24,
-          ),
-          !(widget.isNew ?? false) ? FlatButton(
-            child: Text(
-              l10n.recordDeleteButtonLabel,
-              style: _deleteButtonFont,
+            Container(
+              height: 36,
             ),
-            onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
-          ) : Container()
-        ],
+            StreamBuilder(
+              stream: _viewModel.dateTime,
+              builder: (context, snapshot) {
+                final dateTime = snapshot.data ?? DateTime.now();
+                return Container(
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton(
+                    child: Text(
+                      _dateFormat.format(dateTime),
+                      style: _dateButtonFont,
+                    ),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    onPressed: () => _onDateTimeButtonPressed(dateTime),
+                  ),
+                );
+              },
+            ),
+            widget.buildContent(context),
+            Container(
+              height: 24,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: l10n.recordLabelNote,
+              ),
+              onChanged: (text) => _viewModel.onNoteChanged.add(text),
+              controller: _noteController,
+            ),
+            Container(
+              height: 24,
+            ),
+            !(widget.isNew ?? false) ? FlatButton(
+              child: Text(
+                l10n.recordDeleteButtonLabel,
+                style: _deleteButtonFont,
+              ),
+              onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+            ) : Container()
+          ],
+        ),
       ),
     );
   }
