@@ -20,7 +20,13 @@ class MainViewModel {
   final _onBabyButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onBabyButtonTapped => _onBabyButtonTappedStreamController.sink;
 
+  final _onBabySelectedStreamController = StreamController<Baby>();
+  StreamSink<Baby> get onBabySelected => _onBabySelectedStreamController.sink;
+
   // OUTPUT
+  final _babiesBehaviorSubject = BehaviorSubject<List<Baby>>.seeded(null);
+  Stream<List<Baby>> get babies => _babiesBehaviorSubject.stream;
+
   final _babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
   Stream<Baby> get baby => _babyBehaviorSubject.stream;
 
@@ -39,6 +45,7 @@ class MainViewModel {
 
   void bindInputAndOutput() {
     _onInitStateStreamController.stream.listen((_) {
+      _getBabies();
       _getBaby();
       _getUser();
     });
@@ -57,6 +64,25 @@ class MainViewModel {
     _onBabyButtonTappedStreamController.stream.listen((_) {
       print("### onTap");
     });
+  }
+
+  void _getBabies() async {
+    final sharedPreference = await SharedPreferences.getInstance();
+    final familyId = sharedPreference.getString("familyId");
+    final QuerySnapshot babiesQuerySnapshot = await Firestore.instance
+      .collection('families')
+      .document(familyId)
+      .collection('babies')
+      .getDocuments();
+    final List<DocumentSnapshot> babySnapshots = babiesQuerySnapshot.documents;
+    if (babySnapshots.length == 0) {
+      // TODO: create baby
+    } else {
+      _babiesBehaviorSubject.sink.add(babySnapshots
+          .map((snapshot) => Baby.fromSnapshot(snapshot))
+          .where((baby) => baby != null)
+          .toList());
+    }
   }
 
   void _getBaby() async {
@@ -117,6 +143,8 @@ class MainViewModel {
   dispose() {
     _onInitStateStreamController.close();
     _onTabItemTappedStreamController.close();
+    _onBabySelectedStreamController.close();
+    _babiesBehaviorSubject.close();
     _babyBehaviorSubject.close();
     _onBabyButtonTappedStreamController.close();
     _babyIconImageProvider.close();

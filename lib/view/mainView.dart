@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/baby.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/settingsView.dart';
@@ -55,26 +57,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
         final selectedIndex = snapshot.data ?? 0;
         return Scaffold(
           appBar: AppBar(
-            leading: selectedIndex == 0 ? Container(
-                padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: GestureDetector(
-                  onTap: () => _viewModel.onBabyButtonTapped.add(null),
-                  child: StreamBuilder(
-                    stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
-                    builder: (context, snapshot) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.fitHeight,
-                              image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
-                            )
-                        ),
-                      );
-                    },
-                  ),
-                )
-            ) : Container(),
+            leading: selectedIndex == 0 ? _babyButton()  : Container(),
             title: Text(_appBarTitles[selectedIndex]),
           ),
           body: _widgetOptions.elementAt(selectedIndex),
@@ -101,6 +84,80 @@ class _MainScaffoldState extends State<_MainScaffold> {
           ),
         );
       },
+    );
+  }
+
+  Widget _babyButton() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
+
+      child: StreamBuilder(
+        stream: _viewModel.babies,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data.isEmpty) {
+            return StreamBuilder(
+                stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
+                builder: (context, snapshot) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
+                        )
+                    ),
+                  );
+                }
+            );
+          }
+
+          final List<Baby> babies = snapshot.data;
+
+          return PopupMenuButton<Baby>(
+            onSelected: (baby) => _viewModel.onBabySelected.add(baby),
+            itemBuilder: (context) {
+              return babies
+                  .map((baby) {
+                return PopupMenuItem<Baby>(
+                  value: baby,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.fitHeight,
+                              image: CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
+                            )
+                        ),
+                      ),
+                      Container(width: 8),
+                      Text(baby.name),
+                    ],
+                  ),
+                );
+              })
+                  .toList();
+            },
+            child: StreamBuilder(
+              stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
+              builder: (context, snapshot) {
+                return Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
+                      )
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }
