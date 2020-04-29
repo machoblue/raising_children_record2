@@ -17,9 +17,6 @@ class MainViewModel {
   final _onTabItemTappedStreamController = StreamController<int>();
   StreamSink<int> get onTabItemTapped => _onTabItemTappedStreamController.sink;
 
-  final _onBabyButtonTappedStreamController = StreamController<void>();
-  StreamSink<void> get onBabyButtonTapped => _onBabyButtonTappedStreamController.sink;
-
   final _onBabySelectedStreamController = StreamController<Baby>();
   StreamSink<Baby> get onBabySelected => _onBabySelectedStreamController.sink;
 
@@ -61,8 +58,10 @@ class MainViewModel {
       _selectedIndex.sink.add(index);
     });
 
-    _onBabyButtonTappedStreamController.stream.listen((_) {
-      print("### onTap");
+    _onBabySelectedStreamController.stream.listen((baby) async {
+      _babyBehaviorSubject.sink.add(baby);
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('selectedBabyId', baby.id);
     });
   }
 
@@ -146,7 +145,6 @@ class MainViewModel {
     _onBabySelectedStreamController.close();
     _babiesBehaviorSubject.close();
     _babyBehaviorSubject.close();
-    _onBabyButtonTappedStreamController.close();
     _babyIconImageProvider.close();
     _selectedIndex.close();
     _userBehaviorSubject.close();
