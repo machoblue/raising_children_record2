@@ -15,6 +15,11 @@ class PlainRecordView<VM extends PlainRecordViewModel> extends StatefulWidget {
 
   @override
   _PlainRecordViewState createState() => _PlainRecordViewState();
+
+  // MARK: - Template method
+  Widget buildContent(BuildContext context) {
+    return Container();
+  }
 }
 
 class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<PlainRecordView> {
@@ -23,12 +28,14 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
-  VM _viewModel;
   TextEditingController _noteController;
+  VM _viewModel;
 
   @override
   void initState() {
     super.initState();
+
+    _noteController = TextEditingController();
 
     _viewModel = Provider.of<VM>(context, listen: false);
     _viewModel.onSaveComplete.listen((_) => _pop());
@@ -50,11 +57,6 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
   @override
   Widget build(BuildContext context) {
     return _plainRecordScaffold();
-  }
-
-  // MARK: - Template method
-  Widget buildContent() {
-    return Container();
   }
 
   Widget _plainRecordScaffold() {
@@ -151,7 +153,7 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
           ),
-          buildContent(),
+          widget.buildContent(context),
           Container(
             height: 24,
           ),
