@@ -11,6 +11,7 @@ import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
@@ -166,11 +167,14 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     switch (recordType) {
       case RecordType.milk: {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
-        return MilkRecordView(record: record, user: user, baby: baby, isNew: true);
+        return Provider<MilkRecordViewModel>(
+          create: (_) => MilkRecordViewModel(record, user, baby),
+          child: MilkRecordView(isNew: true),
+        );
       }
       case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
-        return Provider(
+        return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby),
           child: PlainRecordView<PlainRecordViewModel>(isNew: true),
         );
@@ -258,11 +262,13 @@ class _PageState extends State<_Page> {
   Widget _buildRecordView(Record record, User user, Baby baby) {
     switch(record.runtimeType) {
       case MilkRecord: {
-        return MilkRecordView(record: record, user: user, baby: baby);
+        return Provider<MilkRecordViewModel>(
+          create: (_) => MilkRecordViewModel(record, user, baby),
+          child: MilkRecordView(),
+        );
       }
       case SnackRecord: {
-//        return PlainRecordView(record: record, user: user, baby: baby);
-        return Provider(
+        return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby),
           child: PlainRecordView<PlainRecordViewModel>(),
         );

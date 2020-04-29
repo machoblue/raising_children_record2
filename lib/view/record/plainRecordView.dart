@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +15,7 @@ class PlainRecordView<VM extends PlainRecordViewModel> extends StatefulWidget {
   PlainRecordView({ Key key, this.isNew }): super(key: key);
 
   @override
-  _PlainRecordViewState createState() => _PlainRecordViewState();
+  _PlainRecordViewState createState() => _PlainRecordViewState<VM>();
 
   // MARK: - Template method
   Widget buildContent(BuildContext context) {
@@ -37,7 +38,9 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
 
     _noteController = TextEditingController();
 
+    print("### before $VM");
     _viewModel = Provider.of<VM>(context, listen: false);
+    print("### after");
     _viewModel.onSaveComplete.listen((_) => _pop());
 
     StreamSubscription subscription;
@@ -142,8 +145,9 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
               );
             },
           ),
+          widget.buildContent(context),
           Container(
-            height: 14,
+            height: 24,
           ),
           TextField(
             decoration: InputDecoration(
@@ -153,7 +157,6 @@ class _PlainRecordViewState<VM extends PlainRecordViewModel> extends State<Plain
             onChanged: (text) => _viewModel.onNoteChanged.add(text),
             controller: _noteController,
           ),
-          widget.buildContent(context),
           Container(
             height: 24,
           ),
