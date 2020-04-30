@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
     return Provider<HomeViewModel>(
       create: (_) {
         MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
-        return HomeViewModel(mainViewModel.user, mainViewModel.baby);
+        return HomeViewModel(mainViewModel.userBehaviorSubject, mainViewModel.babyBehaviorSubject);
       },
       child: _HomeContainer(),
     );
@@ -133,7 +133,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     return Provider(
       create: (_) {
         MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
-        return HomePageViewModel(dateTime, mainViewModel.user, mainViewModel.baby);
+        return HomePageViewModel(dateTime, mainViewModel.userBehaviorSubject, mainViewModel.babyBehaviorSubject);
       },
       child: _Page(dateTime: dateTime),
     );

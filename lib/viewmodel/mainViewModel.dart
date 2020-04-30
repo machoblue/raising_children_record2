@@ -24,8 +24,8 @@ class MainViewModel {
   final _babiesBehaviorSubject = BehaviorSubject<List<Baby>>.seeded(null);
   Stream<List<Baby>> get babies => _babiesBehaviorSubject.stream;
 
-  final _babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
-  Stream<Baby> get baby => _babyBehaviorSubject.stream;
+  final babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
+  Stream<Baby> get baby => babyBehaviorSubject.stream;
 
   final _babyIconImageProvider = BehaviorSubject<ImageProvider>.seeded(AssetImage("assets/default_baby_icon.png"));
   Stream<ImageProvider> get babyIconImageProvider => _babyIconImageProvider.stream;
@@ -33,8 +33,8 @@ class MainViewModel {
   final _selectedIndex = BehaviorSubject<int>.seeded(0);
   Stream<int> get selectedIndex => _selectedIndex.stream;
 
-  final _userBehaviorSubject = BehaviorSubject<User>.seeded(null);
-  Stream<User> get user => _userBehaviorSubject.stream;
+  final userBehaviorSubject = BehaviorSubject<User>.seeded(null);
+  Stream<User> get user => userBehaviorSubject.stream;
 
   MainViewModel() {
     bindInputAndOutput();
@@ -47,7 +47,7 @@ class MainViewModel {
       _getUser();
     });
 
-    _babyBehaviorSubject.stream.listen((baby) {
+    babyBehaviorSubject.stream.listen((baby) {
       if (baby == null) {
         return;
       }
@@ -59,7 +59,7 @@ class MainViewModel {
     });
 
     _onBabySelectedStreamController.stream.listen((baby) async {
-      _babyBehaviorSubject.sink.add(baby);
+      babyBehaviorSubject.sink.add(baby);
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('selectedBabyId', baby.id);
     });
@@ -98,7 +98,7 @@ class MainViewModel {
     if (babyId != null) {
       final DocumentSnapshot babySnapshot = await babiesCollectionReference.document(babyId).get();
       if (babySnapshot?.exists ?? false) {
-        _babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshot));
+        babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshot));
       } else {
         _createNewBabyAndSink(babiesCollectionReference);
       }
@@ -109,7 +109,7 @@ class MainViewModel {
       if (babySnapshots.length == 0) {
         _createNewBabyAndSink(babiesCollectionReference);
       } else {
-        _babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshots.first));
+        babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshots.first));
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('selectedBabyId', babyId);
         await sharedPreferences.setStringList('babyIds', babySnapshots.map((snapshot) => snapshot['id'] as String).where((id) => id != null).toList());
@@ -121,7 +121,7 @@ class MainViewModel {
     final String babyId = Uuid().v1();
     final Baby baby = Baby(babyId, "Baby", DateTime.now(), 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
     babiesCollectionReference.document(babyId).setData(baby.map);
-    _babyBehaviorSubject.sink.add(baby);
+    babyBehaviorSubject.sink.add(baby);
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('selectedBabyId', babyId);
     await sharedPreferences.setStringList('babyIds', [babyId]);
@@ -135,7 +135,7 @@ class MainViewModel {
     if (userSnapshot?.exists ?? false) {
       final user = User.fromSnapshot(userSnapshot);
       print("### user: ${user.id}");
-      _userBehaviorSubject.sink.add(user);
+      userBehaviorSubject.sink.add(user);
     }
   }
 
@@ -144,9 +144,9 @@ class MainViewModel {
     _onTabItemTappedStreamController.close();
     _onBabySelectedStreamController.close();
     _babiesBehaviorSubject.close();
-    _babyBehaviorSubject.close();
+    babyBehaviorSubject.close();
     _babyIconImageProvider.close();
     _selectedIndex.close();
-    _userBehaviorSubject.close();
+    userBehaviorSubject.close();
   }
 }

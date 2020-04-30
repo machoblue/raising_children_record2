@@ -7,8 +7,8 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 class HomeViewModel {
-  Stream<User> userStream;
-  Stream<Baby> babyStream;
+  BehaviorSubject<User> userBehaviorSubject;
+  BehaviorSubject<Baby> babyBehaviorSubject;
 
   // INPUT
   final _addRecordStreamController = StreamController<RecordType>();
@@ -18,17 +18,14 @@ class HomeViewModel {
   final _navigationToAddRecordStreamController = StreamController<Tuple3<RecordType, User, Baby>>();
   Stream<Tuple3<RecordType, User, Baby>> get navigationToAddRecord => _navigationToAddRecordStreamController.stream;
 
-  HomeViewModel(this.userStream, this.babyStream) {
+  HomeViewModel(this.userBehaviorSubject, this.babyBehaviorSubject) {
     _bindOutputAndOutput();
   }
 
   void _bindOutputAndOutput() {
-    CombineLatestStream.combine3(
-      userStream,
-      babyStream,
-      _addRecordStreamController.stream,
-      (user, baby, recordType) => Tuple3<RecordType, User, Baby>(recordType, user, baby))
-    .listen(_navigateToAddRecords);
+    _addRecordStreamController.stream.listen((recordType) {
+      _navigateToAddRecords(Tuple3<RecordType, User, Baby>(recordType, userBehaviorSubject.value, babyBehaviorSubject.value));
+    });
   }
 
   void _navigateToAddRecords(Tuple3<RecordType, User, Baby> tuple3) {

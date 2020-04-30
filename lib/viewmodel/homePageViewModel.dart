@@ -11,8 +11,8 @@ import 'package:tuple/tuple.dart';
 
 class HomePageViewModel {
   DateTime dateTime;
-  BehaviorSubject<User> userStream;
-  BehaviorSubject<Baby> babyStream;
+  BehaviorSubject<User> userBehaviorSubject;
+  BehaviorSubject<Baby> babyBehaviorSubject;
 
   // Input
   final StreamController _initStateStreamController = StreamController<void>();
@@ -28,23 +28,20 @@ class HomePageViewModel {
   final _navigationToEditRecordStreamController = StreamController<Tuple3<Record, User, Baby>>();
   Stream<Tuple3<Record, User, Baby>> get navigationToEditRecord => _navigationToEditRecordStreamController.stream;
 
-  HomePageViewModel(this.dateTime, this.userStream, this.babyStream) {
+  HomePageViewModel(this.dateTime, this.userBehaviorSubject, this.babyBehaviorSubject) {
     _bindInputAndOutput();
   }
 
   void _bindInputAndOutput() {
     CombineLatestStream.combine2(
-      babyStream,
+      babyBehaviorSubject,
       _initStateStreamController.stream,
       (baby, _) => baby
     ).listen((baby) => _fetchRecords(baby));
 
-    CombineLatestStream.combine3(
-      userStream,
-      babyStream,
-      _editRecordStreamController.stream,
-      (user, baby, record) => Tuple3<Record, User, Baby>(record, user, baby),
-    ).listen(_navigateToEditRecord);
+    _editRecordStreamController.stream.listen((record) {
+      _navigateToEditRecord(Tuple3<Record, User, Baby>(record, userBehaviorSubject.value, babyBehaviorSubject.value));
+    });
   }
 
   void _fetchRecords(Baby baby) async {
