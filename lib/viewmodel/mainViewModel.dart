@@ -43,7 +43,6 @@ class MainViewModel {
   void bindInputAndOutput() {
     _onInitStateStreamController.stream.listen((_) {
       _getBabies();
-      _getBaby();
       _getUser();
     });
 
@@ -62,6 +61,11 @@ class MainViewModel {
       babyBehaviorSubject.sink.add(baby);
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('selectedBabyId', baby.id);
+    });
+
+    _babiesBehaviorSubject.stream.listen((babies) async {
+      final Baby baby = await _pickSelectedBaby(babies);
+      babyBehaviorSubject.sink.add(baby);
     });
   }
 
@@ -84,37 +88,39 @@ class MainViewModel {
     }
   }
 
-  void _getBaby() async {
-    final sharedPreference = await SharedPreferences.getInstance();
-    final userId = sharedPreference.getString("userId");
-    final familyId = sharedPreference.getString("familyId");
-    final babyId = sharedPreference.getString("selectedBabyId");
-    print("### userId:$userId, familyId:$familyId, babyId:$babyId");
-    final CollectionReference babiesCollectionReference = await Firestore.instance
-        .collection('families')
-        .document(familyId)
-        .collection('babies');
+  Future<Baby> _pickSelectedBaby(List<Baby> babies) async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final familyId = sharedPreferences.getString("familyId");
+    final babyId = sharedPreferences.getString("selectedBabyId");
 
-    if (babyId != null) {
-      final DocumentSnapshot babySnapshot = await babiesCollectionReference.document(babyId).get();
-      if (babySnapshot?.exists ?? false) {
-        babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshot));
-      } else {
-        _createNewBabyAndSink(babiesCollectionReference);
-      }
-
-    } else {
-      final QuerySnapshot babiesQuerySnapshot = await babiesCollectionReference.getDocuments();
-      final List<DocumentSnapshot> babySnapshots = babiesQuerySnapshot.documents;
-      if (babySnapshots.length == 0) {
-        _createNewBabyAndSink(babiesCollectionReference);
-      } else {
-        babyBehaviorSubject.sink.add(Baby.fromSnapshot(babySnapshots.first));
-        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        await sharedPreferences.setString('selectedBabyId', babyId);
-        await sharedPreferences.setStringList('babyIds', babySnapshots.map((snapshot) => snapshot['id'] as String).where((id) => id != null).toList());
-      }
+    if ((babies?.length ?? 0) == 0) {
+      final String babyId = Uuid().v1();
+      final Baby baby = Baby(babyId, "Baby", DateTime.now(), 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
+      Firestore.instance
+          .collection('families')
+          .document(familyId)
+          .collection('babies')
+          .document(babyId)
+          .setData(baby.map);
+      sharedPreferences.setString('selectedBabyId', babyId);
+      sharedPreferences.setStringList('babyIds', [babyId]);
+      return baby;
     }
+
+    if (babyId == null) {
+      final Baby newSelectedBaby = babies.first;
+      sharedPreferences.setString('selectedBabyId', newSelectedBaby.id);
+      return newSelectedBaby;
+    }
+
+    final Baby selectedBaby = babies.where((baby) => baby.id == babyId).first;
+    if (selectedBaby == null) {
+      final Baby newSelectedBaby = babies.first;
+      sharedPreferences.setString('selectedBabyId', newSelectedBaby.id);
+      return newSelectedBaby;
+    }
+
+    return selectedBaby;
   }
 
   void _createNewBabyAndSink(CollectionReference babiesCollectionReference) async {
