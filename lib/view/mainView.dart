@@ -57,7 +57,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
         final selectedIndex = snapshot.data ?? 0;
         return Scaffold(
           appBar: AppBar(
-            leading: selectedIndex == 0 ? _babyButton()  : Container(),
+            leading: selectedIndex == 0 ? _babyButton() : null,
             title: Text(_appBarTitles[selectedIndex]),
           ),
           body: _widgetOptions.elementAt(selectedIndex),
