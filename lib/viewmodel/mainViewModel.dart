@@ -105,6 +105,10 @@ class MainViewModel {
     final familyId = sharedPreferences.getString("familyId");
     final babyId = sharedPreferences.getString("selectedBabyId");
 
+    if (babies == null) {
+      return null;
+    }
+
     if ((babies?.length ?? 0) == 0) {
       final String babyId = Uuid().v1();
       final Baby baby = Baby(babyId, "Baby", DateTime.now(), 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
@@ -135,16 +139,6 @@ class MainViewModel {
     return selectedBaby;
   }
 
-  void _createNewBabyAndSink(CollectionReference babiesCollectionReference) async {
-    final String babyId = Uuid().v1();
-    final Baby baby = Baby(babyId, "Baby", DateTime.now(), 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
-    babiesCollectionReference.document(babyId).setData(baby.map);
-    babyBehaviorSubject.sink.add(baby);
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('selectedBabyId', babyId);
-    await sharedPreferences.setStringList('babyIds', [babyId]);
-  }
-
   void _getUser() async {
     final sharedPreference = await SharedPreferences.getInstance();
     final userId = sharedPreference.getString("userId");
@@ -152,7 +146,6 @@ class MainViewModel {
 
     if (userSnapshot?.exists ?? false) {
       final user = User.fromSnapshot(userSnapshot);
-      print("### user: ${user.id}");
       userBehaviorSubject.sink.add(user);
     }
   }
