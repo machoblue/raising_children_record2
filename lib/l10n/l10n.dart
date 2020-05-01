@@ -46,4 +46,6 @@ class L10n {
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');
   String get recordLabelNote => Intl.message('Note', name: 'recordLabelNote');
   String get recordDeleteButtonLabel => Intl.message('Delete', name: 'recordDeleteButtonLabel');
+
+  String get editBabyInfo => Intl.message('Edit baby info', name: 'editBabyInfo');
 }
