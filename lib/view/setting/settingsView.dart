@@ -74,15 +74,24 @@ class _SettingsViewState extends State<SettingsView> {
       onTap: () => item.action(context),
       child: Container(
         padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-        child: Text(
-          Intl.message('${item.titleKey}', name: '${item.titleKey}'),
-        ),
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(
             top: BorderSide(width: 0.25, color: Color(0x0064000000)),
             bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
           ),
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                Intl.message('${item.titleKey}', name: '${item.titleKey}'),
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+            )
+          ],
         ),
       ),
     );
