@@ -129,14 +129,14 @@ class MainViewModel {
       return newSelectedBaby;
     }
 
-    final Baby selectedBaby = babies.where((baby) => baby.id == babyId).first;
-    if (selectedBaby == null) {
+    final selectedBabyList = babies.where((baby) => baby.id == babyId);
+    if (selectedBabyList.length == 0) {
       final Baby newSelectedBaby = babies.first;
       sharedPreferences.setString('selectedBabyId', newSelectedBaby.id);
       return newSelectedBaby;
     }
 
-    return selectedBaby;
+    return selectedBabyList.first;
   }
 
   void _getUser() async {
