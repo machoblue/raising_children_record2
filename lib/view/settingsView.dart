@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
-
+import 'package:intl/intl.dart';
+import 'package:raisingchildrenrecord2/view/babyListView.dart';
 
 class SettingsView extends StatefulWidget {
 
   List<SettingElement> settingElements = [
     SettingSeparator(),
     SettingItem(
-      'editBabyInfo',
-      () => print("###"),
+      titleKey: 'editBabyInfo',
+      action: (context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return BabyListView();
+            }
+          )
+        );
+      },
     ),
   ];
 
@@ -20,7 +30,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
+      color: Colors.grey[16],
       child: ListView.builder(
         itemCount: widget.settingElements.length,
         itemBuilder: (context, index) {
@@ -42,14 +52,24 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Widget _buildSeparator() {
-    return Container(height: 32);
+    return Container(height: 24);
   }
 
   Widget _buildItem(SettingItem item) {
-    return Container(
-      color: Colors.white,
-      child: Text(
-        item.titleKey
+    return GestureDetector(
+      onTap: () => item.action(context),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+        child: Text(
+          Intl.message('${item.titleKey}', name: '${item.titleKey}'),
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.25, color: Color(0x0064000000)),
+            bottom: BorderSide(width: 0.25, color: Color(0x0064000000)),
+          ),
+        ),
       ),
     );
   }

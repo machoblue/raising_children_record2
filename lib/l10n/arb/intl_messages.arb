@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-04-29T22:48:22.114227",
+  "@@last_modified": "2020-05-02T15:47:53.116553",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -53,6 +53,16 @@
   },
   "recordDeleteButtonLabel": "Delete",
   "@recordDeleteButtonLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editBabyInfo": "Edit baby info",
+  "@editBabyInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyListTitle": "Baby List",
+  "@babyListTitle": {
     "type": "text",
     "placeholders": {}
   }

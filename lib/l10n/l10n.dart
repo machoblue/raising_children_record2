@@ -48,4 +48,5 @@ class L10n {
   String get recordDeleteButtonLabel => Intl.message('Delete', name: 'recordDeleteButtonLabel');
 
   String get editBabyInfo => Intl.message('Edit baby info', name: 'editBabyInfo');
+  String get babyListTitle => Intl.message('Baby List', name: 'babyListTitle');
 }

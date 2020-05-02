@@ -55,5 +55,15 @@
   "@recordDeleteButtonLabel": {
     "type": "text",
     "placeholders": {}
+  },
+  "editBabyInfo": "赤ちゃん情報 編集",
+  "@editBabyInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyListTitle": "赤ちゃん情報 一覧",
+  "@babyListTitle": {
+    "type": "text",
+    "placeholders": {}
   }
 }
