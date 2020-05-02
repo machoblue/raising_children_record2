@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
-import 'package:raisingchildrenrecord2/view/babyListView.dart';
+import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 
 class SettingsView extends StatefulWidget {
 
@@ -10,11 +14,17 @@ class SettingsView extends StatefulWidget {
     SettingItem(
       titleKey: 'editBabyInfo',
       action: (context) {
+        Stream<List<Baby>> babiesStream = Provider.of<MainViewModel>(context).babies;
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return BabyListView();
+              return Provider<BabyListViewModel>(
+                create: (_) {
+                  return BabyListViewModel(babiesStream);
+                },
+                child: BabyListView(),
+              );
             }
           )
         );
@@ -29,6 +39,10 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
+    print("### context1: ${context}");
+    print("#### settingsView.build");
+    Stream<List<Baby>> babiesStream = Provider.of<MainViewModel>(context).babies;
+    print("#### settingsView.build2 ${babiesStream}");
     return Container(
       color: Colors.grey[16],
       child: ListView.builder(

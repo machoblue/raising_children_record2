@@ -5,7 +5,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
-import 'package:raisingchildrenrecord2/view/settingsView.dart';
+import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
 
 class MainView extends StatefulWidget {
