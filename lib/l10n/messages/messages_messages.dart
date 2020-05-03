@@ -21,12 +21,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addBabyTitle" : MessageLookupByLibrary.simpleMessage("Add Baby"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
+    "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
+    "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
+    "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
+    "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
     "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("Delete"),
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("Note"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),

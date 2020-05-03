@@ -12,7 +12,7 @@ class Baby {
   Baby.fromSnapshot(DocumentSnapshot snapshot): this(
       snapshot['id'].toString(),
       snapshot['name'].toString(),
-      DateTime((snapshot['birthday'] as Timestamp).millisecondsSinceEpoch),
+      DateTime.fromMillisecondsSinceEpoch((snapshot['birthday'] as Timestamp).millisecondsSinceEpoch),
       snapshot['photoUrl'].toString(),
   );
 

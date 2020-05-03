@@ -65,5 +65,25 @@
   "@babyListTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "editBabyTitle": "赤ちゃん情報 編集",
+  "@editBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addBabyTitle": "赤ちゃん情報 追加",
+  "@addBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameLabel": "名前",
+  "@nameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthdayLabel": "生年月日",
+  "@birthdayLabel": {
+    "type": "text",
+    "placeholders": {}
   }
 }

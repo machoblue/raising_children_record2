@@ -65,5 +65,25 @@
   "@babyListTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "editBabyTitle": "Edit Baby",
+  "@editBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addBabyTitle": "Add Baby",
+  "@addBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthdayLabel": "Birthday",
+  "@birthdayLabel": {
+    "type": "text",
+    "placeholders": {}
   }
 }

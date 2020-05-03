@@ -140,6 +140,9 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     onPressed: () async {
                       final DateTime selectedDateTime = await Utils.onDateTimeButtonPressed(context, dateTime);
+                      if (selectedDateTime == null) {
+                        return;
+                      }
                       _viewModel.onDateTimeSelected.add(selectedDateTime);
                     },
                   ),

@@ -21,12 +21,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 追加"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
+    "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
+    "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
+    "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
+    "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
     "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("削除"),
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("メモ"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("編集"),

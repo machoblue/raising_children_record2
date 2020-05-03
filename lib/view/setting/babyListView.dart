@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyEditView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 
 class BabyListView extends StatefulWidget {
@@ -49,7 +50,11 @@ class _BabyListViewState extends State<BabyListView> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return BabyEditView(baby);
+//              return BabyEditView(baby);
+              return Provider<BabyEditViewModel>(
+                create: (_) => BabyEditViewModel(baby),
+                child: BabyEditView(baby),
+              );
             }
           )
         );

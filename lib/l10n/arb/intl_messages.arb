@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-02T15:47:53.116553",
+  "@@last_modified": "2020-05-03T18:58:33.063183",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -63,6 +63,26 @@
   },
   "babyListTitle": "Baby List",
   "@babyListTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editBabyTitle": "Edit Baby",
+  "@editBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addBabyTitle": "Add Baby",
+  "@addBabyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthdayLabel": "Birthday",
+  "@birthdayLabel": {
     "type": "text",
     "placeholders": {}
   }
