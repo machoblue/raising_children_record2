@@ -1,8 +1,10 @@
 
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -70,16 +72,19 @@ class _BabyEditViewState extends State<BabyEditView> {
                   if (!snapshot.hasData) {
                     return Container();
                   }
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: snapshot.data,
+                  return GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: snapshot.data,
+                        ),
                       ),
+                      height: 84,
+                      width: 84,
                     ),
-                    height: 84,
-                    width: 84,
                   );
                 }
               ),
@@ -147,5 +152,10 @@ class _BabyEditViewState extends State<BabyEditView> {
         ),
       ),
     );
+  }
+
+  void _pickImage() async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _viewModel.onImageSelected.add(image);
   }
 }

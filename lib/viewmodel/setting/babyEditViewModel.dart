@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +23,9 @@ class BabyEditViewModel {
 
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
   Stream<void> get onSaveComplete => _onSaveCompleteStreamController.stream;
+
+  final _imageBehaviorSubject = BehaviorSubject<File>.seeded(null);
+  StreamSink<File> get onImageSelected => _imageBehaviorSubject.sink;
 
   final _onNameChangedStreamController = StreamController<String>();
   StreamSink<String> get onNameChanged => _onNameChangedStreamController.sink;
@@ -86,6 +90,7 @@ class BabyEditViewModel {
   void dispose() {
     _babyBehaviorSubject.close();
     _onSaveCompleteStreamController.close();
+    _imageBehaviorSubject.close();
     _onNameChangedStreamController.close();
     _onBirthdayChangedStreamController.close();
     _onSaveButtonTappedStreamController.close();
