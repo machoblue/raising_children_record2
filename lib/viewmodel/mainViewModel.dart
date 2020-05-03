@@ -72,32 +72,36 @@ class MainViewModel {
   void _getBabies() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final familyId = sharedPreferences.getString("familyId");
-    final QuerySnapshot babiesQuerySnapshot = await Firestore.instance
-      .collection('families')
-      .document(familyId)
-      .collection('babies')
-      .getDocuments();
-    final List<DocumentSnapshot> babySnapshots = babiesQuerySnapshot.documents;
 
-    if (babySnapshots.length == 0) {
-      final String babyId = Uuid().v1();
-      final Baby baby = Baby(babyId, "Baby", DateTime.now(),
-          'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
-      Firestore.instance
-          .collection('families')
-          .document(familyId)
-          .collection('babies')
-          .document(babyId)
-          .setData(baby.map);
-      _babiesBehaviorSubject.sink.add([baby]);
-      sharedPreferences.setStringList('babyIds', [babyId]);
-      return;
-    }
+    Firestore.instance
+    .collection('families')
+    .document(familyId)
+    .collection('babies')
+    .snapshots()
+    .listen((querySnapshot) {
+      final List<DocumentSnapshot> snapshots = querySnapshot.documents;
+      final List<Baby> babies = snapshots
+          .map((snapshot) => Baby.fromSnapshot(snapshot))
+          .where((baby) => baby != null)
+          .toList();
 
-    _babiesBehaviorSubject.sink.add(babySnapshots
-        .map((snapshot) => Baby.fromSnapshot(snapshot))
-        .where((baby) => baby != null)
-        .toList());
+      if (babies.length == 0) {
+        final String babyId = Uuid().v1();
+        final Baby baby = Baby(babyId, "Baby", DateTime.now(),
+            'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
+        Firestore.instance
+            .collection('families')
+            .document(familyId)
+            .collection('babies')
+            .document(babyId)
+            .setData(baby.map);
+        _babiesBehaviorSubject.sink.add([baby]);
+        sharedPreferences.setStringList('babyIds', [babyId]);
+        return;
+      }
+
+      _babiesBehaviorSubject.sink.add(babies);
+    });
   }
 
   Future<Baby> _pickSelectedBaby(List<Baby> babies) async {

@@ -40,6 +40,8 @@ class _BabyEditViewState extends State<BabyEditView> {
       _nameController.text = name;
       subscription.cancel();
     });
+
+    _viewModel.onSaveComplete.listen((_) => Navigator.pop(context));
   }
 
   @override
@@ -47,7 +49,13 @@ class _BabyEditViewState extends State<BabyEditView> {
     L10n _l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Baby")
+        title: Text("Edit Baby"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () => _viewModel.onSaveButtonTapped.add(null),
+          ),
+        ]
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -131,7 +139,7 @@ class _BabyEditViewState extends State<BabyEditView> {
                     _l10n.recordDeleteButtonLabel,
                     style: _deleteButtonFont,
                   ),
-  //                onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+                  onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
                 ),
               )
             ],

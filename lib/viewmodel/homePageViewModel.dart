@@ -66,7 +66,6 @@ class HomePageViewModel {
       .snapshots()
       .listen((recordsQuerySnapshot) {
         final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
-        recordSnapshotList.forEach((snapshot) => print(snapshot['note']));
         final List<Record> records = recordSnapshotList
             .map((snapshot) => Record.fromSnapshot(snapshot))
             .where((record) => record != null)
