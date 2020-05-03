@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/shared/utils.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/baseRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
@@ -137,7 +138,10 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                       style: _dateButtonFont,
                     ),
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    onPressed: () => _onDateTimeButtonPressed(dateTime),
+                    onPressed: () async {
+                      final DateTime selectedDateTime = await Utils.onDateTimeButtonPressed(context, dateTime);
+                      _viewModel.onDateTimeSelected.add(selectedDateTime);
+                    },
                   ),
                 );
               },
@@ -174,34 +178,4 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
     Navigator.pop(context);
   }
 
-  void _onDateTimeButtonPressed(DateTime currentDateTime) async {
-    DateTime selectedDate = await showDatePicker(
-      context: context,
-      initialDate: currentDateTime,
-      firstDate: DateTime(2018),
-      lastDate: DateTime(2030),
-      builder: (BuildContext context, Widget child) {
-        return child;
-      },
-    );
-
-    if (selectedDate == null) {
-      return;
-    }
-
-    TimeOfDay selectedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(currentDateTime),
-      builder: (BuildContext context, Widget child) {
-        return child;
-      },
-    );
-
-    if (selectedTime == null) {
-      return;
-    }
-
-    DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
-    _viewModel.onDateTimeSelected.add(selectedDateTime);
-  }
 }
