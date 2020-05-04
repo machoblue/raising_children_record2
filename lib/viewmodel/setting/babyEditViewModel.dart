@@ -44,7 +44,7 @@ class BabyEditViewModel {
   Stream<bool> get isLoading => _isLoadingBehaviorSubject.stream;
 
   BabyEditViewModel(Baby baby) {
-    _babyBehaviorSubject.add(baby);
+    _babyBehaviorSubject.add(baby ?? Baby.newInstance());
     _bindInputAndOutput();
   }
 

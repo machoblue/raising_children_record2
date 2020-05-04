@@ -25,6 +25,12 @@ class _BabyListViewState extends State<BabyListView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(L10n.of(context).babyListTitle),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _openBabyEditView(null),
+          ),
+        ]
       ),
       body: StreamBuilder(
         stream: _viewModel.babiesStream,
@@ -45,20 +51,7 @@ class _BabyListViewState extends State<BabyListView> {
 
   Widget _babyListItem(Baby baby) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-//              return BabyEditView(baby);
-              return Provider<BabyEditViewModel>(
-                create: (_) => BabyEditViewModel(baby),
-                child: BabyEditView(baby),
-              );
-            }
-          )
-        );
-      },
+      onTap: () => _openBabyEditView(baby),
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 16, 24, 16),
         decoration: const BoxDecoration(
@@ -91,6 +84,20 @@ class _BabyListViewState extends State<BabyListView> {
           ],
         )
       ),
+    );
+  }
+
+  void _openBabyEditView(Baby baby) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return Provider<BabyEditViewModel>(
+                create: (_) => BabyEditViewModel(baby),
+                child: BabyEditView(baby),
+              );
+            }
+        )
     );
   }
 }

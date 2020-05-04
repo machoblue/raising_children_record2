@@ -48,14 +48,20 @@ class _BabyEditViewState extends State<BabyEditView> {
 
   @override
   void dispose() {
+    super.dispose();
     _viewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    L10n _l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Baby"),
+        title: Text(
+          widget.baby == null
+            ? _l10n.addBabyTitle
+            : _l10n.editBabyTitle
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -82,26 +88,26 @@ class _BabyEditViewState extends State<BabyEditView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StreamBuilder(
-                stream: _viewModel.babyIconImageProvider,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container();
-                  }
-                  return GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: snapshot.data,
-                        ),
-                      ),
-                      height: 84,
-                      width: 84,
-                    ),
-                  );
+              stream: _viewModel.babyIconImageProvider,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
                 }
+                return GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: snapshot.data,
+                      ),
+                    ),
+                    height: 84,
+                    width: 84,
+                  ),
+                );
+              }
             ),
             Container(
               height: 36,
@@ -152,16 +158,18 @@ class _BabyEditViewState extends State<BabyEditView> {
             Container(
               height: 24,
             ),
-            (widget.baby == null) ? Container() : Container(
-              alignment: Alignment.center,
-              child: FlatButton(
-                child: Text(
-                  _l10n.recordDeleteButtonLabel,
-                  style: _deleteButtonFont,
+            (widget.baby == null)
+              ? Container()
+              : Container(
+                alignment: Alignment.center,
+                child: FlatButton(
+                  child: Text(
+                    _l10n.recordDeleteButtonLabel,
+                    style: _deleteButtonFont,
+                  ),
+                  onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
                 ),
-                onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
-              ),
-            )
+              )
           ],
         ),
       ),

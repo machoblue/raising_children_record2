@@ -1,6 +1,5 @@
 
 import 'package:raisingchildrenrecord2/model/baby.dart';
-import 'package:rxdart/rxdart.dart';
 
 class BabyListViewModel {
 

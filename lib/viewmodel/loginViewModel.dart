@@ -86,22 +86,21 @@ class LoginViewModel {
       'familyId': familyId,
     });
 
-    final babyId = Uuid().v1();
-    final defaultBabyIconUrl = 'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a';
+    final Baby baby = Baby.newInstance();
     
     final familyDocumentReference = Firestore.instance.collection('families').document(familyId);
     familyDocumentReference.setData({
       'userIds': [user.uid],
     });
-    familyDocumentReference.collection('babies').document(babyId).setData(Baby(babyId, 'Baby', DateTime.now(), defaultBabyIconUrl).map);
+    familyDocumentReference.collection('babies').document(baby.id).setData(baby.map);
 
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userId', user.uid);
     await sharedPreferences.setString('userName', user.displayName);
     await sharedPreferences.setString('userPhotoUrl', user.photoUrl);
     await sharedPreferences.setString('familyId', familyId);
-    await sharedPreferences.setStringList('babyIds', [babyId]);
-    await sharedPreferences.setString('selectedBabyId', babyId);
+    await sharedPreferences.setStringList('babyIds', [baby.id]);
+    await sharedPreferences.setString('selectedBabyId', baby.id);
 
     _signInUserStreamController.sink.add(user.uid);
     _showIndicatorStreamController.sink.add(false);

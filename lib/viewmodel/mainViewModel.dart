@@ -86,17 +86,15 @@ class MainViewModel {
           .toList();
 
       if (babies.length == 0) {
-        final String babyId = Uuid().v1();
-        final Baby baby = Baby(babyId, "Baby", DateTime.now(),
-            'https://firebasestorage.googleapis.com/v0/b/raisingchildrenrecord2.appspot.com/o/icon.png?alt=media&token=ce8d2ab5-98bf-42b3-9090-d3dc1459054a');
+        final Baby baby = Baby.newInstance();
         Firestore.instance
             .collection('families')
             .document(familyId)
             .collection('babies')
-            .document(babyId)
+            .document(baby.id)
             .setData(baby.map);
         _babiesBehaviorSubject.sink.add([baby]);
-        sharedPreferences.setStringList('babyIds', [babyId]);
+        sharedPreferences.setStringList('babyIds', [baby.id]);
         return;
       }
 
