@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -5,8 +7,10 @@ import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
+import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
 
 class SettingsView extends StatefulWidget {
 
@@ -21,9 +25,7 @@ class SettingsView extends StatefulWidget {
           MaterialPageRoute(
             builder: (context) {
               return Provider<BabyListViewModel>(
-                create: (_) {
-                  return BabyListViewModel(babiesStream);
-                },
+                create: (_) => BabyListViewModel(babiesStream),
                 child: BabyListView(),
               );
             }
@@ -36,21 +38,21 @@ class SettingsView extends StatefulWidget {
       titleKey: 'editUserInfo',
       action: (context) {
         Stream<User> userStream = Provider.of<MainViewModel>(context).user;
-        /*
-        Navigator.push(
+        StreamSubscription subscription;
+        subscription = userStream.listen((user) {
+          subscription.cancel(); // listen once
+          Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) {
-                  return Provider<BabyListViewModel>(
-                    create: (_) {
-                      return BabyListViewModel(babiesStream);
-                    },
-                    child: BabyListView(),
-                  );
-                }
+              builder: (context) {
+                return Provider<UserEditViewModel>(
+                  create: (_) => UserEditViewModel(user),
+                  child: UserEditView(user),
+                );
+              }
             )
-        );
-         */
+          );
+        });
       },
     ),
   ];
