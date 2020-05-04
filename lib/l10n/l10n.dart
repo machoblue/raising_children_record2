@@ -54,4 +54,7 @@ class L10n {
   String get addBabyTitle => Intl.message('Add Baby', name: 'addBabyTitle');
   String get nameLabel => Intl.message('Name', name: 'nameLabel');
   String get birthdayLabel => Intl.message('Birthday', name: 'birthdayLabel');
+
+  String get editUserInfo => Intl.message('Edit User Info', name: 'editUserInfo');
+  String get editUserTitle => Intl.message('Edit User', name: 'editUserTitle');
 }

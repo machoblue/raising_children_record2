@@ -85,5 +85,15 @@
   "@birthdayLabel": {
     "type": "text",
     "placeholders": {}
+  },
+  "editUserInfo": "ユーザー情報 編集",
+  "@editUserInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editUserTitle": "ユーザー情報 編集",
+  "@editUserTitle": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
+    "editUserInfo" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
+    "editUserTitle" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),

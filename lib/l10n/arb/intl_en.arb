@@ -56,7 +56,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "editBabyInfo": "Edit baby info",
+  "editBabyInfo": "Edit Baby Bnfo",
   "@editBabyInfo": {
     "type": "text",
     "placeholders": {}
@@ -83,6 +83,16 @@
   },
   "birthdayLabel": "Birthday",
   "@birthdayLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editUserInfo": "Edit User Info",
+  "@editUserInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editUserTitle": "Edit User",
+  "@editUserTitle": {
     "type": "text",
     "placeholders": {}
   }

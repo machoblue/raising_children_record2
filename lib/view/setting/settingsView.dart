@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
@@ -28,6 +29,28 @@ class SettingsView extends StatefulWidget {
             }
           )
         );
+      },
+    ),
+    SettingSeparator(),
+    SettingItem(
+      titleKey: 'editUserInfo',
+      action: (context) {
+        Stream<User> userStream = Provider.of<MainViewModel>(context).user;
+        /*
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) {
+                  return Provider<BabyListViewModel>(
+                    create: (_) {
+                      return BabyListViewModel(babiesStream);
+                    },
+                    child: BabyListView(),
+                  );
+                }
+            )
+        );
+         */
       },
     ),
   ];
