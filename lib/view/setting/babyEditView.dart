@@ -47,8 +47,12 @@ class _BabyEditViewState extends State<BabyEditView> {
   }
 
   @override
+  void dispose() {
+    _viewModel.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    L10n _l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Baby"),
@@ -59,14 +63,25 @@ class _BabyEditViewState extends State<BabyEditView> {
           ),
         ]
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              StreamBuilder(
+      body: Stack(
+        children: <Widget>[
+          _body(),
+          _indicator(),
+        ],
+      ),
+    );
+  }
+
+  Widget _body() {
+    L10n _l10n = L10n.of(context);
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            StreamBuilder(
                 stream: _viewModel.babyIconImageProvider,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -87,70 +102,83 @@ class _BabyEditViewState extends State<BabyEditView> {
                     ),
                   );
                 }
+            ),
+            Container(
+              height: 36,
+            ),
+            TextField(
+              controller: _nameController,
+              onChanged: (text) => _viewModel.onNameChanged.add(text),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: _l10n.nameLabel,
               ),
-              Container(
-                height: 36,
+            ),
+            Container(
+              height: 36,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _l10n.birthdayLabel,
+                style: _birthdayLabelFont,
               ),
-              TextField(
-                controller: _nameController,
-                onChanged: (text) => _viewModel.onNameChanged.add(text),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: _l10n.nameLabel,
-                ),
-              ),
-              Container(
-                height: 36,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  _l10n.birthdayLabel,
-                  style: _birthdayLabelFont,
-                ),
-              ),
-              StreamBuilder(
-                stream: _viewModel.birthday,
-                builder: (context, snapshot) {
-                  final dateTime = snapshot.data ?? DateTime.now();
-                  print("### dateTime: $dateTime");
-                  return Container(
-                    padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                    alignment: Alignment.centerLeft,
-                    child: FlatButton(
-                      child: Text(
-                        _dateFormat.format(dateTime),
-                        style: _dateButtonFont,
-                      ),
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      onPressed: () async {
-                        final DateTime selectedDateTime = await Utils.onDateTimeButtonPressed(context, dateTime);
-                        if (selectedDateTime == null) {
-                          return;
-                        }
-                        _viewModel.onBirthdayChanged.add(selectedDateTime);
-                      },
+            ),
+            StreamBuilder(
+              stream: _viewModel.birthday,
+              builder: (context, snapshot) {
+                final dateTime = snapshot.data ?? DateTime.now();
+                print("### dateTime: $dateTime");
+                return Container(
+                  padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton(
+                    child: Text(
+                      _dateFormat.format(dateTime),
+                      style: _dateButtonFont,
                     ),
-                  );
-                },
-              ),
-              Container(
-                height: 24,
-              ),
-              (widget.baby == null) ? Container() : Container(
-                alignment: Alignment.center,
-                child: FlatButton(
-                  child: Text(
-                    _l10n.recordDeleteButtonLabel,
-                    style: _deleteButtonFont,
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    onPressed: () async {
+                      final DateTime selectedDateTime = await Utils.onDateTimeButtonPressed(context, dateTime);
+                      if (selectedDateTime == null) {
+                        return;
+                      }
+                      _viewModel.onBirthdayChanged.add(selectedDateTime);
+                    },
                   ),
-                  onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+                );
+              },
+            ),
+            Container(
+              height: 24,
+            ),
+            (widget.baby == null) ? Container() : Container(
+              alignment: Alignment.center,
+              child: FlatButton(
+                child: Text(
+                  _l10n.recordDeleteButtonLabel,
+                  style: _deleteButtonFont,
                 ),
-              )
-            ],
-          ),
+                onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+              ),
+            )
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _indicator() {
+    return StreamBuilder(
+      stream: _viewModel.isLoading,
+      builder: (context, snapshot) {
+        final bool isLoading = snapshot.data ?? false;
+        return isLoading
+          ? Center(
+            child: CircularProgressIndicator()
+          )
+          : Container();
+      }
     );
   }
 

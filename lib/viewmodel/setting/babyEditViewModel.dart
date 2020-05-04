@@ -40,6 +40,9 @@ class BabyEditViewModel {
   final _onDeleteButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
 
+  final _isLoadingBehaviorSubject = BehaviorSubject<bool>.seeded(false);
+  Stream<bool> get isLoading => _isLoadingBehaviorSubject.stream;
+
   BabyEditViewModel(Baby baby) {
     _babyBehaviorSubject.add(baby);
     _bindInputAndOutput();
@@ -74,11 +77,19 @@ class BabyEditViewModel {
   }
 
   void _save(Tuple2<Baby, File> tuple2) async {
+    if (_isLoadingBehaviorSubject.value) {
+      return;
+    }
+
+    _isLoadingBehaviorSubject.sink.add(true);
+
     final Baby baby = tuple2.item1;
     final File imageFile = tuple2.item2;
 
     if (imageFile == null) {
-      _saveBaby(baby);
+      await _saveBaby(baby);
+      _isLoadingBehaviorSubject.sink.add(false);
+      _onSaveCompleteStreamController.sink.add(null);
       return;
     }
 
@@ -89,12 +100,15 @@ class BabyEditViewModel {
     uploadTask.onComplete.then((storageTaskSnapshot) {
       if (storageTaskSnapshot.error != null) {
         // TODO: error handling
+        _isLoadingBehaviorSubject.sink.add(false);
         return;
       }
 
-      storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+      storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) async {
         baby.photoUrl = downloadUrl;
-        _saveBaby(baby);
+        await _saveBaby(baby);
+        _isLoadingBehaviorSubject.sink.add(false);
+        _onSaveCompleteStreamController.sink.add(null);
       });
     });
 
@@ -103,18 +117,20 @@ class BabyEditViewModel {
   void _saveBaby(Baby baby) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String familyId = sharedPreferences.get('familyId');
-    Firestore.instance
+    await Firestore.instance
       .collection('families')
       .document(familyId)
       .collection("babies")
       .document(baby.id)
-      .setData(baby.map)
-      .then((value) {
-        _onSaveCompleteStreamController.sink.add(null);
-      });
+      .setData(baby.map);
+    return;
   }
 
   void _delete(Baby baby) async {
+    if (_isLoadingBehaviorSubject.value) {
+      return;
+    }
+
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String familyId = sharedPreferences.get('familyId');
     Firestore.instance
@@ -135,5 +151,6 @@ class BabyEditViewModel {
     _onBirthdayChangedStreamController.close();
     _onSaveButtonTappedStreamController.close();
     _onDeleteButtonTappedStreamController.close();
+    _isLoadingBehaviorSubject.close();
   }
 }
