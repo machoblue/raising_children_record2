@@ -49,9 +49,12 @@ class BabyEditViewModel {
   }
 
   void _bindInputAndOutput() {
-    _babyBehaviorSubject.listen((baby) => _babyIconImageProviderStreamController.sink.add(CachedNetworkImageProvider(baby.photoUrl)));
-
-    _imageBehaviorSubject.listen((imageFile) => _babyIconImageProviderStreamController.sink.add(FileImage(imageFile)));
+    CombineLatestStream.combine2(
+      _babyBehaviorSubject,
+      _imageBehaviorSubject,
+      (baby, image) => image == null ? CachedNetworkImageProvider(baby.photoUrl) : FileImage(image),
+    )
+    .listen((imageProvider) => _babyIconImageProviderStreamController.sink.add(imageProvider));
 
     _onNameChangedStreamController.stream.listen((name) {
       Baby baby = _babyBehaviorSubject.value;
@@ -144,6 +147,7 @@ class BabyEditViewModel {
   }
 
   void dispose() {
+    _babyIconImageProviderStreamController.close();
     _babyBehaviorSubject.close();
     _onSaveCompleteStreamController.close();
     _imageBehaviorSubject.close();
