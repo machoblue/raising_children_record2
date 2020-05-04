@@ -23,7 +23,7 @@ class User {
     snapshot['familyId'],
   );
 
-  Map get map {
+  Map<String, dynamic> get map {
     return {
       'id': id,
       'name': name,
