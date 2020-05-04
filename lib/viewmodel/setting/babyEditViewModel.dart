@@ -8,14 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class BabyEditViewModel {
 
   final _babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
 
-  Stream<ImageProvider> get babyIconImageProvider => _babyBehaviorSubject.stream.map((baby) {
-    return baby == null ? AssetImage('asset/default_baby_icon.png') : CachedNetworkImageProvider(baby.photoUrl);
-  });
+  final StreamController<ImageProvider> _babyIconImageProviderStreamController = StreamController<ImageProvider>();
+  Stream<ImageProvider> get babyIconImageProvider => _babyIconImageProviderStreamController.stream;
 
   Stream<String> get name => _babyBehaviorSubject.stream.map((baby) => baby?.name ?? '');
 
@@ -45,6 +46,10 @@ class BabyEditViewModel {
   }
 
   void _bindInputAndOutput() {
+    _babyBehaviorSubject.listen((baby) => _babyIconImageProviderStreamController.sink.add(CachedNetworkImageProvider(baby.photoUrl)));
+
+    _imageBehaviorSubject.listen((imageFile) => _babyIconImageProviderStreamController.sink.add(FileImage(imageFile)));
+
     _onNameChangedStreamController.stream.listen((name) {
       Baby baby = _babyBehaviorSubject.value;
       baby.name = name;
@@ -57,21 +62,56 @@ class BabyEditViewModel {
       _babyBehaviorSubject.add(baby);
     });
 
-    _onSaveButtonTappedStreamController.stream.listen((_) => _save(_babyBehaviorSubject.value));
+    CombineLatestStream.combine3(
+      _onSaveButtonTappedStreamController.stream,
+      _babyBehaviorSubject,
+      _imageBehaviorSubject,
+      (_, baby, imageFile) => Tuple2<Baby, File>(baby, imageFile),
+    )
+    .listen(_save);
+
     _onDeleteButtonTappedStreamController.stream.listen((_) => _delete(_babyBehaviorSubject.value));
   }
 
-  void _save(Baby baby) async {
+  void _save(Tuple2<Baby, File> tuple2) async {
+    final Baby baby = tuple2.item1;
+    final File imageFile = tuple2.item2;
+
+    if (imageFile == null) {
+      _saveBaby(baby);
+      return;
+    }
+
+    final String babyId = baby.id;
+    StorageReference reference = FirebaseStorage.instance.ref().child(babyId);
+    StorageUploadTask uploadTask = reference.putFile(imageFile);
+//    StorageTaskSnapshot storageTaskSnapshot;
+    uploadTask.onComplete.then((storageTaskSnapshot) {
+      if (storageTaskSnapshot.error != null) {
+        // TODO: error handling
+        return;
+      }
+
+      storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+        baby.photoUrl = downloadUrl;
+        _saveBaby(baby);
+      });
+    });
+
+  }
+
+  void _saveBaby(Baby baby) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String familyId = sharedPreferences.get('familyId');
     Firestore.instance
-        .collection('families')
-        .document(familyId)
-        .collection("babies")
-        .document(baby.id)
-        .setData(baby.map);
-
-    _onSaveCompleteStreamController.sink.add(null);
+      .collection('families')
+      .document(familyId)
+      .collection("babies")
+      .document(baby.id)
+      .setData(baby.map)
+      .then((value) {
+        _onSaveCompleteStreamController.sink.add(null);
+      });
   }
 
   void _delete(Baby baby) async {
