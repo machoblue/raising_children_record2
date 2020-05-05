@@ -1,13 +1,15 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class User {
   String id;
   String name;
   String photoUrl;
   String familyId;
+  String invitationCode;
 
-  User(this.id, this.name, this.photoUrl, this.familyId);
+  User(this.id, this.name, this.photoUrl, this.familyId, { Key key, this.invitationCode });
 
   User.fromMap(Map map): this(
       map['id'],
@@ -24,10 +26,17 @@ class User {
   );
 
   Map<String, dynamic> get map {
-    return {
+    Map<String, dynamic> map = {
       'id': id,
       'name': name,
       'photoUrl': photoUrl,
+      'familyId': familyId,
     };
+
+    if (invitationCode != null) {
+      map['invitationCode'] = invitationCode;
+    }
+
+    return map;
   }
 }
