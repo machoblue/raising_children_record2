@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,20 +80,14 @@ class LoginViewModel {
     }
 
     final familyId = Uuid().v1();
-    Firestore.instance.collection('users').document(user.uid).setData({
-      'id': user.uid,
-      'name': user.displayName,
-      'photoUrl': user.photoUrl,
-      'familyId': familyId,
-    });
+    final User newUser = User(user.uid, user.displayName, user.photoUrl, familyId);
+    Firestore.instance.collection('users').document(newUser.id).setData(newUser.map);
 
     final Baby baby = Baby.newInstance();
     
     final familyDocumentReference = Firestore.instance.collection('families').document(familyId);
-    familyDocumentReference.setData({
-      'userIds': [user.uid],
-    });
     familyDocumentReference.collection('babies').document(baby.id).setData(baby.map);
+    familyDocumentReference.collection('users').document(newUser.id).setData(newUser.map);
 
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userId', user.uid);
