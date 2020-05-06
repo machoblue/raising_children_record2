@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 
 void main() => runApp(MyApp());
 

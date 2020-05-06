@@ -1,0 +1,6 @@
+
+class InvitationCodeReadViewModel {
+
+  void dispose() {
+  }
+}
