@@ -18,10 +18,10 @@ class InvitationCodeViewModel {
   }
 
   void _generateInvitationCode() async {
-    InvitationCode invitationCode = InvitationCode.newInstance();
-
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String familyId = await sharedPreferences.getString('familyId');
+    String familyId = sharedPreferences.getString('familyId');
+
+    InvitationCode invitationCode = InvitationCode.newInstance(familyId);
 
     Firestore.instance
       .collection('families')
