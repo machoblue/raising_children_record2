@@ -7,9 +7,11 @@ import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
+import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/invitationCodeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
 
 class SettingsView extends StatefulWidget {
@@ -58,7 +60,17 @@ class SettingsView extends StatefulWidget {
     SettingItem(
       titleKey: 'showInvitationCode',
       action: (context) {
-        print("### ");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Provider<InvitationCodeViewModel>(
+                create: (_) => InvitationCodeViewModel(),
+                child: InvitationCodeView(),
+              );
+            }
+          )
+        );
       },
     ),
   ];

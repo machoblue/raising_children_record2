@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-06T21:51:26.813360",
+  "@@last_modified": "2020-05-06T22:42:15.658435",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -103,6 +103,16 @@
   },
   "showInvitationCode": "Show Invitation Code",
   "@showInvitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCode": "Invitation Code",
+  "@invitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatingInvitationCode": "Generating invitation code...",
+  "@generatingInvitationCode": {
     "type": "text",
     "placeholders": {}
   }

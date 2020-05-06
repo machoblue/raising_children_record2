@@ -60,4 +60,6 @@ class L10n {
 
   String get shareData => Intl.message('Share Data', name: 'shareData');
   String get showInvitationCode => Intl.message('Show Invitation Code', name: 'showInvitationCode');
+  String get invitationCode => Intl.message('Invitation Code', name: 'invitationCode');
+  String get generatingInvitationCode => Intl.message('Generating invitation code...', name: 'generatingInvitationCode');
 }

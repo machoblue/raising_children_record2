@@ -105,5 +105,15 @@
   "@showInvitationCode": {
     "type": "text",
     "placeholders": {}
+  },
+  "invitationCode": "招待コード",
+  "@invitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatingInvitationCode": "招待コードを生成中です...",
+  "@generatingInvitationCode": {
+    "type": "text",
+    "placeholders": {}
   }
 }

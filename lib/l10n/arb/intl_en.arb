@@ -105,5 +105,15 @@
   "@showInvitationCode": {
     "type": "text",
     "placeholders": {}
+  },
+  "invitationCode": "Invitation Code",
+  "@invitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatingInvitationCode": "Generating invitation code...",
+  "@generatingInvitationCode": {
+    "type": "text",
+    "placeholders": {}
   }
 }
