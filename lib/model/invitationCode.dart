@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:uuid/uuid.dart';
 
 class InvitationCode {
@@ -14,11 +16,27 @@ class InvitationCode {
     DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 5),
   );
 
+  InvitationCode.fromJSON(String json) {
+    Map map = jsonDecode(json);
+    this.code = map['code'] as String;
+    this.familyId = map['familyId'] as String;
+    this.expirationDate = DateTime.parse(map['expirationDate'] as String);
+  }
+
   Map<String, dynamic> get map {
     return {
       'code': code,
       'familyId': familyId,
       'expirationDate': expirationDate,
     };
+  }
+
+  String get json {
+    final Map<String, dynamic> map = {
+      'code': code,
+      'familyId': familyId,
+      'expirationDate': expirationDate.toUtc().toIso8601String(),
+    };
+    return jsonEncode(map);
   }
 }
