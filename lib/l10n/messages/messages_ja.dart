@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("編集"),
     "recordTitleNew" : MessageLookupByLibrary.simpleMessage("新規作成"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定"),
+    "shareData" : MessageLookupByLibrary.simpleMessage("データ共有"),
+    "showInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを表示する"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ")
   };
 }

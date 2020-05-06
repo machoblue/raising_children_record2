@@ -95,5 +95,15 @@
   "@editUserTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "shareData": "データ共有",
+  "@shareData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showInvitationCode": "招待コードを表示する",
+  "@showInvitationCode": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "recordTitleNew" : MessageLookupByLibrary.simpleMessage("New"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "shareData" : MessageLookupByLibrary.simpleMessage("Share Data"),
+    "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack")
   };
 }

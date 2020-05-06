@@ -95,5 +95,15 @@
   "@editUserTitle": {
     "type": "text",
     "placeholders": {}
+  },
+  "shareData": "Share Data",
+  "@shareData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showInvitationCode": "Show Invitation Code",
+  "@showInvitationCode": {
+    "type": "text",
+    "placeholders": {}
   }
 }

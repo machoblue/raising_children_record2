@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
-    "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit Baby Info"),
+    "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "recordTitleNew" : MessageLookupByLibrary.simpleMessage("New"),
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "shareData" : MessageLookupByLibrary.simpleMessage("Share Data"),
+    "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack")
   };
 }

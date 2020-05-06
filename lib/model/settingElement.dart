@@ -10,4 +10,6 @@ class SettingItem implements SettingElement {
 }
 
 class SettingSeparator implements SettingElement {
+  String titleKey;
+  SettingSeparator({ this.titleKey });
 }

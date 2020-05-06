@@ -33,7 +33,6 @@ class SettingsView extends StatefulWidget {
         );
       },
     ),
-    SettingSeparator(),
     SettingItem(
       titleKey: 'editUserInfo',
       action: (context) {
@@ -55,6 +54,13 @@ class SettingsView extends StatefulWidget {
         });
       },
     ),
+    SettingSeparator(titleKey: 'shareData'),
+    SettingItem(
+      titleKey: 'showInvitationCode',
+      action: (context) {
+        print("### ");
+      },
+    ),
   ];
 
   @override
@@ -62,6 +68,8 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  final _groupTitleFont = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0x0088000000));
+
   @override
   Widget build(BuildContext context) {
     print("### context1: ${context}");
@@ -76,7 +84,7 @@ class _SettingsViewState extends State<SettingsView> {
           SettingElement element = widget.settingElements[index];
           switch (element.runtimeType) {
             case SettingSeparator: {
-              return _buildSeparator();
+              return _buildSeparator(element as SettingSeparator);
             }
             case SettingItem: {
               return _buildItem(element as SettingItem);
@@ -90,8 +98,18 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  Widget _buildSeparator() {
-    return Container(height: 24);
+  Widget _buildSeparator(SettingSeparator separator) {
+    return Container(
+      height: 48,
+      alignment: Alignment.bottomLeft,
+      padding: EdgeInsets.fromLTRB(16, 0, 0, 4),
+      child: separator.titleKey == null
+        ? Container()
+        : Text(
+          Intl.message('${separator.titleKey}', name: '${separator.titleKey}'),
+          style: _groupTitleFont,
+        ),
+    );
   }
 
   Widget _buildItem(SettingItem item) {

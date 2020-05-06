@@ -57,4 +57,7 @@ class L10n {
 
   String get editUserInfo => Intl.message('Edit User Info', name: 'editUserInfo');
   String get editUserTitle => Intl.message('Edit User', name: 'editUserTitle');
+
+  String get shareData => Intl.message('Share Data', name: 'shareData');
+  String get showInvitationCode => Intl.message('Show Invitation Code', name: 'showInvitationCode');
 }
