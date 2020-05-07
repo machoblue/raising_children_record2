@@ -62,8 +62,8 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
   void _onUseInvitationCodeButtonTapped() async {
     final ScanResult result = await BarcodeScanner.scan();
     final json = result.rawContent.toString();
-    print("#### read: $json");
-    final InvitationCode invitationCode = InvitationCode.fromJSON(result.toString());
+    final InvitationCode invitationCode = InvitationCode.fromJSON(json);
+    Navigator.pop(context);
     widget.onInvitationCodeRead(invitationCode);
   }
 }
