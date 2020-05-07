@@ -115,5 +115,25 @@
   "@generatingInvitationCode": {
     "type": "text",
     "placeholders": {}
+  },
+  "readingInvitationCodeTitle": "招待コードの読み取り",
+  "@readingInvitationCodeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "readingInvitationCodeMessage": "招待コードを読み込んで、\n他のユーザーとデータを共有しますか？",
+  "@readingInvitationCodeMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "readInvitationCodeButton": "招待コードを読み込む",
+  "@readInvitationCodeButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noInvitationCodeButton": "招待コードを持っていない",
+  "@noInvitationCodeButton": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -2,6 +2,7 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
 
@@ -15,6 +16,9 @@ class InvitationCodeReadView extends StatefulWidget {
 }
 
 class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
+  final _messageStyle = TextStyle(fontSize: 16);
+  final _readButtonStyle = TextStyle(fontSize: 16.0);
+  final _cancelButtonStyle = TextStyle(fontSize: 16.0);
 
   InvitationCodeReadViewModel _viewModel;
 
@@ -31,14 +35,14 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
 
   @override
   Widget build(BuildContext context) {
-    final _messageStyle = TextStyle(fontSize: 16);
-    final _readButtonStyle = TextStyle(fontSize: 16.0);
-    final _cancelButtonStyle = TextStyle(fontSize: 16.0);
+    final L10n l10n = L10n.of(context);
 
     return Scaffold(
       appBar: AppBar(
         leading: Container(),
-        title: Text('招待コードの読み取り'),
+        title: Text(
+          l10n.readingInvitationCodeTitle,
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(36),
@@ -47,7 +51,7 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              '招待コードを読み込んで、\n他のユーザーとデータを共有しますか？',
+              l10n.readingInvitationCodeMessage,
               textAlign: TextAlign.center,
               style: _messageStyle,
             ),
@@ -57,7 +61,7 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
             RaisedButton(
               onPressed: _onUseInvitationCodeButtonTapped,
               child: Text(
-                '招待コードを読み込む',
+                l10n.readInvitationCodeButton,
                 style: _readButtonStyle,
               ),
             ),
@@ -67,7 +71,7 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
                 widget.onInvitationCodeRead(null);
               },
               child: Text(
-                '招待コードを持っていない',
+                l10n.noInvitationCodeButton,
                 style: _cancelButtonStyle,
               )
             ),

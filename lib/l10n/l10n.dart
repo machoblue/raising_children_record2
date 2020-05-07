@@ -62,4 +62,9 @@ class L10n {
   String get showInvitationCode => Intl.message('Show Invitation Code', name: 'showInvitationCode');
   String get invitationCode => Intl.message('Invitation Code', name: 'invitationCode');
   String get generatingInvitationCode => Intl.message('Generating invitation code...', name: 'generatingInvitationCode');
+
+  String get readingInvitationCodeTitle => Intl.message('Reading Invitation Code', name: 'readingInvitationCodeTitle');
+  String get readingInvitationCodeMessage => Intl.message('Do you have an invitation code?', name: 'readingInvitationCodeMessage');
+  String get readInvitationCodeButton => Intl.message('Yes, I do.', name: 'readInvitationCodeButton');
+  String get noInvitationCodeButton => Intl.message('No, I don\'t.', name: 'noInvitationCodeButton');
 }

@@ -115,5 +115,25 @@
   "@generatingInvitationCode": {
     "type": "text",
     "placeholders": {}
+  },
+  "readingInvitationCodeTitle": "Reading Invitation Code",
+  "@readingInvitationCodeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "readingInvitationCodeMessage": "Do you have an invitation code?",
+  "@readingInvitationCodeMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "readInvitationCodeButton": "Yes, I do.",
+  "@readInvitationCodeButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noInvitationCodeButton": "No, I don't.",
+  "@noInvitationCodeButton": {
+    "type": "text",
+    "placeholders": {}
   }
 }
