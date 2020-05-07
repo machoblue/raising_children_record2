@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 
 class UserRepository {
-  Future<void> createUser(User user) {}
+  Future<void> createOrUpdateUser(User user) {}
   Future<User> getUser(String userId) {}
-  Future<void> createFamilyOrJoinFamily(String familyId, User user) {}
+  Future<void> createOrJoinFamily(String familyId, User user) {}
 }
 
 class FirestoreUserRepository implements UserRepository {
@@ -13,7 +13,7 @@ class FirestoreUserRepository implements UserRepository {
   final String users = 'users';
   final String families = 'families';
 
-  Future<void> createUser(User user) {
+  Future<void> createOrUpdateUser(User user) {
     return Firestore.instance
         .collection(users)
         .document(user.id)
@@ -35,7 +35,7 @@ class FirestoreUserRepository implements UserRepository {
         });
   }
 
-  Future<void> createFamilyOrJoinFamily(String familyId, User user) {
+  Future<void> createOrJoinFamily(String familyId, User user) {
     return Firestore.instance
         .collection(families)
         .document(user.familyId)
