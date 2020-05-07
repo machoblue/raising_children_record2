@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/invitationCode.dart';
+import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
 class LoginView extends StatefulWidget {
@@ -89,6 +92,8 @@ class _LoginButtonState extends State<LoginButton> {
     _viewModel.errorMessage.listen((String errorMessage) {
       Fluttertoast.showToast(msg: errorMessage);
     });
+
+    _viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
   }
 
   @override
@@ -101,5 +106,21 @@ class _LoginButtonState extends State<LoginButton> {
   void _onLoginButtonTapped() {
     print("### _onLoginButtonTapped()");
     _viewModel.onSignInButtonTapped.add(null);
+  }
+
+  void _showInvitationReadView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Provider<InvitationCodeReadViewModel>(
+            create: (_) => InvitationCodeReadViewModel(),
+            child: InvitationCodeReadView(
+              onInvitationCodeRead: _viewModel.onInvitationCodeRead.add,
+            ),
+          );
+        }
+      )
+    );
   }
 }

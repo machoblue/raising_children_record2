@@ -1,6 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 
 class User {
   String id;
@@ -23,6 +25,21 @@ class User {
     snapshot['name'],
     snapshot['photoUrl'],
     snapshot['familyId'],
+  );
+
+  User.fromFirebaseUser(FirebaseUser firebaseUser, String familyId): this(
+    firebaseUser.uid,
+    firebaseUser.displayName,
+    firebaseUser.photoUrl,
+    familyId
+  );
+
+  User.fromFirebaseUserAndInvitationCode(FirebaseUser firebaseUser, InvitationCode invitationCode): this(
+      firebaseUser.uid,
+      firebaseUser.displayName,
+      firebaseUser.photoUrl,
+      invitationCode.familyId,
+      invitationCode: invitationCode.code,
   );
 
   Map<String, dynamic> get map {
