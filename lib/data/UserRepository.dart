@@ -4,6 +4,8 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 
 class UserRepository {
   Future<void> createUser(User user) {}
+  Future<User> getUser(String userId) {}
+  Future<void> createFamilyOrJoinFamily(String familyId, User user) {}
 }
 
 class FirestoreUserRepository implements UserRepository {
