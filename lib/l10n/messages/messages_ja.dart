@@ -34,7 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("招待コード"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
-    "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
+    "loginTitle" : MessageLookupByLibrary.simpleMessage("ログイン"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを持っていない"),
