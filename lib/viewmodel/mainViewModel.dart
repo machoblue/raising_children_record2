@@ -94,7 +94,6 @@ class MainViewModel {
             .document(baby.id)
             .setData(baby.map);
         _babiesBehaviorSubject.sink.add([baby]);
-        sharedPreferences.setStringList('babyIds', [baby.id]);
         return;
       }
 
@@ -121,7 +120,6 @@ class MainViewModel {
           .document(babyId)
           .setData(baby.map);
       sharedPreferences.setString('selectedBabyId', babyId);
-      sharedPreferences.setStringList('babyIds', [babyId]);
       return baby;
     }
 

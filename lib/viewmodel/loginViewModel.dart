@@ -82,8 +82,6 @@ class LoginViewModel {
       final User user = User.fromSnapshot(userSnapshot);
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('userId', user.id);
-      await sharedPreferences.setString('userName', user.name);
-      await sharedPreferences.setString('userPhotoUrl', user.photoUrl);
       await sharedPreferences.setString('familyId', user.familyId);
 
       _signInUserStreamController.sink.add(user.id);
@@ -124,10 +122,7 @@ class LoginViewModel {
 
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('userId', user.id);
-      await sharedPreferences.setString('userName', user.name);
-      await sharedPreferences.setString('userPhotoUrl', user.photoUrl);
       await sharedPreferences.setString('familyId', familyId);
-      await sharedPreferences.setStringList('babyIds', [baby.id]);
       await sharedPreferences.setString('selectedBabyId', baby.id);
 
       _signInUserStreamController.sink.add(user.id);
@@ -170,10 +165,7 @@ class LoginViewModel {
 
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
               sharedPreferences.setString('userId', user.id);
-              sharedPreferences.setString('userName', user.name);
-              sharedPreferences.setString('userPhotoUrl', user.photoUrl);
               sharedPreferences.setString('familyId', user.familyId);
-              sharedPreferences.setStringList('babyIds', [baby.id]);
               sharedPreferences.setString('selectedBabyId', baby.id);
 
               _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
@@ -185,10 +177,7 @@ class LoginViewModel {
             final Baby baby = babies.first;
             SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
             sharedPreferences.setString('userId', user.id);
-            sharedPreferences.setString('userName', user.name);
-            sharedPreferences.setString('userPhotoUrl', user.photoUrl);
             sharedPreferences.setString('familyId', user.familyId);
-            sharedPreferences.setStringList('babyIds', [baby.id]);
             sharedPreferences.setString('selectedBabyId', baby.id);
 
             _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
