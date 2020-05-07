@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
+    "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),

@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-07T22:53:31.076164",
+  "@@last_modified": "2020-05-07T23:05:36.251650",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -133,6 +133,11 @@
   },
   "noInvitationCodeButton": "No, I don't.",
   "@noInvitationCodeButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dataShareComplete": "Finished configuration to share data.",
+  "@dataShareComplete": {
     "type": "text",
     "placeholders": {}
   }

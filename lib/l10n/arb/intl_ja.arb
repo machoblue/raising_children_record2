@@ -135,5 +135,10 @@
   "@noInvitationCodeButton": {
     "type": "text",
     "placeholders": {}
+  },
+  "dataShareComplete": "データ共有の設定が完了しました。",
+  "@dataShareComplete": {
+    "type": "text",
+    "placeholders": {}
   }
 }

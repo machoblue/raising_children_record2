@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
+    "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),

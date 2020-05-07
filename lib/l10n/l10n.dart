@@ -67,4 +67,5 @@ class L10n {
   String get readingInvitationCodeMessage => Intl.message('Do you have an invitation code?', name: 'readingInvitationCodeMessage');
   String get readInvitationCodeButton => Intl.message('Yes, I do.', name: 'readInvitationCodeButton');
   String get noInvitationCodeButton => Intl.message('No, I don\'t.', name: 'noInvitationCodeButton');
+  String get dataShareComplete => Intl.message('Finished configuration to share data.', name: 'dataShareComplete');
 }

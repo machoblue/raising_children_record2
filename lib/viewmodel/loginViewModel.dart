@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 class LoginViewModel {
 
@@ -26,10 +27,10 @@ class LoginViewModel {
 
   // output
   final _signInUserStreamController = StreamController<String>();
-  final _errorMessageStreamController = StreamController<String>();
+  final _messageStreamController = StreamController<String>();
   final _showIndicatorStreamController = StreamController<bool>();
   Stream<String> get signInUser => _signInUserStreamController.stream;
-  Stream<String> get errorMessage => _errorMessageStreamController.stream;
+  Stream<String> get message => _messageStreamController.stream;
   Stream<bool> get showIndicator => _showIndicatorStreamController.stream;
 
   final _needConfirmInvitationCode = StreamController<void>();
@@ -71,7 +72,7 @@ class LoginViewModel {
 
     if (firebaseUser == null) {
       _signInUserStreamController.sink.add(null);
-      _errorMessageStreamController.sink.add("Failed to sign in.");
+      _messageStreamController.sink.add("Failed to sign in.");
       _showIndicatorStreamController.sink.add(false);
       return;
     }
@@ -91,27 +92,6 @@ class LoginViewModel {
       return;
     }
 
-    /*
-    final familyId = Uuid().v1();
-    final User newUser = User(user.uid, user.displayName, user.photoUrl, familyId);
-    Firestore.instance.collection('users').document(newUser.id).setData(newUser.map);
-
-    final Baby baby = Baby.newInstance();
-    
-    final familyDocumentReference = Firestore.instance.collection('families').document(familyId);
-    familyDocumentReference.collection('babies').document(baby.id).setData(baby.map);
-    familyDocumentReference.collection('users').document(newUser.id).setData(newUser.map);
-
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('userId', user.uid);
-    await sharedPreferences.setString('userName', user.displayName);
-    await sharedPreferences.setString('userPhotoUrl', user.photoUrl);
-    await sharedPreferences.setString('familyId', familyId);
-    await sharedPreferences.setStringList('babyIds', [baby.id]);
-    await sharedPreferences.setString('selectedBabyId', baby.id);
-
-    _signInUserStreamController.sink.add(user.uid);
-     */
     _needConfirmInvitationCode.sink.add(null);
     _showIndicatorStreamController.sink.add(false);
   }
@@ -196,6 +176,7 @@ class LoginViewModel {
               sharedPreferences.setStringList('babyIds', [baby.id]);
               sharedPreferences.setString('selectedBabyId', baby.id);
 
+              _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
               _signInUserStreamController.sink.add(user.id);
               _showIndicatorStreamController.sink.add(false);
               return;
@@ -210,6 +191,7 @@ class LoginViewModel {
             sharedPreferences.setStringList('babyIds', [baby.id]);
             sharedPreferences.setString('selectedBabyId', baby.id);
 
+            _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
             _signInUserStreamController.sink.add(user.id);
             _showIndicatorStreamController.sink.add(false);
       });
@@ -221,7 +203,7 @@ class LoginViewModel {
     _onLoginPageAppearStreamController.close();
     _onSignInButtonTappedStreamController.close();
     _signInUserStreamController.close();
-    _errorMessageStreamController.close();
+    _messageStreamController.close();
     _showIndicatorStreamController.close();
     _needConfirmInvitationCode.close();
     _onInvitationCodeReadStreamController.close();

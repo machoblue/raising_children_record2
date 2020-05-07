@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
-import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
@@ -89,7 +88,7 @@ class _LoginButtonState extends State<LoginButton> {
         )
       );
     });
-    _viewModel.errorMessage.listen((String errorMessage) {
+    _viewModel.message.listen((String errorMessage) {
       Fluttertoast.showToast(msg: errorMessage);
     });
 
