@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
+    "failedToSignIn" : MessageLookupByLibrary.simpleMessage("Failed to sign in."),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("Generating invitation code..."),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("Invitation Code"),

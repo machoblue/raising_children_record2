@@ -8,7 +8,6 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
@@ -77,7 +76,7 @@ class LoginViewModel {
 
     if (firebaseUser == null) {
       _signInUserStreamController.sink.add(null);
-      _messageStreamController.sink.add("Failed to sign in.");
+      _messageStreamController.sink.add(Intl.message('Failed to sign in.', name: 'failedToSignIn'));
       _showIndicatorStreamController.sink.add(false);
       return;
     }

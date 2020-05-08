@@ -35,6 +35,8 @@ class L10n {
   // 以下、Intl.messageを用いて必要な文言を返すgetter・メソッドを定義
   String get loginTitle => Intl.message('Login', name: 'loginTitle');
   String get loginButtonLabel => Intl.message('Sign in with Google', name: 'loginButtonLabel');
+  String get failedToSignIn => Intl.message('Failed to sign in.', name: 'failedToSignIn');
+
   String get homeTitle => Intl.message('Home', name: 'homeTitle');
   String get settingsTitle => Intl.message('Settings', name: 'settingsTitle');
 

@@ -11,6 +11,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "failedToSignIn": "ログインに失敗しました。",
+  "@failedToSignIn": {
+    "type": "text",
+    "placeholders": {}
+  },
   "homeTitle": "ホーム",
   "@homeTitle": {
     "type": "text",

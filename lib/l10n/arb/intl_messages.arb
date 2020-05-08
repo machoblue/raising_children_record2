@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-07T23:05:36.251650",
+  "@@last_modified": "2020-05-09T07:18:39.183126",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -8,6 +8,11 @@
   },
   "loginButtonLabel": "Sign in with Google",
   "@loginButtonLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSignIn": "Failed to sign in.",
+  "@failedToSignIn": {
     "type": "text",
     "placeholders": {}
   },
