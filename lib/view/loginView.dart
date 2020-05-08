@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
@@ -16,7 +18,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Provider<LoginViewModel>(
-      create: (_) => LoginViewModel(),
+      create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository(null)),
       child: Scaffold(
         appBar: AppBar(
           title: Text(L10n.of(context).loginTitle)

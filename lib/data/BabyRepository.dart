@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BabyRepository {
   Future<List<Baby>> getBabies() {}
@@ -9,15 +10,17 @@ class BabyRepository {
   void observeBabies(Function(List<Baby>) onBabiesUpdated) {}
 }
 
-class FirestoreBabyRepository {
+class FirestoreBabyRepository implements BabyRepository {
   static final String families = 'families';
   static final String babies = 'babies';
 
-  final String familyId;
+  String familyId;
 
   FirestoreBabyRepository(this.familyId);
 
   Future<List<Baby>> getBabies() async {
+    await _prepareFamilyIdIfNeeded();
+
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -32,7 +35,9 @@ class FirestoreBabyRepository {
         });
   }
 
-  Future<Baby> getBaby(String babyId)  {
+  Future<Baby> getBaby(String babyId) async {
+    await _prepareFamilyIdIfNeeded();
+
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -48,7 +53,8 @@ class FirestoreBabyRepository {
         });
   }
 
-  Future<void> createOrUpdateBaby(Baby baby) {
+  Future<void> createOrUpdateBaby(Baby baby) async {
+    await _prepareFamilyIdIfNeeded();
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -57,7 +63,8 @@ class FirestoreBabyRepository {
         .setData(baby.map);
   }
 
-  void observeBabies(Function(List<Baby>) onBabiesUpdated) {
+  void observeBabies(Function(List<Baby>) onBabiesUpdated) async {
+    await _prepareFamilyIdIfNeeded();
     Firestore.instance
         .collection(families)
         .document(familyId)
@@ -72,5 +79,14 @@ class FirestoreBabyRepository {
 
           onBabiesUpdated(babies);
         });
+  }
+
+  Future<void> _prepareFamilyIdIfNeeded() async {
+    if (familyId != null) {
+      return;
+    }
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    familyId = sharedPreferences.getString('familyId');
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -15,6 +17,9 @@ class LoginViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
+
+  final UserRepository userRepository;
+  final BabyRepository babyRepository;
 
   // input
   final _onLoginPageAppearStreamController = StreamController<void>();
@@ -36,7 +41,7 @@ class LoginViewModel {
   final _needConfirmInvitationCode = StreamController<void>();
   Stream<void> get needConfirmInvitationCode => _needConfirmInvitationCode.stream;
 
-  LoginViewModel() {
+  LoginViewModel(this.userRepository, this.babyRepository) {
     _bindInputAndOutput();
   }
 
@@ -77,115 +82,64 @@ class LoginViewModel {
       return;
     }
 
-    final userSnapshot = await Firestore.instance.collection('users').document(firebaseUser.uid).get();
-    if (userSnapshot.exists ?? false) {
-      final User user = User.fromSnapshot(userSnapshot);
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.setString('userId', user.id);
-      await sharedPreferences.setString('familyId', user.familyId);
+    userRepository
+      .getUser(firebaseUser.uid)
+      .then((user) async {
+        if (user == null) {
+          _needConfirmInvitationCode.sink.add(null);
+          _showIndicatorStreamController.sink.add(false);
+          return;
+        }
 
-      _signInUserStreamController.sink.add(user.id);
-      _showIndicatorStreamController.sink.add(false);
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        await sharedPreferences.setString('userId', user.id);
+        await sharedPreferences.setString('familyId', user.familyId);
 
-      return;
-    }
-
-    _needConfirmInvitationCode.sink.add(null);
-    _showIndicatorStreamController.sink.add(false);
+        _signInUserStreamController.sink.add(user.id);
+        _showIndicatorStreamController.sink.add(false);
+      });
   }
 
   void _handleInvitationCode(InvitationCode invitationCode) async {
+    _showIndicatorStreamController.sink.add(true);
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (invitationCode == null) {
-      _showIndicatorStreamController.sink.add(true);
       final familyId = Uuid().v1();
-      User user = User.fromFirebaseUser(firebaseUser, familyId);
-      Firestore.instance
-          .collection('users')
-          .document(user.id)
-          .setData(user.map);
+      await sharedPreferences.setString('familyId', familyId);
 
-      Firestore.instance
-          .collection('families')
-          .document(user.familyId)
-          .collection('users')
-          .document(user.id)
-          .setData(user.map);
+      User user = User.fromFirebaseUser(firebaseUser, familyId);
+      await userRepository.createOrUpdateUser(user);
+      await userRepository.createOrJoinFamily(familyId, user);
+      await sharedPreferences.setString('userId', user.id);
 
       final Baby baby = Baby.newInstance();
-
-      Firestore.instance
-          .collection('families')
-          .document(familyId)
-          .collection('babies')
-          .document(baby.id)
-          .setData(baby.map);
-
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.setString('userId', user.id);
-      await sharedPreferences.setString('familyId', familyId);
+      await babyRepository.createOrUpdateBaby(baby);
       await sharedPreferences.setString('selectedBabyId', baby.id);
 
       _signInUserStreamController.sink.add(user.id);
-      _showIndicatorStreamController.sink.add(false);
 
     } else {
       User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
-      Firestore.instance
-          .collection('users')
-          .document(user.id)
-          .setData(user.map);
+      await userRepository.createOrUpdateUser(user);
+      await userRepository.createOrJoinFamily(invitationCode.familyId, user);
+      await sharedPreferences.setString('familyId', invitationCode.familyId);
+      sharedPreferences.setString('userId', user.id);
 
-      Firestore.instance
-          .collection('families')
-          .document(user.familyId)
-          .collection('users')
-          .document(user.id)
-          .setData(user.map);
+      Baby selectedBaby;
+      List<Baby> babies = await babyRepository.getBabies();
+      if (babies.isEmpty) {
+        selectedBaby = Baby.newInstance();
+        babyRepository.createOrUpdateBaby(selectedBaby);
+      } else {
+        selectedBaby = babies.first;
+      }
+      sharedPreferences.setString('selectedBabyId', selectedBaby.id);
 
-      Firestore.instance
-          .collection('families')
-          .document(user.familyId)
-          .collection('babies')
-          .snapshots()
-          .listen((querySnapshot) async {
-            final List<DocumentSnapshot> snapshots = querySnapshot.documents;
-            final List<Baby> babies = snapshots
-                .map((snapshot) => Baby.fromSnapshot(snapshot))
-                .where((baby) => baby != null)
-                .toList();
-
-            if (babies.length == 0) {
-              final Baby baby = Baby.newInstance();
-              Firestore.instance
-                  .collection('families')
-                  .document(user.familyId)
-                  .collection('babies')
-                  .document(baby.id)
-                  .setData(baby.map);
-
-              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-              sharedPreferences.setString('userId', user.id);
-              sharedPreferences.setString('familyId', user.familyId);
-              sharedPreferences.setString('selectedBabyId', baby.id);
-
-              _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
-              _signInUserStreamController.sink.add(user.id);
-              _showIndicatorStreamController.sink.add(false);
-              return;
-            }
-
-            final Baby baby = babies.first;
-            SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-            sharedPreferences.setString('userId', user.id);
-            sharedPreferences.setString('familyId', user.familyId);
-            sharedPreferences.setString('selectedBabyId', baby.id);
-
-            _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
-            _signInUserStreamController.sink.add(user.id);
-            _showIndicatorStreamController.sink.add(false);
-      });
-
+      _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
+      _signInUserStreamController.sink.add(user.id);
     }
+
+    _showIndicatorStreamController.sink.add(false);
   }
 
   void dispose() {
