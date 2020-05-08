@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class MainViewModel {
+
+  final UserRepository _userRepository;
 
   // INPUT
   final _onInitStateStreamController = StreamController<void>();
@@ -36,7 +39,7 @@ class MainViewModel {
   final userBehaviorSubject = BehaviorSubject<User>.seeded(null);
   Stream<User> get user => userBehaviorSubject.stream;
 
-  MainViewModel() {
+  MainViewModel(this._userRepository) {
     bindInputAndOutput();
   }
 
@@ -142,12 +145,10 @@ class MainViewModel {
   void _getUser() async {
     final sharedPreference = await SharedPreferences.getInstance();
     final userId = sharedPreference.getString("userId");
-    final DocumentSnapshot userSnapshot = await Firestore.instance.collection('users').document(userId).get();
 
-    if (userSnapshot?.exists ?? false) {
-      final user = User.fromSnapshot(userSnapshot);
-      userBehaviorSubject.sink.add(user);
-    }
+    _userRepository
+        .getUser(userId)
+        .then(userBehaviorSubject.sink.add);
   }
 
   dispose() {

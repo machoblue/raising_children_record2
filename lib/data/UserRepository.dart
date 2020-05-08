@@ -21,7 +21,7 @@ class FirestoreUserRepository implements UserRepository {
   }
 
   Future<User> getUser(String userId) {
-    Firestore.instance
+    return Firestore.instance
         .collection(users)
         .document(userId)
         .get()

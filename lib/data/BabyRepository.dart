@@ -18,7 +18,7 @@ class FirestoreBabyRepository {
   FirestoreBabyRepository(this.familyId);
 
   Future<List<Baby>> getBabies() async {
-    Firestore.instance
+    return Firestore.instance
         .collection(families)
         .document(familyId)
         .collection(babies)
@@ -33,7 +33,7 @@ class FirestoreBabyRepository {
   }
 
   Future<Baby> getBaby(String babyId)  {
-    Firestore.instance
+    return Firestore.instance
         .collection(families)
         .document(familyId)
         .collection(babies)
