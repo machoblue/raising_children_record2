@@ -145,5 +145,15 @@
   "@dataShareComplete": {
     "type": "text",
     "placeholders": {}
+  },
+  "cameraAccessDenied": "This app cannot use camera. Please grant the camera permission from the setting app.",
+  "@cameraAccessDenied": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReadInvitationCode": "Failed to read invitation code.",
+  "@failedToReadInvitationCode": {
+    "type": "text",
+    "placeholders": {}
   }
 }

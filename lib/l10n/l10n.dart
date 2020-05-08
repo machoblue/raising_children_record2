@@ -70,4 +70,6 @@ class L10n {
   String get readInvitationCodeButton => Intl.message('Yes, I do.', name: 'readInvitationCodeButton');
   String get noInvitationCodeButton => Intl.message('No, I don\'t.', name: 'noInvitationCodeButton');
   String get dataShareComplete => Intl.message('Finished configuration to share data.', name: 'dataShareComplete');
+  String get cameraAccessDenied => Intl.message('This app cannot use camera. Please grant the camera permission from the setting app.', name: 'cameraAccessDenied');
+  String get failedToReadInvitationCode => Intl.message('Failed to read invitation code.', name: 'failedToReadInvitationCode');
 }

@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-09T07:18:39.183126",
+  "@@last_modified": "2020-05-09T07:58:00.417920",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -143,6 +143,16 @@
   },
   "dataShareComplete": "Finished configuration to share data.",
   "@dataShareComplete": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cameraAccessDenied": "This app cannot use camera. Please grant the camera permission from the setting app.",
+  "@cameraAccessDenied": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReadInvitationCode": "Failed to read invitation code.",
+  "@failedToReadInvitationCode": {
     "type": "text",
     "placeholders": {}
   }

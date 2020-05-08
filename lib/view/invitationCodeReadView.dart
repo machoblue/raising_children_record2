@@ -1,6 +1,8 @@
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
@@ -82,10 +84,19 @@ class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
   }
 
   void _onUseInvitationCodeButtonTapped() async {
-    final ScanResult result = await BarcodeScanner.scan();
-    final json = result.rawContent.toString();
-    final InvitationCode invitationCode = InvitationCode.fromJSON(json);
-    Navigator.pop(context);
-    widget.onInvitationCodeRead(invitationCode);
+    try {
+      final ScanResult result = await BarcodeScanner.scan();
+      final json = result.rawContent.toString();
+      final InvitationCode invitationCode = InvitationCode.fromJSON(json);
+      Navigator.pop(context);
+      widget.onInvitationCodeRead(invitationCode);
+    } on PlatformException catch (e) {
+      L10n l10n = L10n.of(context);
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        Fluttertoast.showToast(msg: l10n.cameraAccessDenied);
+      } else {
+        Fluttertoast.showToast(msg: l10n.failedToReadInvitationCode);
+      }
+    }
   }
 }
