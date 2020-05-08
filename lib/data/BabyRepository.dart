@@ -18,21 +18,35 @@ class FirestoreBabyRepository {
   FirestoreBabyRepository(this.familyId);
 
   Future<List<Baby>> getBabies() async {
-    QuerySnapshot querySnapshot = await Firestore.instance
+    Firestore.instance
         .collection(families)
         .document(familyId)
         .collection(babies)
-        .getDocuments();
-
-    List<DocumentSnapshot> snapshots = querySnapshot.documents;
-
-    return snapshots
-        .map((snapshot) => Baby.fromSnapshot(snapshot))
-        .where((baby) => baby != null)
-        .toList();
+        .getDocuments()
+        .then((querySnapshot) {
+          List<DocumentSnapshot> snapshots = querySnapshot.documents;
+          return snapshots
+              .map((snapshot) => Baby.fromSnapshot(snapshot))
+              .where((baby) => baby != null)
+              .toList();
+        });
   }
 
-  Future<Baby> getBaby(String babyId) {}
+  Future<Baby> getBaby(String babyId)  {
+    Firestore.instance
+        .collection(families)
+        .document(familyId)
+        .collection(babies)
+        .document(babyId)
+        .get()
+        .then((documentSnapshot) {
+          if (!(documentSnapshot?.exists ?? false)) {
+            return null;
+          }
+
+          return Baby.fromSnapshot(documentSnapshot);
+        });
+  }
 
   Future<void> createOrUpdateBaby(Baby baby) {
     return Firestore.instance
