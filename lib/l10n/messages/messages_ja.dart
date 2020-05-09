@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
+    "clearAllData" : MessageLookupByLibrary.simpleMessage("退会する（全データ消去）"),
+    "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("退会すると全てのデータが消去されますが、よろしいですか？"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
@@ -44,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginTitle" : MessageLookupByLibrary.simpleMessage("ログイン"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
+    "no" : MessageLookupByLibrary.simpleMessage("いいえ、消去しません"),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを持っていない"),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを読み込む"),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("招待コードを読み込んで、\n他のユーザーとデータを共有しますか？"),
@@ -55,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定"),
     "shareData" : MessageLookupByLibrary.simpleMessage("データ共有"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを表示する"),
-    "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ")
+    "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ"),
+    "yes" : MessageLookupByLibrary.simpleMessage("はい、消去します")
   };
 }

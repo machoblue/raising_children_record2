@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
+    "clearAllData" : MessageLookupByLibrary.simpleMessage("Clear all data"),
+    "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("Are you sure clear all data?"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit Baby Bnfo"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
@@ -44,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
+    "no" : MessageLookupByLibrary.simpleMessage("No."),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("No, I don\'t."),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("Yes, I do."),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("Do you have an invitation code?"),
@@ -55,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings"),
     "shareData" : MessageLookupByLibrary.simpleMessage("Share Data"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
-    "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack")
+    "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack"),
+    "yes" : MessageLookupByLibrary.simpleMessage("Yes.")
   };
 }

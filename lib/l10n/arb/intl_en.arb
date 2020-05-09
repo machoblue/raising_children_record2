@@ -175,5 +175,25 @@
   "@emptyMessage": {
     "type": "text",
     "placeholders": {}
+  },
+  "clearAllData": "Clear all data",
+  "@clearAllData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearAllDataMessage": "Are you sure clear all data?",
+  "@clearAllDataMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "Yes.",
+  "@yes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "No.",
+  "@no": {
+    "type": "text",
+    "placeholders": {}
   }
 }

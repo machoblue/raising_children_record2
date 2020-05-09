@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-09T17:00:27.410331",
+  "@@last_modified": "2020-05-09T19:19:00.335585",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -173,6 +173,26 @@
   },
   "emptyMessage": "No Data",
   "@emptyMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearAllData": "Clear all data",
+  "@clearAllData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearAllDataMessage": "Are you sure clear all data?",
+  "@clearAllDataMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "Yes.",
+  "@yes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "No.",
+  "@no": {
     "type": "text",
     "placeholders": {}
   }

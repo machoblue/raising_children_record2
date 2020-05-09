@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
@@ -70,6 +71,33 @@ class SettingsView extends StatefulWidget {
               );
             }
           )
+        );
+      },
+    ),
+    SettingSeparator(),
+    SettingItem(
+      titleKey: 'clearAllData',
+      action: (context) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            L10n l10n = L10n.of(context);
+            return AlertDialog(
+              title: Text(l10n.clearAllData),
+              content: Text(l10n.clearAllDataMessage),
+              actions: <Widget>[
+                // ボタン領域
+                FlatButton(
+                  child: Text(l10n.no),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                FlatButton(
+                  child: Text(l10n.yes),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
         );
       },
     ),

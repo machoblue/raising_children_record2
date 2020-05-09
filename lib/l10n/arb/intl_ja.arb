@@ -175,5 +175,25 @@
   "@emptyMessage": {
     "type": "text",
     "placeholders": {}
+  },
+  "clearAllData": "退会する（全データ消去）",
+  "@clearAllData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearAllDataMessage": "退会すると全てのデータが消去されますが、よろしいですか？",
+  "@clearAllDataMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "はい、消去します",
+  "@yes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "いいえ、消去しません",
+  "@no": {
+    "type": "text",
+    "placeholders": {}
   }
 }

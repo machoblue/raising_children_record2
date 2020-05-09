@@ -77,4 +77,9 @@ class L10n {
   String get failedToReadInvitationCode => Intl.message('Failed to read invitation code.', name: 'failedToReadInvitationCode');
 
   String get emptyMessage => Intl.message('No Data', name: 'emptyMessage');
+
+  String get clearAllData => Intl.message('Clear all data', name: 'clearAllData');
+  String get clearAllDataMessage => Intl.message('Are you sure clear all data?', name: 'clearAllDataMessage');
+  String get yes => Intl.message('Yes.', name: 'yes');
+  String get no => Intl.message('No.', name: 'no');
 }
