@@ -39,6 +39,7 @@ class _HomeContainer extends StatefulWidget {
 
 class _HomeContainerState extends State<_HomeContainer> with TickerProviderStateMixin {
   final _pageOffset = 1000; // value enough big
+  final _buttonLabelFont = TextStyle(fontSize: 12, color: Color(0x00FF888888));
   AnimationController _animationController;
   Animation _animation;
 
@@ -142,10 +143,20 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
   List<Widget> _buildGridItems() {
     return RecordType.values.map((recordType) {
       return FlatButton(
-        child: Image.asset(
-          recordType.assetName,
-          width: 64,
-          height: 64,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              recordType.assetName,
+              width: 64,
+              height: 64,
+            ),
+            Text(
+              recordType.localizedName,
+              style: _buttonLabelFont,
+            )
+          ],
         ),
         onPressed: () => _viewModel.addRecord.add(recordType),
       );
