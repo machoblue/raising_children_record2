@@ -121,6 +121,21 @@
     "type": "text",
     "placeholders": {}
   },
+  "invitationCodeMessage": "このQRコードを読み込んだユーザーはあなたとデータを共有できるようになります。",
+  "@invitationCodeMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCodeNote": "※QRコードを読み込みは、このアプリを初めて起動したときのみ可能です。すでにアプリを利用済みのユーザーと共有する場合、そのユーザーが一度退会してデータを全消去する必要があります。",
+  "@invitationCodeNote": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCodeExpirationDateFormat": "有効期限(5分間): %s まで",
+  "@invitationCodeExpirationDateFormat": {
+    "type": "text",
+    "placeholders": {}
+  },
   "readingInvitationCodeTitle": "招待コードの読み取り",
   "@readingInvitationCodeTitle": {
     "type": "text",

@@ -121,6 +121,21 @@
     "type": "text",
     "placeholders": {}
   },
+  "invitationCodeMessage": "The user who read this code can share data with you.",
+  "@invitationCodeMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCodeNote": "NOTE: The user can read this code only when launching this app for the first time. If you wish share data with the existing user, the user need to clear all app data.",
+  "@invitationCodeNote": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCodeExpirationDateFormat": "Expiration date time(for 5 minutes): \nUntil %s",
+  "@invitationCodeExpirationDateFormat": {
+    "type": "text",
+    "placeholders": {}
+  },
   "readingInvitationCodeTitle": "Reading Invitation Code",
   "@readingInvitationCodeTitle": {
     "type": "text",

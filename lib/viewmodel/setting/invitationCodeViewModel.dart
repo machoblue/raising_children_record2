@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
@@ -13,6 +12,9 @@ class InvitationCodeViewModel {
 
   final StreamController<String> _invitationCodeJSONStreamController = StreamController<String>();
   Stream<String> get invitationCodeJSON => _invitationCodeJSONStreamController.stream;
+
+  final StreamController<DateTime> _expirationDateStreamController = StreamController<DateTime>();
+  Stream<DateTime> get expirationDate => _expirationDateStreamController.stream;
 
   InvitationCodeViewModel() {
     _onInitStateStreamController.stream.listen((_) => _generateInvitationCode());
@@ -32,11 +34,13 @@ class InvitationCodeViewModel {
       .setData(invitationCode.map)
       .then((_) {
         _invitationCodeJSONStreamController.sink.add(invitationCode.json);
+        _expirationDateStreamController.sink.add(invitationCode.expirationDate);
       });
   }
 
   void dispose() {
     _onInitStateStreamController.close();
     _invitationCodeJSONStreamController.close();
+    _expirationDateStreamController.close();
   }
 }

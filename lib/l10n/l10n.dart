@@ -64,6 +64,9 @@ class L10n {
   String get showInvitationCode => Intl.message('Show Invitation Code', name: 'showInvitationCode');
   String get invitationCode => Intl.message('Invitation Code', name: 'invitationCode');
   String get generatingInvitationCode => Intl.message('Generating invitation code...', name: 'generatingInvitationCode');
+  String get invitationCodeMessage => Intl.message('The user who read this code can share data with you.', name: 'invitationCodeMessage');
+  String get invitationCodeNote => Intl.message('NOTE: The user can read this code only when launching this app for the first time. If you wish share data with the existing user, the user need to clear all app data.', name: 'invitationCodeNote');
+  String get invitationCodeExpirationDateFormat => Intl.message('Expiration date time(for 5 minutes): \nUntil %s', name: 'invitationCodeExpirationDateFormat');
 
   String get readingInvitationCodeTitle => Intl.message('Reading Invitation Code', name: 'readingInvitationCodeTitle');
   String get readingInvitationCodeMessage => Intl.message('Do you have an invitation code?', name: 'readingInvitationCodeMessage');
