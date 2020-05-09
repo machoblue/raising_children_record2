@@ -14,6 +14,7 @@ class BabyListView extends StatefulWidget {
 }
 
 class _BabyListViewState extends State<BabyListView> {
+  final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
   BabyListViewModel _viewModel;
   @override
   void initState() {
@@ -22,6 +23,7 @@ class _BabyListViewState extends State<BabyListView> {
   }
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(L10n.of(context).babyListTitle),
@@ -35,15 +37,20 @@ class _BabyListViewState extends State<BabyListView> {
       body: StreamBuilder(
         stream: _viewModel.babiesStream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.length == 0) {
-            return Container();
-          }
-
-          List<Baby> babies = snapshot.data;
-          return ListView.builder(
-            itemCount: babies.length,
-            itemBuilder: (context, index) => _babyListItem(babies[index]),
-          );
+          List<Baby> babies = snapshot.data ?? [];
+          return babies.isEmpty
+            ? Container(
+              padding: EdgeInsets.all(16),
+              alignment: Alignment.topCenter,
+              child: Text(
+                l10n.emptyMessage,
+                style: _emptyMessageFont,
+              )
+            )
+            : ListView.builder(
+              itemCount: babies.length,
+              itemBuilder: (context, index) => _babyListItem(babies[index]),
+            );
         }
       )
     );

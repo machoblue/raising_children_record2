@@ -170,5 +170,10 @@
   "@failedToReadInvitationCode": {
     "type": "text",
     "placeholders": {}
+  },
+  "emptyMessage": "データがありません。",
+  "@emptyMessage": {
+    "type": "text",
+    "placeholders": {}
   }
 }

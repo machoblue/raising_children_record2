@@ -208,6 +208,7 @@ class _Page extends StatefulWidget {
 
 
 class _PageState extends State<_Page> {
+  final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
   final DateFormat _timeFormat = DateFormat().add_Hm();
   HomePageViewModel _viewModel;
 
@@ -237,16 +238,25 @@ class _PageState extends State<_Page> {
                 stream: _viewModel.records,
                 builder: (context, snapshot) {
                   final List<Record> records = snapshot.data ?? [];
-                  return ListView.builder(
-                    itemCount: records.length,
-                    itemBuilder: (context, index) {
-                      final record = records[index];
-                      return GestureDetector(
-                        onTap: () => _viewModel.editRecord.add(record),
-                        child: _RecordListTile(record, l10n, _timeFormat),
-                      );
-                    },
-                  );
+                  return records.isEmpty
+                    ? Container(
+                      padding: EdgeInsets.all(16),
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        l10n.emptyMessage,
+                        style: _emptyMessageFont,
+                      )
+                    )
+                    : ListView.builder(
+                      itemCount: records.length,
+                      itemBuilder: (context, index) {
+                        final record = records[index];
+                        return GestureDetector(
+                          onTap: () => _viewModel.editRecord.add(record),
+                          child: _RecordListTile(record, l10n, _timeFormat),
+                        );
+                      },
+                    );
                 },
               )
             )

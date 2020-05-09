@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-09T16:47:16.521091",
+  "@@last_modified": "2020-05-09T17:00:27.410331",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -168,6 +168,11 @@
   },
   "failedToReadInvitationCode": "Failed to read invitation code.",
   "@failedToReadInvitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyMessage": "No Data",
+  "@emptyMessage": {
     "type": "text",
     "placeholders": {}
   }

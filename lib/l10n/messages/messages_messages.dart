@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
+    "emptyMessage" : MessageLookupByLibrary.simpleMessage("No Data"),
     "failedToReadInvitationCode" : MessageLookupByLibrary.simpleMessage("Failed to read invitation code."),
     "failedToSignIn" : MessageLookupByLibrary.simpleMessage("Failed to sign in."),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("Generating invitation code..."),
