@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
-import 'package:raisingchildrenrecord2/viewmodel/setting/SettingViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/settingsViewModel.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -165,8 +165,8 @@ class _MainScaffoldState extends State<_MainScaffold> {
         return HomeView();
       }
       case 1: {
-        return Provider<SettingViewModel>(
-          create: (_) => SettingViewModel(
+        return Provider<SettingsViewModel>(
+          create: (_) => SettingsViewModel(
             Provider.of<MainViewModel>(context).userBehaviorSubject.value,
             FirestoreUserRepository(),
           ),

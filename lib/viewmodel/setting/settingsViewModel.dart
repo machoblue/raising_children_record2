@@ -9,7 +9,7 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingViewModel {
+class SettingsViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final User user;
@@ -24,7 +24,7 @@ class SettingViewModel {
   final _logoutCompleteStreamController = StreamController<void>();
   Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
-  SettingViewModel(this.user, this.userRepository) {
+  SettingsViewModel(this.user, this.userRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
       _isLoadingBehaviorSubject.sink.add(true);
       print("### before _clearAllData()");
@@ -53,14 +53,20 @@ class SettingViewModel {
       .collection('users')
       .getDocuments();
     List<DocumentSnapshot> familyUserSnapshots = familyUsersQuerySnapshot.documents;
+    print("##### ${familyUserSnapshots.length}, ${familyUserSnapshots.first['id']}, ${user.id}");
     final bool isFamilyContainsOnlyMe = familyUserSnapshots.length == 1 && familyUserSnapshots.first['id'] == user.id;
     if (isFamilyContainsOnlyMe) {
+      print("### deleteFamily: ${user.familyId}");
       return Firestore.instance
           .collection('families')
           .document(user.familyId)
-          .delete();
+          .delete()
+          .catchError((error) {
+            print("### error: $error");
+          });
 
     } else {
+      print("### exitFamily");
       return userRepository.exitFamily(user.familyId, user.id);
     }
   }
