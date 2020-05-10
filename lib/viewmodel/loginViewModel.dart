@@ -112,7 +112,7 @@ class LoginViewModel {
       await sharedPreferences.setString('userId', user.id);
 
       final Baby baby = Baby.newInstance();
-      await babyRepository.createOrUpdateBaby(baby);
+      await babyRepository.createOrUpdateBaby(familyId, baby);
       await sharedPreferences.setString('selectedBabyId', baby.id);
 
       _signInUserStreamController.sink.add(user.id);
@@ -120,15 +120,16 @@ class LoginViewModel {
     } else {
       User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
       await userRepository.createOrUpdateUser(user);
-      await userRepository.createOrJoinFamily(invitationCode.familyId, user);
-      await sharedPreferences.setString('familyId', invitationCode.familyId);
+      String familyId = invitationCode.familyId;
+      await userRepository.createOrJoinFamily(familyId, user);
+      await sharedPreferences.setString('familyId', familyId);
       sharedPreferences.setString('userId', user.id);
 
       Baby selectedBaby;
-      List<Baby> babies = await babyRepository.getBabies();
+      List<Baby> babies = await babyRepository.getBabies(familyId);
       if (babies.isEmpty) {
         selectedBaby = Baby.newInstance();
-        babyRepository.createOrUpdateBaby(selectedBaby);
+        babyRepository.createOrUpdateBaby(familyId, selectedBaby);
       } else {
         selectedBaby = babies.first;
       }

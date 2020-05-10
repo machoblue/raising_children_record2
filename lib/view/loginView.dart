@@ -18,7 +18,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Provider<LoginViewModel>(
-      create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository(null)),
+      create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
       child: Scaffold(
         appBar: AppBar(
           title: Text(L10n.of(context).loginTitle)

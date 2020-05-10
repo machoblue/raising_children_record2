@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -20,7 +21,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Provider<MainViewModel>(
-      create: (_) => MainViewModel(FirestoreUserRepository()),
+      create: (_) => MainViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
       child: _MainScaffold()
     );
   }

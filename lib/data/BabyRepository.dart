@@ -4,23 +4,17 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BabyRepository {
-  Future<List<Baby>> getBabies() {}
-  Future<Baby> getBaby(String babyId) {}
-  Future<void> createOrUpdateBaby(Baby baby) {}
-  void observeBabies(Function(List<Baby>) onBabiesUpdated) {}
+  Future<List<Baby>> getBabies(String familyId) {}
+  Future<Baby> getBaby(String familyId, String babyId) {}
+  Future<void> createOrUpdateBaby(String familyId, Baby baby) {}
+  void observeBabies(String familyId, Function(List<Baby>) onBabiesUpdated) {}
 }
 
 class FirestoreBabyRepository implements BabyRepository {
   static final String families = 'families';
   static final String babies = 'babies';
 
-  String familyId;
-
-  FirestoreBabyRepository(this.familyId);
-
-  Future<List<Baby>> getBabies() async {
-    await _prepareFamilyIdIfNeeded();
-
+  Future<List<Baby>> getBabies(String familyId) async {
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -35,9 +29,7 @@ class FirestoreBabyRepository implements BabyRepository {
         });
   }
 
-  Future<Baby> getBaby(String babyId) async {
-    await _prepareFamilyIdIfNeeded();
-
+  Future<Baby> getBaby(String familyId, String babyId) async {
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -53,8 +45,7 @@ class FirestoreBabyRepository implements BabyRepository {
         });
   }
 
-  Future<void> createOrUpdateBaby(Baby baby) async {
-    await _prepareFamilyIdIfNeeded();
+  Future<void> createOrUpdateBaby(String familyId, Baby baby) async {
     return Firestore.instance
         .collection(families)
         .document(familyId)
@@ -63,8 +54,7 @@ class FirestoreBabyRepository implements BabyRepository {
         .setData(baby.map);
   }
 
-  void observeBabies(Function(List<Baby>) onBabiesUpdated) async {
-    await _prepareFamilyIdIfNeeded();
+  void observeBabies(String familyId, Function(List<Baby>) onBabiesUpdated) async {
     Firestore.instance
         .collection(families)
         .document(familyId)
@@ -79,14 +69,5 @@ class FirestoreBabyRepository implements BabyRepository {
 
           onBabiesUpdated(babies);
         });
-  }
-
-  Future<void> _prepareFamilyIdIfNeeded() async {
-    if (familyId != null) {
-      return;
-    }
-
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    familyId = sharedPreferences.getString('familyId');
   }
 }
