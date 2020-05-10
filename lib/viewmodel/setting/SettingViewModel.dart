@@ -18,18 +18,20 @@ class SettingViewModel {
   final _onClearAllDataItemTappedStreamController = StreamController<void>();
   StreamSink<void> get onClearAllDataItemTapped => _onClearAllDataItemTappedStreamController.sink;
 
-  final _loadingBehaviorSubject = BehaviorSubject.seeded(false);
-  Stream<bool> get loading => _loadingBehaviorSubject.stream;
+  final _isLoadingBehaviorSubject = BehaviorSubject.seeded(false);
+  Stream<bool> get isLoading => _isLoadingBehaviorSubject.stream;
 
   final _logoutCompleteStreamController = StreamController<void>();
   Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
   SettingViewModel(this.user, this.userRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
-      _loadingBehaviorSubject.sink.add(true);
+      _isLoadingBehaviorSubject.sink.add(true);
+      print("### before _clearAllData()");
       _clearAllData().then((_) {
+        print("### after  _clearAllData()");
         _logout().then((_) {
-          _loadingBehaviorSubject.sink.add(false);
+          _isLoadingBehaviorSubject.sink.add(false);
           _logoutCompleteStreamController.sink.add(null);
         });
       });
@@ -37,7 +39,9 @@ class SettingViewModel {
   }
 
   Future<void> _clearAllData() {
+    print("### before _clearFamilyInfo()");
     return _clearFamilyInfo().then((_) {
+      print("### after  _clearFamilyInfo()");
       return _clearUserInfo();
     });
   }
@@ -79,7 +83,7 @@ class SettingViewModel {
 
   void dispose() {
     _onClearAllDataItemTappedStreamController.close();
-    _loadingBehaviorSubject.close();
+    _isLoadingBehaviorSubject.close();
     _logoutCompleteStreamController.close();
   }
 }

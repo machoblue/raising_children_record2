@@ -7,6 +7,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
@@ -14,94 +15,11 @@ import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/invitationCodeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/SettingViewModel.dart';
 
 class SettingsView extends StatefulWidget {
 
-  List<SettingElement> settingElements = [
-    SettingSeparator(),
-    SettingItem(
-      titleKey: 'editBabyInfo',
-      action: (context) {
-        Stream<List<Baby>> babiesStream = Provider.of<MainViewModel>(context).babies;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Provider<BabyListViewModel>(
-                create: (_) => BabyListViewModel(babiesStream),
-                child: BabyListView(),
-              );
-            }
-          )
-        );
-      },
-    ),
-    SettingItem(
-      titleKey: 'editUserInfo',
-      action: (context) {
-        Stream<User> userStream = Provider.of<MainViewModel>(context).user;
-        StreamSubscription subscription;
-        subscription = userStream.listen((user) {
-          subscription.cancel(); // listen once
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return Provider<UserEditViewModel>(
-                  create: (_) => UserEditViewModel(user),
-                  child: UserEditView(user),
-                );
-              }
-            )
-          );
-        });
-      },
-    ),
-    SettingSeparator(titleKey: 'shareData'),
-    SettingItem(
-      titleKey: 'showInvitationCode',
-      action: (context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Provider<InvitationCodeViewModel>(
-                create: (_) => InvitationCodeViewModel(),
-                child: InvitationCodeView(),
-              );
-            }
-          )
-        );
-      },
-    ),
-    SettingSeparator(),
-    SettingItem(
-      titleKey: 'clearAllData',
-      action: (context) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            L10n l10n = L10n.of(context);
-            return AlertDialog(
-              title: Text(l10n.clearAllData),
-              content: Text(l10n.clearAllDataMessage),
-              actions: <Widget>[
-                // ボタン領域
-                FlatButton(
-                  child: Text(l10n.no),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                FlatButton(
-                  child: Text(l10n.yes),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    ),
-  ];
+
 
   @override
   State<StatefulWidget> createState() => _SettingsViewState();
@@ -110,31 +28,51 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final _groupTitleFont = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0x0088000000));
 
+  SettingViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = Provider.of<SettingViewModel>(context, listen: false);
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("### context1: ${context}");
-    print("#### settingsView.build");
-    Stream<List<Baby>> babiesStream = Provider.of<MainViewModel>(context).babies;
-    print("#### settingsView.build2 ${babiesStream}");
     return Container(
       color: Colors.grey[16],
-      child: ListView.builder(
-        itemCount: widget.settingElements.length,
-        itemBuilder: (context, index) {
-          SettingElement element = widget.settingElements[index];
-          switch (element.runtimeType) {
-            case SettingSeparator: {
-              return _buildSeparator(element as SettingSeparator);
-            }
-            case SettingItem: {
-              return _buildItem(element as SettingItem);
-            }
-            default: {
-              throw("This line shouldn't be reached.");
-            }
-          }
-        },
+      child: Stack(
+        children: <Widget>[
+          _buildListView(context),
+          _indicator(),
+        ],
       ),
+    );
+  }
+
+  Widget _buildListView(BuildContext context) {
+    return ListView.builder(
+      itemCount: settingElements.length,
+      itemBuilder: (context, index) {
+        SettingElement element = settingElements[index];
+        switch (element.runtimeType) {
+          case SettingSeparator: {
+            return _buildSeparator(element as SettingSeparator);
+          }
+          case SettingItem: {
+            return _buildItem(element as SettingItem);
+          }
+          default: {
+            throw("This line shouldn't be reached.");
+          }
+        }
+      },
     );
   }
 
@@ -180,4 +118,117 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
+
+  Widget _indicator() {
+    return StreamBuilder(
+      stream: _viewModel.isLoading,
+      builder: (context, snapshot) {
+        final bool isLoading = snapshot.data ?? false;
+        return isLoading
+            ? Center(
+            child: CircularProgressIndicator()
+        )
+            : Container();
+      }
+    );
+  }
+
+  List<SettingElement> settingElements = [
+    SettingSeparator(),
+    SettingItem(
+      titleKey: 'editBabyInfo',
+      action: (context) {
+        Stream<List<Baby>> babiesStream = Provider.of<MainViewModel>(context).babies;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) {
+                  return Provider<BabyListViewModel>(
+                    create: (_) => BabyListViewModel(babiesStream),
+                    child: BabyListView(),
+                  );
+                }
+            )
+        );
+      },
+    ),
+    SettingItem(
+      titleKey: 'editUserInfo',
+      action: (context) {
+        Stream<User> userStream = Provider.of<MainViewModel>(context).user;
+        StreamSubscription subscription;
+        subscription = userStream.listen((user) {
+          subscription.cancel(); // listen once
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) {
+                    return Provider<UserEditViewModel>(
+                      create: (_) => UserEditViewModel(user),
+                      child: UserEditView(user),
+                    );
+                  }
+              )
+          );
+        });
+      },
+    ),
+    SettingSeparator(titleKey: 'shareData'),
+    SettingItem(
+      titleKey: 'showInvitationCode',
+      action: (context) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) {
+                  return Provider<InvitationCodeViewModel>(
+                    create: (_) => InvitationCodeViewModel(),
+                    child: InvitationCodeView(),
+                  );
+                }
+            )
+        );
+      },
+    ),
+    SettingSeparator(),
+    SettingItem(
+      titleKey: 'clearAllData',
+      action: (context) {
+        SettingViewModel viewModel = Provider.of<SettingViewModel>(context);
+        showDialog(
+          context: context,
+          builder: (_) {
+            L10n l10n = L10n.of(context);
+            return AlertDialog(
+              title: Text(l10n.clearAllData),
+              content: Text(l10n.clearAllDataMessage),
+              actions: <Widget>[
+                // ボタン領域
+                FlatButton(
+                  child: Text(l10n.no),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                FlatButton(
+                    child: Text(l10n.yes),
+                    onPressed: () {
+                      print("### onYesPressed");
+                      viewModel.onClearAllDataItemTapped.add(null);
+                      viewModel.logoutComplete.listen((_) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginView()
+                          )
+                        );
+                      });
+                      Navigator.pop(context);
+                    }
+                ),
+              ],
+            );
+          },
+        );
+      },
+    ),
+  ];
 }

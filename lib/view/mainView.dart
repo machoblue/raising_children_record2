@@ -8,6 +8,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/SettingViewModel.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -33,10 +34,6 @@ class _MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<_MainScaffold> {
 
   List<String> _appBarTitles;
-  List<Widget> _widgetOptions = <Widget>[
-    HomeView(),
-    SettingsView(),
-  ];
 
   MainViewModel _viewModel;
 
@@ -61,7 +58,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
             leading: selectedIndex == 0 ? _babyButton() : null,
             title: Text(_appBarTitles[selectedIndex]),
           ),
-          body: _widgetOptions.elementAt(selectedIndex),
+          body: _buildContent(selectedIndex),
           bottomNavigationBar: BottomNavigationBar(
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
@@ -160,5 +157,25 @@ class _MainScaffoldState extends State<_MainScaffold> {
         },
       ),
     );
+  }
+
+  Widget _buildContent(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0: {
+        return HomeView();
+      }
+      case 1: {
+        return Provider<SettingViewModel>(
+          create: (_) => SettingViewModel(
+            Provider.of<MainViewModel>(context).userBehaviorSubject.value,
+            FirestoreUserRepository(),
+          ),
+          child: SettingsView(),
+        );
+      }
+      default: {
+        throw('This line shouldn\'t be reached.');
+      }
+    }
   }
 }
