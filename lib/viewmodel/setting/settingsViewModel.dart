@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,9 +28,7 @@ class SettingsViewModel {
   SettingsViewModel(this.user, this.userRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
       _isLoadingBehaviorSubject.sink.add(true);
-      print("### before _clearAllData()");
       _clearAllData().then((_) {
-        print("### after  _clearAllData()");
         _logout().then((_) {
           _isLoadingBehaviorSubject.sink.add(false);
           _logoutCompleteStreamController.sink.add(null);
@@ -39,9 +38,7 @@ class SettingsViewModel {
   }
 
   Future<void> _clearAllData() {
-    print("### before _clearFamilyInfo()");
     return _clearFamilyInfo().then((_) {
-      print("### after  _clearFamilyInfo()");
       return _clearUserInfo();
     });
   }
@@ -53,20 +50,18 @@ class SettingsViewModel {
       .collection('users')
       .getDocuments();
     List<DocumentSnapshot> familyUserSnapshots = familyUsersQuerySnapshot.documents;
-    print("##### ${familyUserSnapshots.length}, ${familyUserSnapshots.first['id']}, ${user.id}");
     final bool isFamilyContainsOnlyMe = familyUserSnapshots.length == 1 && familyUserSnapshots.first['id'] == user.id;
     if (isFamilyContainsOnlyMe) {
-      print("### deleteFamily: ${user.familyId}");
-      return Firestore.instance
-          .collection('families')
-          .document(user.familyId)
-          .delete()
-          .catchError((error) {
-            print("### error: $error");
-          });
+      DocumentReference familyReference = Firestore.instance
+        .collection('families')
+        .document(user.familyId);
+
+      await familyReference.collection('invitationCodes').deleteAll();
+      await familyReference.collection('babies').deleteAll();
+      await familyReference.collection('users').deleteAll();
+      return;
 
     } else {
-      print("### exitFamily");
       return userRepository.exitFamily(user.familyId, user.id);
     }
   }
