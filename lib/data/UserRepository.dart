@@ -6,6 +6,8 @@ class UserRepository {
   Future<void> createOrUpdateUser(User user) {}
   Future<User> getUser(String userId) {}
   Future<void> createOrJoinFamily(String familyId, User user) {}
+  Future<void> exitFamily(String familyId, String userId) {}
+  Future<void> deleteUser(String userId) {}
 }
 
 class FirestoreUserRepository implements UserRepository {
@@ -42,5 +44,21 @@ class FirestoreUserRepository implements UserRepository {
         .collection(users)
         .document(user.id)
         .setData(user.map);
+  }
+
+  Future<void> exitFamily(String familyId, String userId) {
+    return Firestore.instance
+        .collection(families)
+        .document(familyId)
+        .collection(users)
+        .document(userId)
+        .delete();
+  }
+
+  Future<void> deleteUser(String userId) {
+    return Firestore.instance
+        .collection(users)
+        .document(userId)
+        .delete();
   }
 }

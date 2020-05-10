@@ -4,12 +4,16 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
+import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final User user;
+  final UserRepository userRepository;
 
   final _onClearAllDataItemTappedStreamController = StreamController<void>();
   StreamSink<void> get onClearAllDataItemTapped => _onClearAllDataItemTappedStreamController.sink;
@@ -20,7 +24,7 @@ class SettingViewModel {
   final _logoutCompleteStreamController = StreamController<void>();
   Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
-  SettingViewModel() {
+  SettingViewModel(this.user, this.userRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
       _loadingBehaviorSubject.sink.add(true);
       _clearAllData().then((_) {
@@ -38,11 +42,27 @@ class SettingViewModel {
     });
   }
 
-  Future<void> _clearFamilyInfo() {
+  Future<void> _clearFamilyInfo() async {
+    QuerySnapshot familyUsersQuerySnapshot = await Firestore.instance
+      .collection('families')
+      .document(user.familyId)
+      .collection('users')
+      .getDocuments();
+    List<DocumentSnapshot> familyUserSnapshots = familyUsersQuerySnapshot.documents;
+    final bool isFamilyContainsOnlyMe = familyUserSnapshots.length == 1 && familyUserSnapshots.first['id'] == user.id;
+    if (isFamilyContainsOnlyMe) {
+      return Firestore.instance
+          .collection('families')
+          .document(user.familyId)
+          .delete();
 
+    } else {
+      return userRepository.exitFamily(user.familyId, user.id);
+    }
   }
 
   Future<void> _clearUserInfo() {
+    return userRepository.deleteUser(user.id);
   }
 
   Future<void> _logout() {
