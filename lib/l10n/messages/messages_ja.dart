@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invitationCodeNote" : MessageLookupByLibrary.simpleMessage("※QRコードを読み込みは、このアプリを初めて起動したときのみ可能です。すでにアプリを利用済みのユーザーと共有する場合、そのユーザーが一度退会してデータを全消去する必要があります。"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("ログイン"),
+    "logout" : MessageLookupByLibrary.simpleMessage("ログアウト"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
     "no" : MessageLookupByLibrary.simpleMessage("いいえ、消去しません"),

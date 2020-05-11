@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invitationCodeNote" : MessageLookupByLibrary.simpleMessage("NOTE: The user can read this code only when launching this app for the first time. If you wish share data with the existing user, the user need to clear all app data."),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
+    "logout" : MessageLookupByLibrary.simpleMessage("Sign out"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
     "no" : MessageLookupByLibrary.simpleMessage("No."),

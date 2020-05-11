@@ -82,4 +82,6 @@ class L10n {
   String get clearAllDataMessage => Intl.message('Are you sure clear all data?', name: 'clearAllDataMessage');
   String get yes => Intl.message('Yes.', name: 'yes');
   String get no => Intl.message('No.', name: 'no');
+
+  String get logout => Intl.message('Sign out', name: 'logout');
 }

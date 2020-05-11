@@ -19,6 +19,9 @@ class SettingsViewModel {
   final _onClearAllDataItemTappedStreamController = StreamController<void>();
   StreamSink<void> get onClearAllDataItemTapped => _onClearAllDataItemTappedStreamController.sink;
 
+  final _onLogoutButtonTappedStreamController = StreamController<void>();
+  StreamSink<void> get onLogoutButtonTapped => _onLogoutButtonTappedStreamController.sink;
+
   final _isLoadingBehaviorSubject = BehaviorSubject.seeded(false);
   Stream<bool> get isLoading => _isLoadingBehaviorSubject.stream;
 
@@ -33,6 +36,16 @@ class SettingsViewModel {
           _isLoadingBehaviorSubject.sink.add(false);
           _logoutCompleteStreamController.sink.add(null);
         });
+      });
+    });
+
+    _onLogoutButtonTappedStreamController.stream.listen((_) {
+      print("##### _onLogoutButtonTappedStreamController.stream.listen");
+      _isLoadingBehaviorSubject.sink.add(true);
+      _logout().then((_) {
+        print("##### _logout.then");
+        _isLoadingBehaviorSubject.sink.add(false);
+        _logoutCompleteStreamController.sink.add(null);
       });
     });
   }
@@ -71,19 +84,23 @@ class SettingsViewModel {
   }
 
   Future<void> _logout() {
+    print("### _logout");
     return firebaseAuth.signOut().then((_) {
+      print("### firebaseAuth.signOut");
       return googleSignIn.signOut().then((_) async {
+        print("### googleSignIn.signOut");
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.remove('userId');
         await sharedPreferences.remove('familyId');
         await sharedPreferences.remove('selectedBabyId');
-        return null;
+        return;
       });
     });
   }
 
   void dispose() {
     _onClearAllDataItemTappedStreamController.close();
+    _onLogoutButtonTappedStreamController.close();
     _isLoadingBehaviorSubject.close();
     _logoutCompleteStreamController.close();
   }

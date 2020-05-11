@@ -195,5 +195,10 @@
   "@no": {
     "type": "text",
     "placeholders": {}
+  },
+  "logout": "Sign out",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
   }
 }

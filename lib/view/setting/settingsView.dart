@@ -78,6 +78,11 @@ class SettingsView extends StatefulWidget {
     ),
     SettingSeparator(),
     SettingItem(
+      titleKey: 'logout',
+      action: (context) => Provider.of<SettingsViewModel>(context).onLogoutButtonTapped.add(null),
+    ),
+    SettingSeparator(),
+    SettingItem(
       titleKey: 'clearAllData',
       action: (context) {
         SettingsViewModel viewModel = Provider.of<SettingsViewModel>(context);
@@ -99,14 +104,6 @@ class SettingsView extends StatefulWidget {
                     onPressed: () {
                       print("### onYesPressed");
                       viewModel.onClearAllDataItemTapped.add(null);
-                      viewModel.logoutComplete.listen((_) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginView()
-                            )
-                        );
-                      });
                       Navigator.pop(context);
                     }
                 ),
@@ -132,6 +129,14 @@ class _SettingsViewState extends State<SettingsView> {
     super.initState();
     _viewModel = Provider.of<SettingsViewModel>(context, listen: false);
 
+    _viewModel.logoutComplete.listen((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginView()
+        ),
+      );
+    });
   }
 
   @override
