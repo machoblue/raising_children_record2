@@ -69,10 +69,19 @@ class LoginViewModel {
   void _signIn(_) async {
     print("### _signIn()");
     _showIndicatorStreamController.sink.add(true);
-    final GoogleSignInAccount account = await googleSignIn.signIn();
-    final GoogleSignInAuthentication auth = await account.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
-    firebaseUser = (await firebaseAuth.signInWithCredential(credential)).user;
+
+    firebaseUser = await googleSignIn.signIn().then((GoogleSignInAccount account) {
+      if (account == null) {
+        return null;
+      }
+
+      return account.authentication.then((GoogleSignInAuthentication auth) async {
+        final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
+        return firebaseAuth.signInWithCredential(credential).then((AuthResult result) {
+          return result.user;
+        });
+      });
+    });
 
     if (firebaseUser == null) {
       _signInUserStreamController.sink.add(null);
