@@ -14,6 +14,7 @@ import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/invitationCodeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/settingsViewModel.dart';
@@ -29,7 +30,10 @@ class SettingsView extends StatefulWidget {
           context,
           MaterialPageRoute(
               builder: (context) {
-                return ButtonOrderView();
+                return Provider<ButtonOrderViewModel>(
+                  create: (_) => ButtonOrderViewModel(),
+                  child: ButtonOrderView(),
+                );
               }
           ),
         );

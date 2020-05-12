@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
 
 class ButtonOrderView extends StatefulWidget {
   @override
@@ -7,6 +9,21 @@ class ButtonOrderView extends StatefulWidget {
 }
 
 class _ButtonOrderViewState extends State<ButtonOrderView> {
+
+  ButtonOrderViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = Provider.of<ButtonOrderViewModel>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
