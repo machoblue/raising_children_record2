@@ -22,7 +22,7 @@ import 'package:raisingchildrenrecord2/viewmodel/setting/settingsViewModel.dart'
 class SettingsView extends StatefulWidget {
 
   List<SettingElement> settingElements = [
-    SettingSeparator(),
+    SettingSeparator(titleKey: 'basicSettings'),
     SettingItem(
       titleKey: 'editRecordButtonsOrder',
       action: (context) {
@@ -56,6 +56,24 @@ class SettingsView extends StatefulWidget {
         );
       },
     ),
+    SettingSeparator(titleKey: 'shareData'),
+    SettingItem(
+      titleKey: 'showInvitationCode',
+      action: (context) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) {
+                  return Provider<InvitationCodeViewModel>(
+                    create: (_) => InvitationCodeViewModel(),
+                    child: InvitationCodeView(),
+                  );
+                }
+            )
+        );
+      },
+    ),
+    SettingSeparator(titleKey: 'account'),
     SettingItem(
       titleKey: 'editUserInfo',
       action: (context) {
@@ -77,29 +95,11 @@ class SettingsView extends StatefulWidget {
         });
       },
     ),
-    SettingSeparator(titleKey: 'shareData'),
-    SettingItem(
-      titleKey: 'showInvitationCode',
-      action: (context) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) {
-                  return Provider<InvitationCodeViewModel>(
-                    create: (_) => InvitationCodeViewModel(),
-                    child: InvitationCodeView(),
-                  );
-                }
-            )
-        );
-      },
-    ),
-    SettingSeparator(),
     SettingItem(
       titleKey: 'logout',
       action: (context) => Provider.of<SettingsViewModel>(context).onLogoutButtonTapped.add(null),
     ),
-    SettingSeparator(),
+    SettingSeparator(titleKey: 'danger'),
     SettingItem(
       titleKey: 'clearAllData',
       action: (context) {

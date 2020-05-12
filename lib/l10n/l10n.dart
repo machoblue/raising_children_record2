@@ -86,4 +86,8 @@ class L10n {
   String get logout => Intl.message('Sign out', name: 'logout');
 
   String get editRecordButtonsOrder => Intl.message('Edit Record Buttons Order', name: 'editRecordButtonsOrder');
+
+  String get basicSettings => Intl.message('Basic Settings', name: 'basicSettings');
+  String get account => Intl.message('Account', name: 'account');
+  String get danger => Intl.message('*** Danger ***', name: 'danger');
 }

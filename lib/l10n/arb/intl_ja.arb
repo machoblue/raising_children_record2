@@ -205,5 +205,20 @@
   "@editRecordButtonsOrder": {
     "type": "text",
     "placeholders": {}
+  },
+  "basicSettings": "基本設定",
+  "@basicSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "account": "アカウント",
+  "@account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "danger": "※取扱い注意",
+  "@danger": {
+    "type": "text",
+    "placeholders": {}
   }
 }

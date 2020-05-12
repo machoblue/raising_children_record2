@@ -21,13 +21,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "account" : MessageLookupByLibrary.simpleMessage("Account"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("Add Baby"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
+    "basicSettings" : MessageLookupByLibrary.simpleMessage("Basic Settings"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("Clear all data"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("Are you sure clear all data?"),
+    "danger" : MessageLookupByLibrary.simpleMessage("*** Danger ***"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),

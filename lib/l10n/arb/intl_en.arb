@@ -205,5 +205,20 @@
   "@editRecordButtonsOrder": {
     "type": "text",
     "placeholders": {}
+  },
+  "basicSettings": "Basic Settings",
+  "@basicSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "account": "Account",
+  "@account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "danger": "*** Danger ***",
+  "@danger": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -21,13 +21,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "account" : MessageLookupByLibrary.simpleMessage("アカウント"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 追加"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
+    "basicSettings" : MessageLookupByLibrary.simpleMessage("基本設定"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("退会する（全データ消去）"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("退会すると全てのデータが消去されますが、よろしいですか？"),
+    "danger" : MessageLookupByLibrary.simpleMessage("※取扱い注意"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
