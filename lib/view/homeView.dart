@@ -97,13 +97,19 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
 
                     ),
                     Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 4,
-                        children: _buildGridItems(),
-                      )
-                    )
-
-                  ]
+                      child: StreamBuilder(
+                        stream: _viewModel.recordTypes,
+                        builder: (context, snapshot) {
+                          return !snapshot.hasData
+                            ? Container()
+                            : GridView.count(
+                              crossAxisCount: 4,
+                              children: _buildGridItems(snapshot.data),
+                            );
+                        }
+                      ),
+                    ),
+                  ],
                 ),
                 padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                 decoration: BoxDecoration(
@@ -140,8 +146,8 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
     );
   }
 
-  List<Widget> _buildGridItems() {
-    return RecordType.values.map((recordType) {
+  List<Widget> _buildGridItems(List<RecordType> recordTypes) {
+    return recordTypes.map((recordType) {
       return FlatButton(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
