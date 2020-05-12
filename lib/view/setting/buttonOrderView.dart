@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
 
@@ -29,7 +30,7 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ボタンの順番を変更する')
+        title: Text(L10n.of(context).editRecordButtonsOrder),
       ),
       body: _body(),
     );

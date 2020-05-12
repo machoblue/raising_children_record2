@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
+    "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("記録ボタンの順番を変更する"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("データがありません。"),

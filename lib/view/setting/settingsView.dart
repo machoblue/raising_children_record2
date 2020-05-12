@@ -24,7 +24,7 @@ class SettingsView extends StatefulWidget {
   List<SettingElement> settingElements = [
     SettingSeparator(),
     SettingItem(
-      titleKey: 'editButtonOrder',
+      titleKey: 'editRecordButtonsOrder',
       action: (context) {
         Navigator.push(
           context,

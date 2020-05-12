@@ -200,5 +200,10 @@
   "@logout": {
     "type": "text",
     "placeholders": {}
+  },
+  "editRecordButtonsOrder": "Edit Record Buttons Order",
+  "@editRecordButtonsOrder": {
+    "type": "text",
+    "placeholders": {}
   }
 }

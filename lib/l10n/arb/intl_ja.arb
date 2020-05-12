@@ -200,5 +200,10 @@
   "@logout": {
     "type": "text",
     "placeholders": {}
+  },
+  "editRecordButtonsOrder": "記録ボタンの順番を変更する",
+  "@editRecordButtonsOrder": {
+    "type": "text",
+    "placeholders": {}
   }
 }

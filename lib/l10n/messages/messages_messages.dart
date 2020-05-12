@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
+    "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("Edit Record Buttons Order"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("No Data"),
