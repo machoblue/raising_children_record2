@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
+import 'package:raisingchildrenrecord2/view/setting/buttonOrderView.dart';
 import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -21,6 +22,19 @@ class SettingsView extends StatefulWidget {
 
   List<SettingElement> settingElements = [
     SettingSeparator(),
+    SettingItem(
+      titleKey: 'editButtonOrder',
+      action: (context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) {
+                return ButtonOrderView();
+              }
+          ),
+        );
+      },
+    ),
     SettingItem(
       titleKey: 'editBabyInfo',
       action: (context) {
