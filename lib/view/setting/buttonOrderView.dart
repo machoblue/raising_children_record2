@@ -45,7 +45,7 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
 
         final List<RecordType> recordTypes = snapshot.data;
         return ReorderableListView(
-          onReorder: _onReorder,
+          onReorder: (oldOrder, newOrder) => _onReorder(oldOrder, newOrder, recordTypes),
           children: <Widget>[
             for (RecordType recordType in recordTypes)
               _buildListTile(recordType),
@@ -92,6 +92,8 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
     );
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
+  void _onReorder(int oldIndex, int newIndex, List<RecordType> recordTypes) {
+    recordTypes.insert(newIndex, recordTypes.removeAt(oldIndex));
+    _viewModel.onButtonOrderChanged.add(recordTypes.map((recordType) => recordType.string).toList());
   }
 }
