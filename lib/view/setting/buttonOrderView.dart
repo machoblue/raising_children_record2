@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
@@ -28,6 +29,7 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
 
   @override
   Widget build(BuildContext context) {
+    Fluttertoast.showToast(msg: L10n.of(context).editRecordButtonsOrderMessage, toastLength: Toast.LENGTH_LONG);
     return Scaffold(
       appBar: AppBar(
         title: Text(L10n.of(context).editRecordButtonsOrder),

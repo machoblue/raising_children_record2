@@ -86,6 +86,7 @@ class L10n {
   String get logout => Intl.message('Sign out', name: 'logout');
 
   String get editRecordButtonsOrder => Intl.message('Edit Record Buttons Order', name: 'editRecordButtonsOrder');
+  String get editRecordButtonsOrderMessage => Intl.message('Please keep pressing the item you want to move, and drag it.', name: 'editRecordButtonsOrderMessage');
 
   String get basicSettings => Intl.message('Basic Settings', name: 'basicSettings');
   String get account => Intl.message('Account', name: 'account');

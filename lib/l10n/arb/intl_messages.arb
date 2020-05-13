@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-13T07:32:19.123442",
+  "@@last_modified": "2020-05-13T22:39:39.734517",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -203,6 +203,11 @@
   },
   "editRecordButtonsOrder": "Edit Record Buttons Order",
   "@editRecordButtonsOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editRecordButtonsOrderMessage": "Please keep pressing the item you want to move, and drag it.",
+  "@editRecordButtonsOrderMessage": {
     "type": "text",
     "placeholders": {}
   },

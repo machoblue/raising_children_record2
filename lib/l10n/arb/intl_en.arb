@@ -206,6 +206,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "editRecordButtonsOrderMessage": "Please keep pressing the item you want to move, and drag it.",
+  "@editRecordButtonsOrderMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
   "basicSettings": "Basic Settings",
   "@basicSettings": {
     "type": "text",

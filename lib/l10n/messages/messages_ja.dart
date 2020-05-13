@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("記録ボタンの順番を変更する"),
+    "editRecordButtonsOrderMessage" : MessageLookupByLibrary.simpleMessage("移動したい項目を長押しした後、移動したい場所にドラッグしてください。"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("データがありません。"),

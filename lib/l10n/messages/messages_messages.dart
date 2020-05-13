@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("Edit Record Buttons Order"),
+    "editRecordButtonsOrderMessage" : MessageLookupByLibrary.simpleMessage("Please keep pressing the item you want to move, and drag it."),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("No Data"),
