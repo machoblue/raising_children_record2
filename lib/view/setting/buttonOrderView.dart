@@ -94,7 +94,9 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
   }
 
   void _onReorder(int oldIndex, int newIndex, List<RecordType> recordTypes) {
-    recordTypes.insert(newIndex, recordTypes.removeAt(oldIndex));
+    RecordType movedRecordType = recordTypes.removeAt(oldIndex);
+    newIndex -= newIndex > oldIndex ? 1 : 0;
+    recordTypes.insert(newIndex, movedRecordType);
     _viewModel.onButtonOrderChanged.add(recordTypes.map((recordType) => recordType.string).toList());
   }
 }
