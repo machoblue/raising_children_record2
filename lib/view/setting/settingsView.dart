@@ -131,6 +131,7 @@ class SettingsView extends StatefulWidget {
         );
       },
     ),
+    SettingSeparator(),
   ];
 
   @override
