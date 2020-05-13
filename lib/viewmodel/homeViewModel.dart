@@ -31,10 +31,13 @@ class HomeViewModel {
       _navigateToAddRecords(Tuple3<RecordType, User, Baby>(recordType, userBehaviorSubject.value, babyBehaviorSubject.value));
     });
 
+    print("#### bindOutputAndOutput");
     SharedPreferences.getInstance().then((sharedPreferences) {
-      final List<RecordType> recordTypes = sharedPreferences.getStringList('recordButtonOrder')
-          .map((recordTypeString) => RecordTypeExtension.fromString(recordTypeString))
-          .toList();
+      print("#### bindOutputAndOutput2");
+      final List<RecordType> recordTypes = sharedPreferences.getStringList('recordButtonOrder')?.map((recordTypeString) {
+          return RecordTypeExtension.fromString(recordTypeString);
+        })?.toList() ?? RecordType.values;
+      print("### recordButtonOrder:${sharedPreferences.getStringList('recordButtonOrder')}");
       _recordTypesBehaviorSubject.add(recordTypes);
     });
   }
