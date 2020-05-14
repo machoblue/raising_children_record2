@@ -5,6 +5,7 @@ import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/view/loginView.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
@@ -43,6 +44,14 @@ class _MainScaffoldState extends State<_MainScaffold> {
     super.initState();
     _viewModel = Provider.of<MainViewModel>(context, listen: false);
     _viewModel.onInitState.add(null);
+    _viewModel.logoutComplete.listen((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginView()
+        ),
+      );
+    });
   }
 
   @override
@@ -88,7 +97,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
 
   Widget _babyButton() {
     return Container(
-      padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
+      padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
 
       child: StreamBuilder(
         stream: _viewModel.babies,

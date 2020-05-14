@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainViewModel {
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   final UserRepository _userRepository;
   final BabyRepository _babyRepository;
@@ -38,6 +42,9 @@ class MainViewModel {
 
   final userBehaviorSubject = BehaviorSubject<User>.seeded(null);
   Stream<User> get user => userBehaviorSubject.stream;
+
+  final _logoutCompleteStreamController = StreamController<void>();
+  Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
   MainViewModel(this._userRepository, this._babyRepository) {
     bindInputAndOutput();
@@ -128,7 +135,26 @@ class MainViewModel {
 
     _userRepository
         .getUser(userId)
-        .then(userBehaviorSubject.sink.add);
+        .then((user) {
+          if (user == null) {
+            _logout().then((_) => _logoutCompleteStreamController.sink.add(null));
+            return;
+          }
+
+          userBehaviorSubject.sink.add(user);
+        });
+  }
+
+  Future<void> _logout() {
+    return firebaseAuth.signOut().then((_) {
+      return googleSignIn.signOut().then((_) async {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        await sharedPreferences.remove('userId');
+        await sharedPreferences.remove('familyId');
+        await sharedPreferences.remove('selectedBabyId');
+        return;
+      });
+    });
   }
 
   dispose() {
@@ -140,5 +166,6 @@ class MainViewModel {
     _babyIconImageProvider.close();
     _selectedIndex.close();
     userBehaviorSubject.close();
+    _logoutCompleteStreamController.close();
   }
 }

@@ -84,11 +84,8 @@ class SettingsViewModel {
   }
 
   Future<void> _logout() {
-    print("### _logout");
     return firebaseAuth.signOut().then((_) {
-      print("### firebaseAuth.signOut");
       return googleSignIn.signOut().then((_) async {
-        print("### googleSignIn.signOut");
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.remove('userId');
         await sharedPreferences.remove('familyId');
