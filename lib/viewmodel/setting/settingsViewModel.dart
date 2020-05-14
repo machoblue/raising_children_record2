@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
@@ -15,6 +16,7 @@ class SettingsViewModel {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final User user;
   final UserRepository userRepository;
+  final BabyRepository babyRepository;
 
   final _onClearAllDataItemTappedStreamController = StreamController<void>();
   StreamSink<void> get onClearAllDataItemTapped => _onClearAllDataItemTappedStreamController.sink;
@@ -28,7 +30,7 @@ class SettingsViewModel {
   final _logoutCompleteStreamController = StreamController<void>();
   Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
-  SettingsViewModel(this.user, this.userRepository) {
+  SettingsViewModel(this.user, this.userRepository, this.babyRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
       _isLoadingBehaviorSubject.sink.add(true);
       _clearAllData().then((_) {
@@ -70,7 +72,7 @@ class SettingsViewModel {
         .document(user.familyId);
 
       await familyReference.collection('invitationCodes').deleteAll();
-      await familyReference.collection('babies').deleteAll();
+      await babyRepository.deleteAllBabies(user.familyId);
       await familyReference.collection('users').deleteAll();
       return;
 

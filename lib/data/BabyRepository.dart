@@ -1,18 +1,20 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
 
 class BabyRepository {
   Future<List<Baby>> getBabies(String familyId) {}
   Future<Baby> getBaby(String familyId, String babyId) {}
   Future<void> createOrUpdateBaby(String familyId, Baby baby) {}
   void observeBabies(String familyId, Function(List<Baby>) onBabiesUpdated) {}
+  Future<void> deleteAllBabies(String familyId) {}
 }
 
 class FirestoreBabyRepository implements BabyRepository {
   static final String families = 'families';
   static final String babies = 'babies';
+  static final String records = 'records';
 
   Future<List<Baby>> getBabies(String familyId) async {
     return Firestore.instance
@@ -69,5 +71,23 @@ class FirestoreBabyRepository implements BabyRepository {
 
           onBabiesUpdated(babies);
         });
+  }
+
+  Future<void> deleteAllBabies(String familyId) {
+    final babiesReference = Firestore.instance
+      .collection(families)
+      .document(familyId)
+      .collection(babies);
+
+    return babiesReference
+      .getDocuments().then((querySnapshot) async {
+        List<DocumentSnapshot> snapshots = querySnapshot.documents;
+        for (final snapshot in snapshots) {
+          final babyReference = babiesReference.document(snapshot['id']);
+          await babyReference.collection(records).deleteAll();
+          await babyReference.delete();
+        }
+        return;
+    });
   }
 }

@@ -179,6 +179,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
           create: (_) => SettingsViewModel(
             Provider.of<MainViewModel>(context).userBehaviorSubject.value,
             FirestoreUserRepository(),
+            FirestoreBabyRepository(),
           ),
           child: SettingsView(),
         );
