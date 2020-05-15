@@ -1,5 +1,8 @@
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 
 class UserRepository {
@@ -10,7 +13,7 @@ class UserRepository {
   Future<void> deleteUser(String userId) {}
 }
 
-class FirestoreUserRepository implements UserRepository {
+class FirestoreUserRepository with FirestoreErrorHandler implements UserRepository {
 
   final String users = 'users';
   final String families = 'families';
@@ -19,7 +22,8 @@ class FirestoreUserRepository implements UserRepository {
     return Firestore.instance
         .collection(users)
         .document(user.id)
-        .setData(user.map);
+        .setData(user.map)
+        .catchError(handleError);
   }
 
   Future<User> getUser(String userId) {
@@ -34,7 +38,8 @@ class FirestoreUserRepository implements UserRepository {
           }
 
           return User.fromSnapshot(documentSnapshot);
-        });
+        })
+        .catchError(handleError);
   }
 
   Future<void> createOrJoinFamily(String familyId, User user) {
@@ -43,7 +48,8 @@ class FirestoreUserRepository implements UserRepository {
         .document(user.familyId)
         .collection(users)
         .document(user.id)
-        .setData(user.map);
+        .setData(user.map)
+        .catchError(handleError);
   }
 
   Future<void> exitFamily(String familyId, String userId) {
@@ -52,13 +58,15 @@ class FirestoreUserRepository implements UserRepository {
         .document(familyId)
         .collection(users)
         .document(userId)
-        .delete();
+        .delete()
+        .catchError(handleError);
   }
 
   Future<void> deleteUser(String userId) {
     return Firestore.instance
         .collection(users)
         .document(userId)
-        .delete();
+        .delete()
+        .catchError(handleError);
   }
 }
