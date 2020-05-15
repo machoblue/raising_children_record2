@@ -4,9 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 
-class BaseRecordViewModel<R extends Record> {
+class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implements ViewModel {
   BehaviorSubject<R> recordBehaviorSubject;
   User user;
   Baby baby;

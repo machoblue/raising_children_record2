@@ -5,13 +5,14 @@ import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
-class LoginViewModel {
+class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
