@@ -7,6 +7,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -138,7 +139,10 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
   Widget _buildContent(int selectedIndex) {
     switch (selectedIndex) {
       case 0: {
-        return HomeView();
+        return Provider<HomeViewModel>(
+          create: (_) => HomeViewModel(viewModel.userBehaviorSubject, viewModel.babyBehaviorSubject),
+          child: HomeView(),
+        );
       }
       case 1: {
         return Provider<SettingsViewModel>(

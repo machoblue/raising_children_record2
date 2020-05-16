@@ -5,6 +5,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
@@ -19,38 +20,18 @@ class HomeView extends StatefulWidget {
   State<StatefulWidget> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  @override
-  Widget build(BuildContext context) {
-    return Provider<HomeViewModel>(
-      create: (_) {
-        MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
-        return HomeViewModel(mainViewModel.userBehaviorSubject, mainViewModel.babyBehaviorSubject);
-      },
-      child: _HomeContainer(),
-    );
-  }
-}
-
-class _HomeContainer extends StatefulWidget {
-  @override
-  _HomeContainerState createState() => _HomeContainerState();
-}
-
-class _HomeContainerState extends State<_HomeContainer> with TickerProviderStateMixin {
+class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProviderStateMixin {
   final _pageOffset = 1000; // value enough big
   final _buttonLabelFont = TextStyle(fontSize: 12, color: Color(0x00FF888888));
   AnimationController _animationController;
   Animation _animation;
 
-  HomeViewModel _viewModel;
-
   @override
   void initState() {
     super.initState();
 
-    _viewModel = Provider.of<HomeViewModel>(context, listen: false);
-    _viewModel.navigationToAddRecord.listen((tuple3) => _addRecord(tuple3.item1, tuple3.item2, tuple3.item3));
+    viewModel = Provider.of<HomeViewModel>(context, listen: false);
+    viewModel.navigationToAddRecord.listen((tuple3) => _addRecord(tuple3.item1, tuple3.item2, tuple3.item3));
 
     _animationController = AnimationController(duration: Duration(milliseconds: 250), vsync: this);
     _animation = IntTween(begin: 1, end: 4).animate(_animationController);
@@ -98,7 +79,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
                     ),
                     Expanded(
                       child: StreamBuilder(
-                        stream: _viewModel.recordTypes,
+                        stream: viewModel.recordTypes,
                         builder: (context, snapshot) {
                           return !snapshot.hasData
                             ? Container()
@@ -164,7 +145,7 @@ class _HomeContainerState extends State<_HomeContainer> with TickerProviderState
             )
           ],
         ),
-        onPressed: () => _viewModel.addRecord.add(recordType),
+        onPressed: () => viewModel.addRecord.add(recordType),
       );
     }).toList();
   }
@@ -227,14 +208,14 @@ class _Page extends StatefulWidget {
 class _PageState extends State<_Page> {
   final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
   final DateFormat _timeFormat = DateFormat().add_Hm();
-  HomePageViewModel _viewModel;
+  HomePageViewModel viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Provider.of<HomePageViewModel>(context, listen: false);
-    _viewModel.initState.add(null);
-    _viewModel.navigationToEditRecord.listen((tuple3) => _editRecord(tuple3.item1, tuple3.item2, tuple3.item3));
+    viewModel = Provider.of<HomePageViewModel>(context, listen: false);
+    viewModel.initState.add(null);
+    viewModel.navigationToEditRecord.listen((tuple3) => _editRecord(tuple3.item1, tuple3.item2, tuple3.item3));
   }
 
   @override
@@ -252,7 +233,7 @@ class _PageState extends State<_Page> {
             ),
             Expanded(
               child: StreamBuilder(
-                stream: _viewModel.records,
+                stream: viewModel.records,
                 builder: (context, snapshot) {
                   final List<Record> records = snapshot.data ?? [];
                   return records.isEmpty
@@ -269,7 +250,7 @@ class _PageState extends State<_Page> {
                       itemBuilder: (context, index) {
                         final record = records[index];
                         return GestureDetector(
-                          onTap: () => _viewModel.editRecord.add(record),
+                          onTap: () => viewModel.editRecord.add(record),
                           child: _RecordListTile(record, l10n, _timeFormat),
                         );
                       },
@@ -418,74 +399,6 @@ class _RecordListTile extends StatelessWidget {
           ),
         ]
       ),
-//      child: Column(
-//        children: <Widget>[
-//          Row(
-//            children: <Widget>[
-//              Container(
-//                decoration: BoxDecoration(
-//                  shape: BoxShape.circle,
-//                  image: DecorationImage(
-//                    fit: BoxFit.fitHeight,
-//                    image: AssetImage(record.assetName),
-//                  ),
-//                ),
-//                height: 48,
-//                width: 48,
-//              ),
-//              Expanded(
-//                  flex: 2,
-//                  child: Container(
-//                    padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-//                    child: Text(
-//                      record.title(l10n),
-//                      style: _titleFont,
-//                    ),
-//                  )
-//              ),
-//              Expanded(
-//                flex: 3,
-//                child: Text(
-//                  record.description,
-//                  style: _descriptionFont,
-//                ),
-//              ),
-//            ],
-//            mainAxisAlignment: MainAxisAlignment.start,
-//          ),
-//          Row(
-//            children: <Widget>[
-//              Spacer(flex: 2),
-//              Expanded(
-//                flex: 1,
-//                child: Row(
-//                  children: <Widget>[
-//                    Container(
-//                      decoration: BoxDecoration(
-//                        shape: BoxShape.circle,
-//                        image: DecorationImage(
-//                          fit: BoxFit.fitHeight,
-//                          image: CachedNetworkImageProvider(record.user.photoUrl),
-//                        ),
-//                      ),
-//                      height: 24,
-//                      width: 24,
-//                    ),
-//                    Container(
-//                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-//                      child: Text(
-//                        record.user.name,
-//                        style: _userNameFont,
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              ),
-//            ],
-//            mainAxisAlignment: MainAxisAlignment.end,
-//          ),
-//        ],
-//      ),
     );
   }
 }

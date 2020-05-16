@@ -4,10 +4,11 @@ import 'dart:async';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
-class HomeViewModel {
+class HomeViewModel with ViewModelErrorHandler implements ViewModel {
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;
 
@@ -28,25 +29,30 @@ class HomeViewModel {
 
   void _bindOutputAndOutput() {
     _addRecordStreamController.stream.listen((recordType) {
-      _navigateToAddRecords(Tuple3<RecordType, User, Baby>(recordType, userBehaviorSubject.value, babyBehaviorSubject.value));
+      final tuple3 = Tuple3<RecordType, User, Baby>(recordType, userBehaviorSubject.value, babyBehaviorSubject.value);
+      _navigationToAddRecordStreamController.sink.add(tuple3);
     });
 
-    print("#### bindOutputAndOutput");
-    SharedPreferences.getInstance().then((sharedPreferences) {
-      print("#### bindOutputAndOutput2");
-      final List<RecordType> recordTypes = sharedPreferences.getStringList('recordButtonOrder')?.map((recordTypeString) {
-          return RecordTypeExtension.fromString(recordTypeString);
-        })?.toList() ?? RecordType.values;
-      print("### recordButtonOrder:${sharedPreferences.getStringList('recordButtonOrder')}");
+    _getRecordTypes().then((recordTypes) {
       _recordTypesBehaviorSubject.add(recordTypes);
     });
   }
 
-  void _navigateToAddRecords(Tuple3<RecordType, User, Baby> tuple3) {
-    _navigationToAddRecordStreamController.sink.add(tuple3);
+  Future<List<RecordType>> _getRecordTypes() {
+    return SharedPreferences.getInstance().then((sharedPreferences) {
+      final List<String> recordTypeStrings = sharedPreferences.getStringList('recordButtonOrder');
+      if (recordTypeStrings == null) {
+        return RecordType.values;
+      }
+
+      return recordTypeStrings
+        .map((recordTypeString) => RecordTypeExtension.fromString(recordTypeString))
+        .toList();
+    });
   }
 
   void dispose() {
+    super.dispose();
     _addRecordStreamController.close();
     _navigationToAddRecordStreamController.close();
     _recordTypesBehaviorSubject.close();
