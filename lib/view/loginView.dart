@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -100,7 +103,10 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MainView()
+        builder: (context) => Provider<MainViewModel>(
+          create: (_) => MainViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+          child: MainView()
+        )
       )
     );
   }

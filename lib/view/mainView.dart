@@ -5,6 +5,7 @@ import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
@@ -18,34 +19,15 @@ class MainView extends StatefulWidget {
   _MainViewState createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Provider<MainViewModel>(
-      create: (_) => MainViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
-      child: _MainScaffold()
-    );
-  }
-}
-
-class _MainScaffold extends StatefulWidget {
-  @override
-  _MainScaffoldState createState() => _MainScaffoldState();
-}
-
-class _MainScaffoldState extends State<_MainScaffold> {
+class _MainViewState extends BaseState<MainView, MainViewModel> {
 
   List<String> _appBarTitles;
-
-  MainViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Provider.of<MainViewModel>(context, listen: false);
-    _viewModel.onInitState.add(null);
-    _viewModel.logoutComplete.listen((_) {
+    viewModel.onInitState.add(null);
+    viewModel.logoutComplete.listen((_) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -64,7 +46,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
     _appBarTitles = [l10n.homeTitle, l10n.settingsTitle];
 
     return StreamBuilder(
-      stream: _viewModel.selectedIndex,
+      stream: viewModel.selectedIndex,
       builder: (context, snapshot) {
         final selectedIndex = snapshot.data ?? 0;
         return Scaffold(
@@ -73,27 +55,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
             title: Text(_appBarTitles[selectedIndex]),
           ),
           body: _buildContent(selectedIndex),
-          bottomNavigationBar: BottomNavigationBar(
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  title: Text(l10n.homeTitle),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  title: Text(l10n.settingsTitle),
-                ),
-              ],
-              currentIndex: selectedIndex,
-              selectedItemColor: Colors.amber[800],
-              onTap: (index) {
-                print("### $index");
-                Provider
-                    .of<MainViewModel>(context)
-                    .onTabItemTapped
-                    .add(index);
-              }
-          ),
+          bottomNavigationBar: _buildBottomNavigation(selectedIndex),
         );
       },
     );
@@ -104,7 +66,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
       padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
 
       child: StreamBuilder(
-        stream: _viewModel.babies,
+        stream: viewModel.babies,
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.isEmpty) {
             return StreamBuilder(
@@ -126,7 +88,7 @@ class _MainScaffoldState extends State<_MainScaffold> {
           final List<Baby> babies = snapshot.data;
 
           return PopupMenuButton<Baby>(
-            onSelected: (baby) => _viewModel.onBabySelected.add(baby),
+            onSelected: (baby) => viewModel.onBabySelected.add(baby),
             itemBuilder: (context) {
               return babies
                   .map((baby) {
@@ -192,5 +154,24 @@ class _MainScaffoldState extends State<_MainScaffold> {
         throw('This line shouldn\'t be reached.');
       }
     }
+  }
+
+  Widget _buildBottomNavigation(int selectedIndex) {
+    L10n l10n = L10n.of(context);
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text(l10n.homeTitle),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          title: Text(l10n.settingsTitle),
+        ),
+      ],
+      currentIndex: selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: viewModel.onTabItemTapped.add,
+    );
   }
 }

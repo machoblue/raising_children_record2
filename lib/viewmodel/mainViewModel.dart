@@ -6,11 +6,12 @@ import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainViewModel {
+class MainViewModel with ViewModelErrorHandler implements ViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -52,7 +53,12 @@ class MainViewModel {
 
   void bindInputAndOutput() {
     _onInitStateStreamController.stream.listen((_) {
-      _getBabies();
+      _getBabies()
+        .then((babies) => _babiesBehaviorSubject.add(babies))
+        .catchError(handleError);
+
+      _observeBabies();
+
       _getUser();
     });
 
@@ -79,22 +85,26 @@ class MainViewModel {
     });
   }
 
-  void _getBabies() async {
+  Future<List<Baby>> _getBabies() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final String familyId = await sharedPreferences.getString('familyId');
-    _babyRepository
+    final String familyId = sharedPreferences.getString('familyId');
+    return _babyRepository
       .getBabies(familyId)
       .then((babies) {
         if (babies.isEmpty) {
           Baby baby = Baby.newInstance();
           _babyRepository.createOrUpdateBaby(familyId, baby);
-          _babiesBehaviorSubject.sink.add([baby]);
-          return;
+          return [baby];
         }
 
-        _babiesBehaviorSubject.sink.add(babies);
+        return babies;
       });
 
+  }
+
+  void _observeBabies() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String familyId = sharedPreferences.getString('familyId');
     _babyRepository
       .observeBabies(familyId, (babies) {
         _babiesBehaviorSubject.sink.add(babies);
@@ -134,15 +144,16 @@ class MainViewModel {
     final userId = sharedPreference.getString("userId");
 
     _userRepository
-        .getUser(userId)
-        .then((user) {
-          if (user == null) {
-            _logout().then((_) => _logoutCompleteStreamController.sink.add(null));
-            return;
-          }
+      .getUser(userId)
+      .then((user) {
+        if (user == null) {
+          _logout().then((_) => _logoutCompleteStreamController.sink.add(null));
+          return;
+        }
 
-          userBehaviorSubject.sink.add(user);
-        });
+        userBehaviorSubject.sink.add(user);
+      })
+      .catchError(handleError);
   }
 
   Future<void> _logout() {
@@ -157,7 +168,8 @@ class MainViewModel {
     });
   }
 
-  dispose() {
+  void dispose() {
+    super.dispose();
     _onInitStateStreamController.close();
     _onTabItemTappedStreamController.close();
     _onBabySelectedStreamController.close();
