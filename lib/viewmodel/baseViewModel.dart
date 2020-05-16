@@ -41,7 +41,8 @@ mixin ViewModelErrorHandler {
     }
   }
 
-  void disposeErrorMessageStreamController() {
+  void dispose() {
+    print("### ViewModelErrorHandler.dispose()");
     errorMessageStreamController.close();
   }
 }

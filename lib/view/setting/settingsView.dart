@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
+import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
@@ -12,6 +14,7 @@ import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/view/setting/buttonOrderView.dart';
 import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
@@ -152,7 +155,10 @@ class _SettingsViewState extends State<SettingsView> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginView()
+          builder: (context) => Provider(
+            create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+            child: LoginView(),
+          ),
         ),
       );
     });

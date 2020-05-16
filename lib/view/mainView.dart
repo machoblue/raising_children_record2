@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/data/UserRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
@@ -48,7 +49,10 @@ class _MainScaffoldState extends State<_MainScaffold> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => LoginView()
+          builder: (context) => Provider(
+            create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+            child: LoginView(),
+          ),
         ),
       );
     });

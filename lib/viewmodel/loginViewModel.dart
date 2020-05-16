@@ -23,8 +23,9 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
   // input
   final _onLoginPageAppearStreamController = StreamController<void>();
-  final _onSignInButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onLoginPageAppear => _onLoginPageAppearStreamController.sink;
+
+  final _onSignInButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onSignInButtonTapped => _onSignInButtonTappedStreamController.sink;
 
   final _onInvitationCodeReadStreamController = StreamController<InvitationCode>();
@@ -32,10 +33,12 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
   // output
   final _signInUserStreamController = StreamController<String>();
-  final _messageStreamController = StreamController<String>();
-  final _showIndicatorStreamController = StreamController<bool>();
   Stream<String> get signInUser => _signInUserStreamController.stream;
+
+  final _messageStreamController = StreamController<String>();
   Stream<String> get message => _messageStreamController.stream;
+
+  final _showIndicatorStreamController = StreamController<bool>();
   Stream<bool> get showIndicator => _showIndicatorStreamController.stream;
 
   final _needConfirmInvitationCode = StreamController<void>();
@@ -73,6 +76,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
     firebaseUser = await googleSignIn.signIn().then((GoogleSignInAccount account) {
       if (account == null) {
+        _showIndicatorStreamController.sink.add(false);
         return null;
       }
 
@@ -86,7 +90,8 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
     if (firebaseUser == null) {
       _signInUserStreamController.sink.add(null);
-      _messageStreamController.sink.add(Intl.message('Failed to sign in.', name: 'failedToSignIn'));
+      errorMessageStreamController.sink.add(ErrorMessage(Intl.message('Error', name: 'error'),
+                                                          Intl.message('Failed to sign in.', name: 'failedToSignIn')));
       _showIndicatorStreamController.sink.add(false);
       return;
     }
@@ -106,53 +111,81 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
         _signInUserStreamController.sink.add(user.id);
         _showIndicatorStreamController.sink.add(false);
-      });
+      })
+      .catchError(_handleError);
   }
 
   void _handleInvitationCode(InvitationCode invitationCode) async {
     _showIndicatorStreamController.sink.add(true);
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (invitationCode == null) {
-      final familyId = Uuid().v1();
-      await sharedPreferences.setString('familyId', familyId);
-
-      User user = User.fromFirebaseUser(firebaseUser, familyId);
-      await userRepository.createOrUpdateUser(user);
-      await userRepository.createOrJoinFamily(familyId, user);
-      await sharedPreferences.setString('userId', user.id);
-
-      final Baby baby = Baby.newInstance();
-      await babyRepository.createOrUpdateBaby(familyId, baby);
-      await sharedPreferences.setString('selectedBabyId', baby.id);
-
-      _signInUserStreamController.sink.add(user.id);
+      _createUserAndFamily()
+        .then((userId) {
+          _showIndicatorStreamController.sink.add(false);
+          _signInUserStreamController.sink.add(userId);
+        })
+        .catchError(_handleError);
 
     } else {
-      User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
-      await userRepository.createOrUpdateUser(user);
-      String familyId = invitationCode.familyId;
-      await userRepository.createOrJoinFamily(familyId, user);
-      await sharedPreferences.setString('familyId', familyId);
-      sharedPreferences.setString('userId', user.id);
-
-      Baby selectedBaby;
-      List<Baby> babies = await babyRepository.getBabies(familyId);
-      if (babies.isEmpty) {
-        selectedBaby = Baby.newInstance();
-        babyRepository.createOrUpdateBaby(familyId, selectedBaby);
-      } else {
-        selectedBaby = babies.first;
-      }
-      sharedPreferences.setString('selectedBabyId', selectedBaby.id);
-
-      _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
-      _signInUserStreamController.sink.add(user.id);
+      _createUserAndJoinFamily(invitationCode)
+        .then((userId) {
+          _showIndicatorStreamController.sink.add(false);
+          _signInUserStreamController.sink.add(userId);
+          _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
+        })
+        .catchError(_handleError);
     }
+  }
 
+  Future<String> _createUserAndFamily() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final familyId = Uuid().v1();
+    User user = User.fromFirebaseUser(firebaseUser, familyId);
+    return userRepository.createOrUpdateUser(user).then((_) {
+      return userRepository.createOrJoinFamily(familyId, user).then((_) {
+        sharedPreferences.setString('userId', user.id);
+        sharedPreferences.setString('familyId', familyId);
+
+        final baby = Baby.newInstance();
+        return babyRepository.createOrUpdateBaby(familyId, baby).then((_) {
+          sharedPreferences.setString('selectedBabyId', baby.id);
+          return user.id;
+        });
+      });
+    });
+  }
+
+  Future<String> _createUserAndJoinFamily(InvitationCode invitationCode) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
+    return userRepository.createOrUpdateUser(user).then((_) {
+      String familyId = invitationCode.familyId;
+      return userRepository.createOrJoinFamily(familyId, user).then((_) {
+        sharedPreferences.setString('familyId', familyId);
+        sharedPreferences.setString('userId', user.id);
+
+        return babyRepository.getBabies(familyId).then((babies) {
+          if (babies.isNotEmpty) {
+            sharedPreferences.setString('selectedBabyId', babies.first.id);
+            return user.id;
+          }
+
+          final baby = Baby.newInstance();
+          return babyRepository.createOrUpdateBaby(familyId, baby).then((_) {
+            sharedPreferences.setString('selectedBabyId', baby.id);
+            return user.id;
+          });
+        });
+      });
+    });
+  }
+
+  void _handleError(Object error) {
     _showIndicatorStreamController.sink.add(false);
+    super.handleError(error);
   }
 
   void dispose() {
+    super.dispose();
     _onLoginPageAppearStreamController.close();
     _onSignInButtonTappedStreamController.close();
     _signInUserStreamController.close();

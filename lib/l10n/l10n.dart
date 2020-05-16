@@ -93,4 +93,6 @@ class L10n {
   String get danger => Intl.message('*** Danger ***', name: 'danger');
 
   String get ok => Intl.message('OK', name: 'ok');
+
+  String get error => Intl.message('Error', name: 'error');
 }
