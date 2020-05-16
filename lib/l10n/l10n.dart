@@ -95,4 +95,8 @@ class L10n {
   String get ok => Intl.message('OK', name: 'ok');
 
   String get error => Intl.message('Error', name: 'error');
+
+  String get permissionError => Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
+  String get dataAccessError => Intl.message('Error has occured on accessing data. Please retry later.', name: 'dataAccessError');
+  String get errorMessage => Intl.message('Error has occured.', name: 'errorMessage');
 }

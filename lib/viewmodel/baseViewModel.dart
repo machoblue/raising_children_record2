@@ -1,6 +1,6 @@
 
 import 'dart:async';
-
+import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 
 class ViewModel {
@@ -21,20 +21,20 @@ mixin ViewModelErrorHandler {
   void handleError(Object error) {
     switch (error.runtimeType) {
       case PermissionException: {
-        String title = 'システムエラー';
-        String message = 'データにアクセスする権限がありません。想定されていない操作です。どのような操作をしたかを添えてお問い合わせください。';
+        String title = Intl.message('Error', name: 'error');
+        String message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
         errorMessageStreamController.sink.add(ErrorMessage(title, message));
       }
       break;
       case DataAccessException: {
-        String title = 'エラー';
-        String message = 'データアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。';
+        String title = Intl.message('Error', name: 'error');
+        String message = Intl.message('Error has occured on accessing data. Please retry later.', name: 'dataAccessError');
         errorMessageStreamController.sink.add(ErrorMessage(title, message));
       }
       break;
       default: {
-        String title = 'エラー';
-        String message = 'エラーが発生しました。';
+        String title = Intl.message('Error', name: 'error');
+        String message = Intl.message('Error has occured.', name: 'errorMessage');
         errorMessageStreamController.sink.add(ErrorMessage(title, message));
       }
       break;

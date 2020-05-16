@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-16T14:07:17.893849",
+  "@@last_modified": "2020-05-16T16:12:06.427330",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -228,6 +228,26 @@
   },
   "ok": "OK",
   "@ok": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "permissionError": "Cannot access data. This operation is unexpected. Please tell us what did you do.",
+  "@permissionError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dataAccessError": "Error has occured on accessing data. Please retry later.",
+  "@dataAccessError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMessage": "Error has occured.",
+  "@errorMessage": {
     "type": "text",
     "placeholders": {}
   }

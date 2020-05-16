@@ -230,5 +230,25 @@
   "@ok": {
     "type": "text",
     "placeholders": {}
+  },
+  "error": "エラー",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "permissionError": "データにアクセスする権限がありません。想定されていない操作です。どのような操作をしたかを添えてお問い合わせください。",
+  "@permissionError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dataAccessError": "データアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。",
+  "@dataAccessError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMessage": "エラーが発生しました。",
+  "@errorMessage": {
+    "type": "text",
+    "placeholders": {}
   }
 }

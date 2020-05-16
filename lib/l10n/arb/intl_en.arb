@@ -230,5 +230,25 @@
   "@ok": {
     "type": "text",
     "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "permissionError": "Cannot access data. This operation is unexpected. Please tell us what did you do.",
+  "@permissionError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dataAccessError": "Error has occured on accessing data. Please retry later.",
+  "@dataAccessError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMessage": "Error has occured.",
+  "@errorMessage": {
+    "type": "text",
+    "placeholders": {}
   }
 }
