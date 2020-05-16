@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-16T16:12:06.427330",
+  "@@last_modified": "2020-05-17T08:27:08.516637",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -168,6 +168,11 @@
   },
   "failedToReadInvitationCode": "Failed to read invitation code.",
   "@failedToReadInvitationCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invitationCodeInvalid": "This invitation code isn't valid. This may be expired. Please recreate invitation code and read again.",
+  "@invitationCodeInvalid": {
     "type": "text",
     "placeholders": {}
   },

@@ -3,9 +3,9 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
 
 class InvitationCodeReadView extends StatefulWidget {
@@ -17,23 +17,10 @@ class InvitationCodeReadView extends StatefulWidget {
   _InvitationCodeReadViewState createState() => _InvitationCodeReadViewState();
 }
 
-class _InvitationCodeReadViewState extends State<InvitationCodeReadView> {
+class _InvitationCodeReadViewState extends BaseState<InvitationCodeReadView, InvitationCodeReadViewModel> {
   final _messageStyle = TextStyle(fontSize: 16);
   final _readButtonStyle = TextStyle(fontSize: 16.0);
   final _cancelButtonStyle = TextStyle(fontSize: 16.0);
-
-  InvitationCodeReadViewModel _viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    _viewModel = Provider.of<InvitationCodeReadViewModel>(context, listen: false);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

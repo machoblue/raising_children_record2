@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("Invitation Code"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("Expiration date time(for 5 minutes): \nUntil %s"),
+    "invitationCodeInvalid" : MessageLookupByLibrary.simpleMessage("This invitation code isn\'t valid. This may be expired. Please recreate invitation code and read again."),
     "invitationCodeMessage" : MessageLookupByLibrary.simpleMessage("The user who read this code can share data with you."),
     "invitationCodeNote" : MessageLookupByLibrary.simpleMessage("NOTE: The user can read this code only when launching this app for the first time. If you wish share data with the existing user, the user need to clear all app data."),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),

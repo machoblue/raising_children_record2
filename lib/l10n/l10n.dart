@@ -75,6 +75,7 @@ class L10n {
   String get dataShareComplete => Intl.message('Finished configuration to share data.', name: 'dataShareComplete');
   String get cameraAccessDenied => Intl.message('This app cannot use camera. Please grant the camera permission from the setting app.', name: 'cameraAccessDenied');
   String get failedToReadInvitationCode => Intl.message('Failed to read invitation code.', name: 'failedToReadInvitationCode');
+  String get invitationCodeInvalid => Intl.message('This invitation code isn\'t valid. This may be expired. Please recreate invitation code and read again.', name: 'invitationCodeInvalid');
 
   String get emptyMessage => Intl.message('No Data', name: 'emptyMessage');
 

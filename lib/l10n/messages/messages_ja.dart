@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("招待コード"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("有効期限(5分間): %s まで"),
+    "invitationCodeInvalid" : MessageLookupByLibrary.simpleMessage("この招待コードは期限が切れているようです。招待コードを発行し直して、再び読み込んでください。"),
     "invitationCodeMessage" : MessageLookupByLibrary.simpleMessage("このQRコードを読み込んだユーザーはあなたとデータを共有できるようになります。"),
     "invitationCodeNote" : MessageLookupByLibrary.simpleMessage("※QRコードを読み込みは、このアプリを初めて起動したときのみ可能です。すでにアプリを利用済みのユーザーと共有する場合、そのユーザーが一度退会してデータを全消去する必要があります。"),
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),

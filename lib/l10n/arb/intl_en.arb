@@ -171,6 +171,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "invitationCodeInvalid": "This invitation code isn't valid. This may be expired. Please recreate invitation code and read again.",
+  "@invitationCodeInvalid": {
+    "type": "text",
+    "placeholders": {}
+  },
   "emptyMessage": "No Data",
   "@emptyMessage": {
     "type": "text",
