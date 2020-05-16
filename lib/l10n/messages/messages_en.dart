@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
     "no" : MessageLookupByLibrary.simpleMessage("No."),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("No, I don\'t."),
+    "ok" : MessageLookupByLibrary.simpleMessage("OK"),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("Yes, I do."),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("Do you have an invitation code?"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("Reading Invitation Code"),

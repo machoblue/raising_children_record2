@@ -225,5 +225,10 @@
   "@danger": {
     "type": "text",
     "placeholders": {}
+  },
+  "ok": "OK",
+  "@ok": {
+    "type": "text",
+    "placeholders": {}
   }
 }

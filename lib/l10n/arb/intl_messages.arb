@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-13T22:39:39.734517",
+  "@@last_modified": "2020-05-16T14:07:17.893849",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -223,6 +223,11 @@
   },
   "danger": "*** Danger ***",
   "@danger": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ok": "OK",
+  "@ok": {
     "type": "text",
     "placeholders": {}
   }

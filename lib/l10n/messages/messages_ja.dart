@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
     "no" : MessageLookupByLibrary.simpleMessage("いいえ、消去しません"),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを持っていない"),
+    "ok" : MessageLookupByLibrary.simpleMessage("OK"),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを読み込む"),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("招待コードを読み込んで、\n他のユーザーとデータを共有しますか？"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("招待コードの読み取り"),
