@@ -5,11 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
-class HomePageViewModel {
+class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
   DateTime dateTime;
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;
@@ -79,6 +80,7 @@ class HomePageViewModel {
   }
 
   void dispose() {
+    super.dispose();
     _initStateStreamController.close();
     _recordsStreamController.close();
     _editRecordStreamController.close();
