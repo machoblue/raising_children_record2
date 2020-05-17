@@ -8,7 +8,7 @@ class BabyRepository {
   Future<List<Baby>> getBabies(String familyId) {}
   Future<Baby> getBaby(String familyId, String babyId) {}
   Future<void> createOrUpdateBaby(String familyId, Baby baby) {}
-  void observeBabies(String familyId, Function(List<Baby>) onBabiesUpdated) {}
+  Stream<List<Baby>> observeBabies(String familyId) {}
   Future<void> deleteAllBabies(String familyId) {}
 }
 
@@ -60,21 +60,18 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
         .catchError(handleError);
   }
 
-  void observeBabies(String familyId, Function(List<Baby>) onBabiesUpdated) async {
-    Firestore.instance
-        .collection(families)
-        .document(familyId)
-        .collection(babies)
-        .snapshots()
-        .listen((querySnapshot) {
-          final List<DocumentSnapshot> snapshots = querySnapshot.documents;
-          final List<Baby> babies = snapshots
-              .map((snapshot) => Baby.fromSnapshot(snapshot))
-              .where((baby) => baby != null)
-              .toList();
-
-          onBabiesUpdated(babies);
-        });
+  Stream<List<Baby>> observeBabies(String familyId) {
+    return Firestore.instance
+      .collection(families)
+      .document(familyId)
+      .collection(babies)
+      .snapshots()
+      .map((querySnapshot) {
+        return querySnapshot.documents
+          .map((snapshot) => Baby.fromSnapshot(snapshot))
+          .where((baby) => baby != null)
+          .toList();
+      });
   }
 
   Future<void> deleteAllBabies(String familyId) {

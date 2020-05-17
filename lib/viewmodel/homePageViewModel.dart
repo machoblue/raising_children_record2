@@ -15,6 +15,8 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;
 
+  StreamSubscription<QuerySnapshot> _subscription;
+
   // Input
   final StreamController _initStateStreamController = StreamController<void>();
   StreamSink<void> get initState => _initStateStreamController.sink;
@@ -57,7 +59,7 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
     print(fromDateTime);
     print(toDateTime);
 
-    Firestore.instance
+    _subscription = Firestore.instance
       .collection('families')
       .document(familyId)
       .collection('babies')
@@ -85,5 +87,6 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
     _recordsStreamController.close();
     _editRecordStreamController.close();
     _navigationToEditRecordStreamController.close();
+    _subscription.cancel();
   }
 }

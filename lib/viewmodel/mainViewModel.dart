@@ -18,6 +18,8 @@ class MainViewModel with ViewModelErrorHandler implements ViewModel {
   final UserRepository _userRepository;
   final BabyRepository _babyRepository;
 
+  StreamSubscription<List<Baby>> _subscription;
+
   // INPUT
   final _onInitStateStreamController = StreamController<void>();
   StreamSink<void> get onInitState => _onInitStateStreamController.sink;
@@ -105,10 +107,9 @@ class MainViewModel with ViewModelErrorHandler implements ViewModel {
   void _observeBabies() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String familyId = sharedPreferences.getString('familyId');
-    _babyRepository
-      .observeBabies(familyId, (babies) {
-        _babiesBehaviorSubject.sink.add(babies);
-      });
+    _subscription = _babyRepository
+      .observeBabies(familyId)
+      .listen(_babiesBehaviorSubject.sink.add);
   }
 
   Future<Baby> _pickSelectedBaby(List<Baby> babies) async {
@@ -179,5 +180,6 @@ class MainViewModel with ViewModelErrorHandler implements ViewModel {
     _selectedIndex.close();
     userBehaviorSubject.close();
     _logoutCompleteStreamController.close();
+    _subscription.cancel();
   }
 }
