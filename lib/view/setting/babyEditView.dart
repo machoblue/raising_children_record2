@@ -5,11 +5,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/shared/utils.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 
 class BabyEditView extends StatefulWidget {
@@ -21,35 +21,27 @@ class BabyEditView extends StatefulWidget {
   _BabyEditViewState createState() => _BabyEditViewState();
 }
 
-class _BabyEditViewState extends State<BabyEditView> {
+class _BabyEditViewState extends BaseState<BabyEditView, BabyEditViewModel> {
   final _birthdayLabelFont = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0x0088000000));
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
-  BabyEditViewModel _viewModel;
   TextEditingController _nameController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController();
-    _viewModel = Provider.of<BabyEditViewModel>(context, listen: false);
 
     StreamSubscription<String> subscription;
-    subscription = _viewModel.name.listen((name) {
+    subscription = viewModel.name.listen((name) {
       print("### initState name: $name");
       _nameController.text = name;
       subscription.cancel();
     });
 
-    _viewModel.onSaveComplete.listen((_) => Navigator.pop(context));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _viewModel.dispose();
+    viewModel.onSaveComplete.listen((_) => Navigator.pop(context));
   }
 
   @override
@@ -65,7 +57,7 @@ class _BabyEditViewState extends State<BabyEditView> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () => _viewModel.onSaveButtonTapped.add(null),
+            onPressed: () => viewModel.onSaveButtonTapped.add(null),
           ),
         ]
       ),
@@ -88,7 +80,7 @@ class _BabyEditViewState extends State<BabyEditView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StreamBuilder(
-              stream: _viewModel.babyIconImageProvider,
+              stream: viewModel.babyIconImageProvider,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
@@ -114,7 +106,7 @@ class _BabyEditViewState extends State<BabyEditView> {
             ),
             TextField(
               controller: _nameController,
-              onChanged: (text) => _viewModel.onNameChanged.add(text),
+              onChanged: (text) => viewModel.onNameChanged.add(text),
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: _l10n.nameLabel,
@@ -131,7 +123,7 @@ class _BabyEditViewState extends State<BabyEditView> {
               ),
             ),
             StreamBuilder(
-              stream: _viewModel.birthday,
+              stream: viewModel.birthday,
               builder: (context, snapshot) {
                 final dateTime = snapshot.data ?? DateTime.now();
                 print("### dateTime: $dateTime");
@@ -149,7 +141,7 @@ class _BabyEditViewState extends State<BabyEditView> {
                       if (selectedDateTime == null) {
                         return;
                       }
-                      _viewModel.onBirthdayChanged.add(selectedDateTime);
+                      viewModel.onBirthdayChanged.add(selectedDateTime);
                     },
                   ),
                 );
@@ -167,7 +159,7 @@ class _BabyEditViewState extends State<BabyEditView> {
                     _l10n.recordDeleteButtonLabel,
                     style: _deleteButtonFont,
                   ),
-                  onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+                  onPressed: () => viewModel.onDeleteButtonTapped.add(null),
                 ),
               )
           ],
@@ -178,7 +170,7 @@ class _BabyEditViewState extends State<BabyEditView> {
 
   Widget _indicator() {
     return StreamBuilder(
-      stream: _viewModel.isLoading,
+      stream: viewModel.isLoading,
       builder: (context, snapshot) {
         final bool isLoading = snapshot.data ?? false;
         return isLoading
@@ -192,6 +184,6 @@ class _BabyEditViewState extends State<BabyEditView> {
 
   void _pickImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    _viewModel.onImageSelected.add(image);
+    viewModel.onImageSelected.add(image);
   }
 }

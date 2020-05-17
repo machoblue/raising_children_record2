@@ -6,12 +6,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class BabyEditViewModel {
+class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
 
   final _babyBehaviorSubject = BehaviorSubject<Baby>.seeded(null);
 
@@ -125,7 +126,8 @@ class BabyEditViewModel {
       .document(familyId)
       .collection("babies")
       .document(baby.id)
-      .setData(baby.map);
+      .setData(baby.map)
+      .catchError(_handleError);
     return;
   }
 
@@ -141,12 +143,19 @@ class BabyEditViewModel {
         .document(familyId)
         .collection("babies")
         .document(baby.id)
-        .delete();
+        .delete()
+        .catchError(_handleError);
 
     _onSaveCompleteStreamController.sink.add(null);
   }
 
+  void _handleError(Object error) {
+    _isLoadingBehaviorSubject.add(false);
+    handleError(error);
+  }
+
   void dispose() {
+    super.dispose();
     _babyIconImageProviderStreamController.close();
     _babyBehaviorSubject.close();
     _onSaveCompleteStreamController.close();
