@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/firestore/FirestoreRecordRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
@@ -122,7 +123,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
     return Provider(
       create: (_) {
         MainViewModel mainViewModel = Provider.of<MainViewModel>(context);
-        return HomePageViewModel(dateTime, mainViewModel.userBehaviorSubject, mainViewModel.babyBehaviorSubject);
+        return HomePageViewModel(dateTime, mainViewModel.userBehaviorSubject, mainViewModel.babyBehaviorSubject, FirestoreRecordRepository());
       },
       child: HomePageView(dateTime: dateTime),
     );

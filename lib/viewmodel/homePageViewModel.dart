@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/RecordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -14,8 +15,9 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
   DateTime dateTime;
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;
+  final RecordRepository recordRepository;
 
-  StreamSubscription<QuerySnapshot> _subscription;
+  StreamSubscription<List<Record>> _subscription;
 
   // Input
   final StreamController _initStateStreamController = StreamController<void>();
@@ -31,7 +33,7 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
   final _navigationToEditRecordStreamController = StreamController<Tuple3<Record, User, Baby>>();
   Stream<Tuple3<Record, User, Baby>> get navigationToEditRecord => _navigationToEditRecordStreamController.stream;
 
-  HomePageViewModel(this.dateTime, this.userBehaviorSubject, this.babyBehaviorSubject) {
+  HomePageViewModel(this.dateTime, this.userBehaviorSubject, this.babyBehaviorSubject, this.recordRepository) {
     _bindInputAndOutput();
   }
 
@@ -54,27 +56,12 @@ class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
 
     final sharedPreference = await SharedPreferences.getInstance();
     final familyId = sharedPreference.getString("familyId");
-    final fromDateTime = Timestamp.fromMillisecondsSinceEpoch(DateTime(dateTime.year, dateTime.month, dateTime.day).millisecondsSinceEpoch);
-    final toDateTime = Timestamp.fromMillisecondsSinceEpoch(fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
-    print(fromDateTime);
-    print(toDateTime);
+    final fromDateTime = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    final toDateTime = DateTime.fromMillisecondsSinceEpoch(fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
 
-    _subscription = Firestore.instance
-      .collection('families')
-      .document(familyId)
-      .collection('babies')
-      .document(baby.id)
-      .collection('records')
-      .where('dateTime', isGreaterThanOrEqualTo: fromDateTime, isLessThan: toDateTime)
-      .snapshots()
-      .listen((recordsQuerySnapshot) {
-        final List<DocumentSnapshot> recordSnapshotList = recordsQuerySnapshot.documents;
-        final List<Record> records = recordSnapshotList
-            .map((snapshot) => Record.fromSnapshot(snapshot))
-            .where((record) => record != null)
-            .toList();
-        _recordsStreamController.sink.add(records);
-      });
+    _subscription = recordRepository
+      .observeRecords(familyId, baby.id, from: fromDateTime, to: toDateTime)
+      .listen(_recordsStreamController.sink.add);
   }
 
   void _navigateToEditRecord(Tuple3<Record, User, Baby> tuple3) {
