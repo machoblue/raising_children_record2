@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
-import 'package:raisingchildrenrecord2/data/UserRepository.dart';
+import 'package:raisingchildrenrecord2/data/babyRepository.dart';
+import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';

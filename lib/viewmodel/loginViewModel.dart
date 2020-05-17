@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
-import 'package:raisingchildrenrecord2/data/UserRepository.dart';
+import 'package:raisingchildrenrecord2/data/babyRepository.dart';
+import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
