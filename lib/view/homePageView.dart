@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -98,19 +99,19 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
     switch(record.runtimeType) {
       case MilkRecord: {
         return Provider<MilkRecordViewModel>(
-          create: (_) => MilkRecordViewModel(record, user, baby),
+          create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: MilkRecordView(),
         );
       }
       case SnackRecord: {
         return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby),
+          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(),
         );
       }
       case BabyFoodRecord: {
         return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby),
+          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(),
         );
       }

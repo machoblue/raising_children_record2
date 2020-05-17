@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:raisingchildrenrecord2/data/firestore/FirestoreRecordRepository.dart';
-import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -12,7 +10,6 @@ import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
-import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
@@ -168,21 +165,21 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       case RecordType.milk: {
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
         return Provider<MilkRecordViewModel>(
-          create: (_) => MilkRecordViewModel(record, user, baby),
+          create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: MilkRecordView(isNew: true),
         );
       }
       case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
         return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby),
+          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(isNew: true),
         );
       }
       case RecordType.babyFood: {
         BabyFoodRecord record = BabyFoodRecord.newInstance(DateTime.now(), null, user);
         return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby),
+          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(isNew: true),
         );
       }

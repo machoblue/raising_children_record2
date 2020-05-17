@@ -1,6 +1,6 @@
 
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -11,6 +11,7 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
   BehaviorSubject<R> recordBehaviorSubject;
   User user;
   Baby baby;
+  RecordRepository recordRepository;
 
   Stream<String> get assetName => recordBehaviorSubject.stream.map((record) => record.type.assetName);
   Stream<String> get title => recordBehaviorSubject.stream.map((record) => record.type.localizedName);
@@ -32,7 +33,7 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
   final StreamController<void> _onDeleteButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
 
-  BaseRecordViewModel(record, this.user, this.baby) {
+  BaseRecordViewModel(record, this.user, this.baby, this.recordRepository) {
     recordBehaviorSubject = BehaviorSubject.seeded(record);
 
     _onDateTimeSelectedStreamController.stream.listen((date) {
@@ -63,27 +64,15 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
   }
 
   void _save(Record record) async {
-    Firestore.instance
-        .collection('families')
-        .document(user.familyId)
-        .collection("babies")
-        .document(baby.id)
-        .collection("records")
-        .document(record.id)
-        .setData(record.map);
+    recordRepository
+      .save(user.familyId, baby.id, record);
 
     _onSaveCompleteStreamController.sink.add(null);
   }
 
   void _delete(Record record) async {
-    Firestore.instance
-        .collection('families')
-        .document(user.familyId)
-        .collection("babies")
-        .document(baby.id)
-        .collection("records")
-        .document(record.id)
-        .delete();
+    recordRepository
+      .delete(user.familyId, baby.id, record);
 
     _onSaveCompleteStreamController.sink.add(null);
   }
