@@ -65,14 +65,16 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
 
   void _save(Record record) async {
     recordRepository
-      .save(user.familyId, baby.id, record);
+      .save(user.familyId, baby.id, record)
+      .catchError(handleError);
 
     _onSaveCompleteStreamController.sink.add(null);
   }
 
   void _delete(Record record) async {
     recordRepository
-      .delete(user.familyId, baby.id, record);
+      .delete(user.familyId, baby.id, record)
+      .catchError(handleError);
 
     _onSaveCompleteStreamController.sink.add(null);
   }

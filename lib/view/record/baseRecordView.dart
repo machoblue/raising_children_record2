@@ -3,9 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/shared/utils.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/baseRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
@@ -20,14 +20,13 @@ abstract class BaseRecordView<VM extends BaseRecordViewModel> extends StatefulWi
   Widget buildContent(BuildContext context);
 }
 
-class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRecordView> {
+class _BaseRecordViewState<VM extends BaseRecordViewModel> extends BaseState<BaseRecordView, VM> {
   final _recordTypeFont = const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
   final _dateFormat = DateFormat().add_yMd().add_Hms();
 
   TextEditingController _noteController;
-  VM _viewModel;
 
   @override
   void initState() {
@@ -35,13 +34,10 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
 
     _noteController = TextEditingController();
 
-    print("### before $VM");
-    _viewModel = Provider.of<VM>(context, listen: false);
-    print("### after");
-    _viewModel.onSaveComplete.listen((_) => _pop());
+    viewModel.onSaveComplete.listen((_) => Navigator.pop(context));
 
     StreamSubscription subscription;
-    subscription = _viewModel.note.listen((note) {
+    subscription = viewModel.note.listen((note) {
       _noteController.text = note;
       subscription.cancel(); // listen only first time
     });
@@ -50,7 +46,6 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
   @override
   void dispose() {
     super.dispose();
-    _viewModel.dispose();
     _noteController.dispose();
   }
 
@@ -67,7 +62,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
-              onPressed: () => _viewModel.onSaveButtonTapped.add(null),
+              onPressed: () => viewModel.onSaveButtonTapped.add(null),
             ),
           ]
       ),
@@ -85,7 +80,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
             Row(
               children: <Widget>[
                 StreamBuilder(
-                    stream: _viewModel.assetName,
+                    stream: viewModel.assetName,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -105,7 +100,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                 ),
                 Expanded(
                   child: StreamBuilder(
-                    stream: _viewModel.title,
+                    stream: viewModel.title,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -127,7 +122,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
               height: 36,
             ),
             StreamBuilder(
-              stream: _viewModel.dateTime,
+              stream: viewModel.dateTime,
               builder: (context, snapshot) {
                 final dateTime = snapshot.data ?? DateTime.now();
                 return Container(
@@ -143,7 +138,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                       if (selectedDateTime == null) {
                         return;
                       }
-                      _viewModel.onDateTimeSelected.add(selectedDateTime);
+                      viewModel.onDateTimeSelected.add(selectedDateTime);
                     },
                   ),
                 );
@@ -158,7 +153,7 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                 border: OutlineInputBorder(),
                 labelText: l10n.recordLabelNote,
               ),
-              onChanged: (text) => _viewModel.onNoteChanged.add(text),
+              onChanged: (text) => viewModel.onNoteChanged.add(text),
               controller: _noteController,
             ),
             Container(
@@ -169,16 +164,11 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends State<BaseRec
                 l10n.recordDeleteButtonLabel,
                 style: _deleteButtonFont,
               ),
-              onPressed: () => _viewModel.onDeleteButtonTapped.add(null),
+              onPressed: () => viewModel.onDeleteButtonTapped.add(null),
             ) : Container()
           ],
         ),
       ),
     );
   }
-
-  void _pop() {
-    Navigator.pop(context);
-  }
-
 }
