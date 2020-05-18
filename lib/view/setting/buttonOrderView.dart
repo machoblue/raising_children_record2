@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
 
 class ButtonOrderView extends StatefulWidget {
@@ -11,21 +12,7 @@ class ButtonOrderView extends StatefulWidget {
   _ButtonOrderViewState createState() => _ButtonOrderViewState();
 }
 
-class _ButtonOrderViewState extends State<ButtonOrderView> {
-
-  ButtonOrderViewModel _viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    _viewModel = Provider.of<ButtonOrderViewModel>(context, listen: false);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _viewModel.dispose();
-  }
+class _ButtonOrderViewState extends BaseState<ButtonOrderView, ButtonOrderViewModel> {
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +27,7 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
 
   Widget _body() {
     return StreamBuilder(
-      stream: _viewModel.recordTypes,
+      stream: viewModel.recordTypes,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container();
@@ -99,6 +86,6 @@ class _ButtonOrderViewState extends State<ButtonOrderView> {
     RecordType movedRecordType = recordTypes.removeAt(oldIndex);
     newIndex -= newIndex > oldIndex ? 1 : 0;
     recordTypes.insert(newIndex, movedRecordType);
-    _viewModel.onButtonOrderChanged.add(recordTypes.map((recordType) => recordType.string).toList());
+    viewModel.onButtonOrderChanged.add(recordTypes.map((recordType) => recordType.string).toList());
   }
 }

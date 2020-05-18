@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
@@ -15,14 +16,9 @@ class BabyListView extends StatefulWidget {
   _BabyListViewState createState() => _BabyListViewState();
 }
 
-class _BabyListViewState extends State<BabyListView> {
+class _BabyListViewState extends BaseState<BabyListView, BabyListViewModel> {
   final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
-  BabyListViewModel _viewModel;
-  @override
-  void initState() {
-    super.initState();
-    _viewModel = Provider.of<BabyListViewModel>(context, listen: false);
-  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
@@ -37,7 +33,7 @@ class _BabyListViewState extends State<BabyListView> {
         ]
       ),
       body: StreamBuilder(
-        stream: _viewModel.babiesStream,
+        stream: viewModel.babiesStream,
         builder: (context, snapshot) {
           List<Baby> babies = snapshot.data ?? [];
           return babies.isEmpty

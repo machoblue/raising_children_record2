@@ -1,12 +1,14 @@
 
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 
-class BabyListViewModel {
+class BabyListViewModel with ViewModelErrorHandler implements ViewModel {
 
   Stream<List<Baby>> babiesStream;
 
   BabyListViewModel(this.babiesStream);
 
   void dispose() {
+    super.dispose();
   }
 }

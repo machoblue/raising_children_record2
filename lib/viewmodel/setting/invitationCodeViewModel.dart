@@ -1,11 +1,14 @@
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/familyRepository.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InvitationCodeViewModel {
+class InvitationCodeViewModel with ViewModelErrorHandler implements ViewModel {
+
+  final FamilyRepository familyRepository;
 
   final StreamController<void> _onInitStateStreamController = StreamController<void>();
   StreamSink<void> get onInitState => _onInitStateStreamController.sink;
@@ -16,29 +19,29 @@ class InvitationCodeViewModel {
   final StreamController<DateTime> _expirationDateStreamController = StreamController<DateTime>();
   Stream<DateTime> get expirationDate => _expirationDateStreamController.stream;
 
-  InvitationCodeViewModel() {
-    _onInitStateStreamController.stream.listen((_) => _generateInvitationCode());
+  InvitationCodeViewModel(this.familyRepository) {
+    _onInitStateStreamController.stream.listen((_) {
+      _generateInvitationCode().then((invitationCode) {
+        _invitationCodeJSONStreamController.sink.add(invitationCode.json);
+        _expirationDateStreamController.sink.add(invitationCode.expirationDate);
+      })
+      .catchError(handleError);
+    });
   }
 
-  void _generateInvitationCode() async {
+  Future<InvitationCode> _generateInvitationCode() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String familyId = sharedPreferences.getString('familyId');
 
     InvitationCode invitationCode = InvitationCode.newInstance(familyId);
 
-    Firestore.instance
-      .collection('families')
-      .document(familyId)
-      .collection("invitationCodes")
-      .document(invitationCode.code)
-      .setData(invitationCode.map)
-      .then((_) {
-        _invitationCodeJSONStreamController.sink.add(invitationCode.json);
-        _expirationDateStreamController.sink.add(invitationCode.expirationDate);
-      });
+    return familyRepository
+      .createInvitationCode(invitationCode, familyId)
+      .then((_) => invitationCode);
   }
 
   void dispose() {
+    super.dispose();
     _onInitStateStreamController.close();
     _invitationCodeJSONStreamController.close();
     _expirationDateStreamController.close();

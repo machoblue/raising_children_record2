@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
+import 'package:raisingchildrenrecord2/data/familyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -69,7 +70,7 @@ class SettingsView extends StatefulWidget {
             MaterialPageRoute(
                 builder: (context) {
                   return Provider<InvitationCodeViewModel>(
-                    create: (_) => InvitationCodeViewModel(),
+                    create: (_) => InvitationCodeViewModel(FirestoreFamilyRepository()),
                     child: InvitationCodeView(),
                   );
                 }
