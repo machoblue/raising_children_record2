@@ -147,7 +147,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
     final familyId = Uuid().v1();
     User user = User.fromFirebaseUser(firebaseUser, familyId);
     return userRepository.createOrUpdateUser(user).then((_) {
-      return userRepository.createOrJoinFamily(familyId, user).then((_) {
+      return userRepository.createFamily(familyId, user).then((_) {
         sharedPreferences.setString('userId', user.id);
         sharedPreferences.setString('familyId', familyId);
 
@@ -165,7 +165,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
     final User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
     return userRepository.createOrUpdateUser(user).then((_) {
       String familyId = invitationCode.familyId;
-      return userRepository.createOrJoinFamily(familyId, user).then((_) {
+      return userRepository.joinFamily(familyId, user).then((_) {
         sharedPreferences.setString('familyId', familyId);
         sharedPreferences.setString('userId', user.id);
 

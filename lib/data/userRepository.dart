@@ -8,7 +8,8 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 class UserRepository {
   Future<void> createOrUpdateUser(User user) {}
   Future<User> getUser(String userId) {}
-  Future<void> createOrJoinFamily(String familyId, User user) {}
+  Future<void> createFamily(String familyId, User user) {}
+  Future<void> joinFamily(String familyId, User user) {}
   Future<void> exitFamily(String familyId, String userId) {}
   Future<void> deleteUser(String userId) {}
 }
@@ -42,7 +43,23 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
         .catchError(handleError);
   }
 
-  Future<void> createOrJoinFamily(String familyId, User user) {
+  Future<void> createFamily(String familyId, User user) {
+    return Firestore.instance
+      .collection(families)
+      .document(user.familyId)
+      .collection(users)
+      .document(user.id)
+      .setData(user.map)
+      .then((_) {
+        return Firestore.instance
+          .collection(families)
+          .document(user.familyId)
+          .setData({ 'createdBy': user.id });
+      })
+      .catchError(handleError);
+  }
+
+  Future<void> joinFamily(String familyId, User user) {
     return Firestore.instance
         .collection(families)
         .document(user.familyId)
