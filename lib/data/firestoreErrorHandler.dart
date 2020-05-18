@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 mixin FirestoreErrorHandler {
   static const String missingOrInsufficientPermissions = 'Error 7';
   void handleError(Object error) {
+    // TODO: Crasylytics
     switch (error.runtimeType) {
       case PlatformException: {
         final String code = (error as PlatformException).code;

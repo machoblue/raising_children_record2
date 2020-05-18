@@ -10,6 +10,7 @@ class BabyRepository {
   Future<void> createOrUpdateBaby(String familyId, Baby baby) {}
   Stream<List<Baby>> observeBabies(String familyId) {}
   Future<void> deleteAllBabies(String familyId) {}
+  Future<void> deleteBaby(String familyId, String babyId) {}
 }
 
 class FirestoreBabyRepository with FirestoreErrorHandler implements BabyRepository {
@@ -96,5 +97,15 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
         return;
       })
       .catchError(handleError);
+  }
+
+  Future<void> deleteBaby(String familyId, String babyId) {
+    return Firestore.instance
+        .collection(families)
+        .document(familyId)
+        .collection(babies)
+        .document(babyId)
+        .delete()
+        .catchError(handleError);
   }
 }

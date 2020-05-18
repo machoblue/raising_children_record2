@@ -2,8 +2,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
@@ -100,7 +102,7 @@ class _BabyListViewState extends State<BabyListView> {
         MaterialPageRoute(
             builder: (context) {
               return Provider<BabyEditViewModel>(
-                create: (_) => BabyEditViewModel(baby),
+                create: (_) => BabyEditViewModel(baby, FirestoreBabyRepository(), FirebaseStorageUtil()),
                 child: BabyEditView(baby),
               );
             }
