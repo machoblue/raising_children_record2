@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
 
 class UserEditView extends StatefulWidget {
@@ -19,7 +20,7 @@ class UserEditView extends StatefulWidget {
   _UserEditViewState createState() => _UserEditViewState();
 }
 
-class _UserEditViewState extends State<UserEditView> {
+class _UserEditViewState extends BaseState<UserEditView, UserEditViewModel> {
 
   UserEditViewModel _viewModel;
   TextEditingController _nameController;

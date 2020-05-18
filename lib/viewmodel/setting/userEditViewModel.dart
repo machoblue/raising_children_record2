@@ -3,15 +3,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-class UserEditViewModel {
+class UserEditViewModel with ViewModelErrorHandler implements ViewModel {
+
+  final UserRepository userRepository;
+  final StorageUtil storageUtil;
 
   final _userBehaviorSubject = BehaviorSubject<User>.seeded(null);
 
@@ -35,7 +38,7 @@ class UserEditViewModel {
   final _isLoadingBehaviorSubject = BehaviorSubject<bool>.seeded(false);
   Stream<bool> get isLoading => _isLoadingBehaviorSubject.stream;
 
-  UserEditViewModel(User user) {
+  UserEditViewModel(User user, this.userRepository, this.storageUtil) {
     _userBehaviorSubject.add(user);
     _bindInputAndOutput();
   }
@@ -60,57 +63,49 @@ class UserEditViewModel {
       _imageBehaviorSubject,
       (_, user, imageFile) => Tuple2<User, File>(user, imageFile),
     )
-    .listen(_save);
+    .listen((tuple2) {
+      _isLoadingBehaviorSubject.sink.add(true);
+      _save(tuple2).then((_) {
+        _isLoadingBehaviorSubject.sink.add(false);
+        _onSaveCompleteStreamController.sink.add(null);
+      });
+    });
   }
 
-  void _save(Tuple2<User, File> tuple2) async {
+  Future<void>_save(Tuple2<User, File> tuple2) async {
     if (_isLoadingBehaviorSubject.value) {
       return;
     }
-
-    _isLoadingBehaviorSubject.sink.add(true);
 
     final User user = tuple2.item1;
     final File imageFile = tuple2.item2;
 
     if (imageFile == null) {
-      await _saveUser(user);
-      _isLoadingBehaviorSubject.sink.add(false);
-      _onSaveCompleteStreamController.sink.add(null);
-      return;
+      return _saveUser(user);
     }
 
     final String userId = user.id;
-    StorageReference reference = FirebaseStorage.instance.ref().child(userId);
-    StorageUploadTask uploadTask = reference.putFile(imageFile);
-//    StorageTaskSnapshot storageTaskSnapshot;
-    uploadTask.onComplete.then((storageTaskSnapshot) {
-      if (storageTaskSnapshot.error != null) {
-        // TODO: error handling
-        _isLoadingBehaviorSubject.sink.add(false);
-        return;
-      }
-
-      storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) async {
-        user.photoUrl = downloadUrl;
-        await _saveUser(user);
-        _isLoadingBehaviorSubject.sink.add(false);
-        _onSaveCompleteStreamController.sink.add(null);
+    return storageUtil
+      .uploadFile(imageFile, userId)
+      .then((imageFileUrl) {
+        user.photoUrl = imageFileUrl;
+        return _saveUser(user);
       });
-    });
-
   }
 
-  void _saveUser(User user) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await Firestore.instance
-      .collection('users')
-      .document(user.id)
-      .setData(user.map);
-    return;
+  Future<void>_saveUser(User user) async {
+    return userRepository
+      .createOrUpdateUser(user)
+      .catchError(_handleError);
+  }
+
+  void _handleError(Object error) {
+    _isLoadingBehaviorSubject.sink.add(false);
+    handleError(error);
   }
 
   void dispose() {
+    super.dispose();
     _userIconImageProviderStreamController.close();
     _userBehaviorSubject.close();
     _onSaveCompleteStreamController.close();

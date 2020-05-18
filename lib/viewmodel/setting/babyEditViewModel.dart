@@ -83,7 +83,8 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
       _save(tuple2).then((_) {
         _isLoadingBehaviorSubject.sink.add(false);
         _onSaveCompleteStreamController.sink.add(null);
-      });
+      })
+      .catchError(_handleError);
     });
 
     _onDeleteButtonTappedStreamController.stream.listen((_) {
@@ -91,7 +92,8 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
       _delete(_babyBehaviorSubject.value).then((_) {
         _isLoadingBehaviorSubject.add(false);
         _onSaveCompleteStreamController.sink.add(null);
-      });
+      })
+      .catchError(_handleError);
     });
   }
 
@@ -113,16 +115,14 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
       .then((imageFileUrl) {
         baby.photoUrl = imageFileUrl;
         return _saveBaby(baby);
-      })
-      .catchError(_handleError);
+      });
   }
 
   Future<void>_saveBaby(Baby baby) async {
     return SharedPreferences.getInstance().then((sharedPreferences) {
       final String familyId = sharedPreferences.get('familyId');
       return babyRepository
-        .createOrUpdateBaby(familyId, baby)
-        .catchError(_handleError);
+        .createOrUpdateBaby(familyId, baby);
     });
   }
 
@@ -134,8 +134,7 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
     return SharedPreferences.getInstance().then((sharedPreferences) {
       final String familyId = sharedPreferences.get('familyId');
       return babyRepository
-        .deleteBaby(familyId, baby.id)
-        .catchError(_handleError);
+        .deleteBaby(familyId, baby.id);
     });
   }
 

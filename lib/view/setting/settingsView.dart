@@ -9,6 +9,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/view/setting/buttonOrderView.dart';
@@ -89,7 +90,7 @@ class SettingsView extends StatefulWidget {
               MaterialPageRoute(
                   builder: (context) {
                     return Provider<UserEditViewModel>(
-                      create: (_) => UserEditViewModel(user),
+                      create: (_) => UserEditViewModel(user, FirestoreUserRepository(), FirebaseStorageUtil()),
                       child: UserEditView(user),
                     );
                   }
