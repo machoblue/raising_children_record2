@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // This rule allows anyone on the internet to view, edit, and delete
+    // all data in your Firestore database. It is useful for getting
+    // started, but it is configured to expire after 30 days because it
+    // leaves your app open to attackers. At that time, all client
+    // requests to your Firestore database will be denied.
+    //
+    // Make sure to write security rules for your app before that time, or else
+    // your app will lose access to your Firestore database
+    // match /{document=**} {
+    //   allow read, write: if true;
+    // }
+    
+    function isSignedIn() {
+    	return request.auth.uid != null;
+    }
+    
+    function userExists() {
+    	return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    
+    function familyContainsRequestUser(familyId) {
+    	return exists(/databases/$(database)/documents/families/$(familyId)/users/$(request.auth.uid));
+    }
+    
+    function hasValidInvitationCode(familyId) {
+      return request.time < get(/databases/$(database)/documents/families/$(familyId)/invitationCodes/$(request.resource.data.invitationCode)).data.expirationDate;
+    }
+    
+    function familyNotExists(familyId) {
+      return !exists(/databases/$(database)/documents/families/$(familyId));
+    }
+    
+    match /families/{familyId}/{document=**} {
+      allow read, write: if familyContainsRequestUser(familyId);
+    }
+    
+    match /families/{familyId}/users/{userId} {
+    	allow create: if userExists() && (familyNotExists(familyId) || hasValidInvitationCode(familyId));
+    }
+    
+    match /users/{userId} {
+    	allow read, update, delete: if request.auth.uid == userId;
+      allow create: if isSignedIn();
+    }
+  }
+}
