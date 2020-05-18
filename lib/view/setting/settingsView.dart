@@ -11,6 +11,7 @@ import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
+import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/view/setting/buttonOrderView.dart';
@@ -143,17 +144,13 @@ class SettingsView extends StatefulWidget {
   State<StatefulWidget> createState() => _SettingsViewState();
 }
 
-class _SettingsViewState extends State<SettingsView> {
+class _SettingsViewState extends BaseState<SettingsView, SettingsViewModel> {
   final _groupTitleFont = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0x0088000000));
-
-  SettingsViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Provider.of<SettingsViewModel>(context, listen: false);
-
-    _viewModel.logoutComplete.listen((_) {
+    viewModel.logoutComplete.listen((_) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -164,12 +161,6 @@ class _SettingsViewState extends State<SettingsView> {
         ),
       );
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _viewModel.dispose();
   }
 
   @override
@@ -250,7 +241,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   Widget _indicator() {
     return StreamBuilder(
-      stream: _viewModel.isLoading,
+      stream: viewModel.isLoading,
       builder: (context, snapshot) {
         final bool isLoading = snapshot.data ?? false;
         return isLoading

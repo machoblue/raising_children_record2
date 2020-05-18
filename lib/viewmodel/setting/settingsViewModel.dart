@@ -1,22 +1,23 @@
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
+import 'package:raisingchildrenrecord2/data/familyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
-import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
+import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsViewModel {
+class SettingsViewModel with ViewModelErrorHandler implements ViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final User user;
   final UserRepository userRepository;
   final BabyRepository babyRepository;
+  final FamilyRepository familyRepository;
 
   final _onClearAllDataItemTappedStreamController = StreamController<void>();
   StreamSink<void> get onClearAllDataItemTapped => _onClearAllDataItemTappedStreamController.sink;
@@ -30,7 +31,7 @@ class SettingsViewModel {
   final _logoutCompleteStreamController = StreamController<void>();
   Stream<void> get logoutComplete => _logoutCompleteStreamController.stream;
 
-  SettingsViewModel(this.user, this.userRepository, this.babyRepository) {
+  SettingsViewModel(this.user, this.userRepository, this.babyRepository, this.familyRepository) {
     _onClearAllDataItemTappedStreamController.stream.listen((_) {
       _isLoadingBehaviorSubject.sink.add(true);
       _clearAllData().then((_) {
@@ -38,51 +39,41 @@ class SettingsViewModel {
           _isLoadingBehaviorSubject.sink.add(false);
           _logoutCompleteStreamController.sink.add(null);
         });
-      });
+      })
+      .catchError(_handleError);
     });
 
     _onLogoutButtonTappedStreamController.stream.listen((_) {
-      print("##### _onLogoutButtonTappedStreamController.stream.listen");
       _isLoadingBehaviorSubject.sink.add(true);
       _logout().then((_) {
-        print("##### _logout.then");
         _isLoadingBehaviorSubject.sink.add(false);
         _logoutCompleteStreamController.sink.add(null);
-      });
+      })
+      .catchError(_handleError);
     });
   }
 
   Future<void> _clearAllData() {
     return _clearFamilyInfo().then((_) {
-      return _clearUserInfo();
+      return userRepository.deleteUser(user.id);
     });
   }
 
   Future<void> _clearFamilyInfo() async {
-    QuerySnapshot familyUsersQuerySnapshot = await Firestore.instance
-      .collection('families')
-      .document(user.familyId)
-      .collection('users')
-      .getDocuments();
-    List<DocumentSnapshot> familyUserSnapshots = familyUsersQuerySnapshot.documents;
-    final bool isFamilyContainsOnlyMe = familyUserSnapshots.length == 1 && familyUserSnapshots.first['id'] == user.id;
-    if (isFamilyContainsOnlyMe) {
-      DocumentReference familyReference = Firestore.instance
-        .collection('families')
-        .document(user.familyId);
+    final String familyId = user.familyId;
+    return familyRepository
+      .getMembers(familyId)
+      .then((users) {
+        final bool isFamilyContainsOnlyMe = users.length == 1 && users.first.id == user.id;
+        if (!isFamilyContainsOnlyMe) {
+          return userRepository
+            .exitFamily(user.familyId, user.id);
 
-      await familyReference.collection('invitationCodes').deleteAll();
-      await babyRepository.deleteAllBabies(user.familyId);
-      await familyReference.collection('users').deleteAll();
-      return;
-
-    } else {
-      return userRepository.exitFamily(user.familyId, user.id);
-    }
-  }
-
-  Future<void> _clearUserInfo() {
-    return userRepository.deleteUser(user.id);
+        } else {
+          return familyRepository
+            .deleteFamily(user.familyId);
+        }
+      });
   }
 
   Future<void> _logout() {
@@ -97,7 +88,13 @@ class SettingsViewModel {
     });
   }
 
+  void _handleError(Object error) {
+    _isLoadingBehaviorSubject.sink.add(false);
+    handleError(error);
+  }
+
   void dispose() {
+    super.dispose();
     _onClearAllDataItemTappedStreamController.close();
     _onLogoutButtonTappedStreamController.close();
     _isLoadingBehaviorSubject.close();

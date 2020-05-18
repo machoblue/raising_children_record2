@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
+import 'package:raisingchildrenrecord2/data/familyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -150,6 +151,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
             Provider.of<MainViewModel>(context).userBehaviorSubject.value,
             FirestoreUserRepository(),
             FirestoreBabyRepository(),
+            FirestoreFamilyRepository(),
           ),
           child: SettingsView(),
         );
