@@ -65,7 +65,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
 
   Widget _babyButton() {
     return Container(
-      padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
+      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
 
       child: StreamBuilder(
         stream: viewModel.babies,
