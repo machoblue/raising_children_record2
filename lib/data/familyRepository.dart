@@ -34,7 +34,9 @@ class FirestoreFamilyRepository with FirestoreErrorHandler implements FamilyRepo
 
     return familyReference.collection(invitationCodes).deleteAll().then((_) {
       return FirestoreBabyRepository().deleteAllBabies(familyId).then((_) {
-        return familyReference.collection(users).deleteAll();
+        return familyReference.delete().then((_) {
+          return familyReference.collection(users).deleteAll();
+        });
       });
     })
     .catchError(handleError);
