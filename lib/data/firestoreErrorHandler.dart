@@ -5,6 +5,7 @@ mixin FirestoreErrorHandler {
   static const String missingOrInsufficientPermissions = 'Error 7';
   void handleError(Object error) {
     // TODO: Crasylytics
+    print("### FirestoreErrorHandler.error: $error");
     switch (error.runtimeType) {
       case PlatformException: {
         final String code = (error as PlatformException).code;

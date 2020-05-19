@@ -32,21 +32,21 @@ class FirestoreFamilyRepository with FirestoreErrorHandler implements FamilyRepo
       .collection(families)
       .document(familyId);
 
-    return familyReference.collection('invitationCodes').deleteAll().then((_) {
+    return familyReference.collection(invitationCodes).deleteAll().then((_) {
       return FirestoreBabyRepository().deleteAllBabies(familyId).then((_) {
-        return familyReference.collection('users').deleteAll();
+        return familyReference.collection(users).deleteAll();
       });
     })
     .catchError(handleError);
   }
 
   Future<List<User>> getMembers(String familyId) {
-    Firestore.instance
+    return Firestore.instance
       .collection(families)
       .document(familyId)
       .collection(users)
       .getDocuments()
-      .then((querySnapshot){
+      .then((querySnapshot) {
         return querySnapshot
           .documents
           .map((documentSnapshot) => User.fromSnapshot(documentSnapshot))

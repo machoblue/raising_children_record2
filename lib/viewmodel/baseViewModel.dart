@@ -20,6 +20,7 @@ mixin ViewModelErrorHandler {
   Stream<ErrorMessage> get errorMessage => errorMessageStreamController.stream;
 
   void handleError(Object error) {
+    print("### ViewModelErrorHandler.error: $error");
     String title = Intl.message('Error', name: 'error');
     String message = Intl.message('Error has occured.', name: 'errorMessage');
 
