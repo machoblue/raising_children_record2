@@ -7,7 +7,7 @@ extension CollectionReferenceExtension on CollectionReference {
       .then((querySnapshot) async {
         List<DocumentSnapshot> snapshotList = querySnapshot.documents;
         for (var snapshot in snapshotList) {
-            await this.document(snapshot['id']).delete();
+            await this.document(snapshot.documentID).delete();
         }
         return;
     });
