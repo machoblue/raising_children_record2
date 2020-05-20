@@ -4,7 +4,7 @@ import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
-import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
+import 'package:raisingchildrenrecord2/data/collectionReferenceExtension.dart';
 
 class FamilyRepository {
   Future<void> createInvitationCode(InvitationCode invitationCode, String familyId) {}

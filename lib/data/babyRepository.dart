@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
-import 'package:raisingchildrenrecord2/shared/collectionReferenceExtension.dart';
+import 'package:raisingchildrenrecord2/data/collectionReferenceExtension.dart';
 
 class BabyRepository {
   Future<List<Baby>> getBabies(String familyId) {}

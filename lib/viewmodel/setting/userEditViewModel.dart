@@ -64,6 +64,10 @@ class UserEditViewModel with ViewModelErrorHandler implements ViewModel {
       (_, user, imageFile) => Tuple2<User, File>(user, imageFile),
     )
     .listen((tuple2) {
+      if (_isLoadingBehaviorSubject.value) {
+        return;
+      }
+
       _isLoadingBehaviorSubject.sink.add(true);
       _save(tuple2).then((_) {
         _isLoadingBehaviorSubject.sink.add(false);
@@ -73,10 +77,6 @@ class UserEditViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Future<void>_save(Tuple2<User, File> tuple2) async {
-    if (_isLoadingBehaviorSubject.value) {
-      return;
-    }
-
     final User user = tuple2.item1;
     final File imageFile = tuple2.item2;
 

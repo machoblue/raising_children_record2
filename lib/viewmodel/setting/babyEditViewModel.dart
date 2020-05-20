@@ -79,6 +79,10 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
       (_, baby, imageFile) => Tuple2<Baby, File>(baby, imageFile),
     )
     .listen((tuple2) {
+      if (_isLoadingBehaviorSubject.value) {
+        return;
+      }
+
       _isLoadingBehaviorSubject.sink.add(true);
       _save(tuple2).then((_) {
         _isLoadingBehaviorSubject.sink.add(false);
@@ -88,6 +92,10 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
     });
 
     _onDeleteButtonTappedStreamController.stream.listen((_) {
+      if (_isLoadingBehaviorSubject.value) {
+        return;
+      }
+
       _isLoadingBehaviorSubject.add(true);
       _delete(_babyBehaviorSubject.value).then((_) {
         _isLoadingBehaviorSubject.add(false);
@@ -98,10 +106,6 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Future<void> _save(Tuple2<Baby, File> tuple2) async {
-    if (_isLoadingBehaviorSubject.value) {
-      return;
-    }
-
     final Baby baby = tuple2.item1;
     final File imageFile = tuple2.item2;
 
@@ -127,10 +131,6 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Future<void> _delete(Baby baby) async {
-    if (_isLoadingBehaviorSubject.value) {
-      return;
-    }
-
     return SharedPreferences.getInstance().then((sharedPreferences) {
       final String familyId = sharedPreferences.get('familyId');
       return babyRepository
