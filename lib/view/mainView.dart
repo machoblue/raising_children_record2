@@ -78,7 +78,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          fit: BoxFit.fitHeight,
+                          fit: BoxFit.fill,
                           image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
                         )
                     ),
@@ -104,7 +104,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              fit: BoxFit.fitHeight,
+                              fit: BoxFit.fill,
                               image: CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
                             )
                         ),
@@ -124,7 +124,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        fit: BoxFit.fitHeight,
+                        fit: BoxFit.fill,
                         image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
                       )
                   ),
