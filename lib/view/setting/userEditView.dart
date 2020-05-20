@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart';
 
 class UserEditView extends StatefulWidget {
@@ -85,16 +86,10 @@ class _UserEditViewState extends BaseState<UserEditView, UserEditViewModel> {
                 }
                 return GestureDetector(
                   onTap: _pickImage,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: snapshot.data,
-                      ),
-                    ),
-                    height: 84,
+                  child: CircleImage(
+                    snapshot.data,
                     width: 84,
+                    height: 84,
                   ),
                 );
               }

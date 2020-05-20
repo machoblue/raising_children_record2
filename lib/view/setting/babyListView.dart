@@ -8,6 +8,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyEditView.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 
@@ -68,16 +69,10 @@ class _BabyListViewState extends BaseState<BabyListView, BabyListViewModel> {
         ),
         child: Row(
           children: <Widget>[
-            Container(
+            CircleImage(
+              CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
               width: 36,
               height: 36,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.fitHeight,
-                    image: CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
-                  )
-              ),
             ),
             Container(width: 8),
             Expanded(

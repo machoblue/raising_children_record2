@@ -8,6 +8,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 
@@ -74,15 +75,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
             return StreamBuilder(
                 stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
                 builder: (context, snapshot) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
-                        )
-                    ),
-                  );
+                  return CircleImage(snapshot.data ?? AssetImage('assets/default_baby_icon.png'));
                 }
             );
           }
@@ -98,16 +91,10 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
                   value: baby,
                   child: Row(
                     children: <Widget>[
-                      Container(
+                      CircleImage(
+                        CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
                         width: 28,
                         height: 28,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: CachedNetworkImageProvider(baby.photoUrl) ?? AssetImage("assets/default_baby_icon.png"),
-                            )
-                        ),
                       ),
                       Container(width: 8),
                       Text(baby.name),
@@ -120,15 +107,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
             child: StreamBuilder(
               stream: Provider.of<MainViewModel>(context).babyIconImageProvider,
               builder: (context, snapshot) {
-                return Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
-                      )
-                  ),
-                );
+                return CircleImage(snapshot.data ?? AssetImage('assets/default_baby_icon.png'));
               },
             ),
           );

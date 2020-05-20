@@ -10,6 +10,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/shared/utils.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 
 class BabyEditView extends StatefulWidget {
@@ -87,16 +88,10 @@ class _BabyEditViewState extends BaseState<BabyEditView, BabyEditViewModel> {
                 }
                 return GestureDetector(
                   onTap: _pickImage,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: snapshot.data,
-                      ),
-                    ),
-                    height: 84,
+                  child: CircleImage(
+                    snapshot.data,
                     width: 84,
+                    height: 84,
                   ),
                 );
               }
