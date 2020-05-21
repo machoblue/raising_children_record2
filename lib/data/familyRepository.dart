@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/FirestoreUtil.dart';
 import 'package:raisingchildrenrecord2/data/BabyRepository.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
@@ -12,13 +13,13 @@ class FamilyRepository {
   Future<List<User>> getMembers(String familyId) {}
 }
 
-class FirestoreFamilyRepository with FirestoreErrorHandler implements FamilyRepository {
+class FirestoreFamilyRepository with FirestoreErrorHandler, FirestoreUtil implements FamilyRepository {
   static final String families = 'families';
   static final String invitationCodes = 'invitationCodes';
   static final String users = 'users';
 
   Future<void> createInvitationCode(InvitationCode invitationCode, String familyId) {
-    return Firestore.instance
+    return rootRef
       .collection(families)
       .document(familyId)
       .collection(invitationCodes)
@@ -28,7 +29,7 @@ class FirestoreFamilyRepository with FirestoreErrorHandler implements FamilyRepo
   }
 
   Future<void> deleteFamily(String familyId) {
-    DocumentReference familyReference = Firestore.instance
+    DocumentReference familyReference = rootRef
       .collection(families)
       .document(familyId);
 
@@ -43,7 +44,7 @@ class FirestoreFamilyRepository with FirestoreErrorHandler implements FamilyRepo
   }
 
   Future<List<User>> getMembers(String familyId) {
-    return Firestore.instance
+    return rootRef
       .collection(families)
       .document(familyId)
       .collection(users)

@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/FirestoreUtil.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/data/collectionReferenceExtension.dart';
@@ -13,13 +14,13 @@ class BabyRepository {
   Future<void> deleteBaby(String familyId, String babyId) {}
 }
 
-class FirestoreBabyRepository with FirestoreErrorHandler implements BabyRepository {
+class FirestoreBabyRepository with FirestoreErrorHandler, FirestoreUtil implements BabyRepository {
   static final String families = 'families';
   static final String babies = 'babies';
   static final String records = 'records';
 
   Future<List<Baby>> getBabies(String familyId) async {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(familyId)
         .collection(babies)
@@ -35,7 +36,7 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
   }
 
   Future<Baby> getBaby(String familyId, String babyId) async {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(familyId)
         .collection(babies)
@@ -52,7 +53,7 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
   }
 
   Future<void> createOrUpdateBaby(String familyId, Baby baby) async {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(familyId)
         .collection(babies)
@@ -62,7 +63,7 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
   }
 
   Stream<List<Baby>> observeBabies(String familyId) {
-    return Firestore.instance
+    return rootRef
       .collection(families)
       .document(familyId)
       .collection(babies)
@@ -76,7 +77,7 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
   }
 
   Future<void> deleteAllBabies(String familyId) {
-    final babiesReference = Firestore.instance
+    final babiesReference = rootRef
       .collection(families)
       .document(familyId)
       .collection(babies);
@@ -100,7 +101,7 @@ class FirestoreBabyRepository with FirestoreErrorHandler implements BabyReposito
   }
 
   Future<void> deleteBaby(String familyId, String babyId) {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(familyId)
         .collection(babies)

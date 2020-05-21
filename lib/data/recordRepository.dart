@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:raisingchildrenrecord2/data/FirestoreUtil.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 
@@ -10,11 +11,11 @@ class RecordRepository {
   Future<void> delete(String familyId, String babyId, Record record) {}
 }
 
-class FirestoreRecordRepository with FirestoreErrorHandler implements RecordRepository {
+class FirestoreRecordRepository with FirestoreErrorHandler, FirestoreUtil implements RecordRepository {
   Stream<List<Record>> observeRecords(String familyId, String babyId, { Key key, DateTime from, DateTime to }) {
     final fromTimeStamp = Timestamp.fromDate(from);
     final toTimeStamp = Timestamp.fromDate(to);
-    return Firestore.instance
+    return rootRef
       .collection('families')
       .document(familyId)
       .collection('babies')
@@ -31,7 +32,7 @@ class FirestoreRecordRepository with FirestoreErrorHandler implements RecordRepo
   }
 
   Future<void> save(String familyId, String babyId, Record record) {
-    return Firestore.instance
+    return rootRef
         .collection('families')
         .document(familyId)
         .collection("babies")
@@ -42,7 +43,7 @@ class FirestoreRecordRepository with FirestoreErrorHandler implements RecordRepo
   }
 
   Future<void> delete(String familyId, String babyId, Record record) {
-    Firestore.instance
+    return rootRef
         .collection('families')
         .document(familyId)
         .collection("babies")

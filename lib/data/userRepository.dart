@@ -1,7 +1,7 @@
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raisingchildrenrecord2/data/FirestoreUtil.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 
@@ -14,13 +14,13 @@ class UserRepository {
   Future<void> deleteUser(String userId) {}
 }
 
-class FirestoreUserRepository with FirestoreErrorHandler implements UserRepository {
+class FirestoreUserRepository with FirestoreErrorHandler, FirestoreUtil implements UserRepository {
 
   final String users = 'users';
   final String families = 'families';
 
   Future<void> createOrUpdateUser(User user) {
-    return Firestore.instance
+    return rootRef
         .collection(users)
         .document(user.id)
         .setData(user.map)
@@ -28,7 +28,7 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
   }
 
   Future<User> getUser(String userId) {
-    return Firestore.instance
+    return rootRef
         .collection(users)
         .document(userId)
         .get()
@@ -44,14 +44,14 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
   }
 
   Future<void> createFamily(String familyId, User user) {
-    return Firestore.instance
+    return rootRef
       .collection(families)
       .document(user.familyId)
       .collection(users)
       .document(user.id)
       .setData(user.map)
       .then((_) {
-        return Firestore.instance
+        return rootRef
           .collection(families)
           .document(user.familyId)
           .setData({ 'createdBy': user.id });
@@ -60,7 +60,7 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
   }
 
   Future<void> joinFamily(String familyId, User user) {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(user.familyId)
         .collection(users)
@@ -70,7 +70,7 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
   }
 
   Future<void> exitFamily(String familyId, String userId) {
-    return Firestore.instance
+    return rootRef
         .collection(families)
         .document(familyId)
         .collection(users)
@@ -80,7 +80,7 @@ class FirestoreUserRepository with FirestoreErrorHandler implements UserReposito
   }
 
   Future<void> deleteUser(String userId) {
-    return Firestore.instance
+    return rootRef
         .collection(users)
         .document(userId)
         .delete()
