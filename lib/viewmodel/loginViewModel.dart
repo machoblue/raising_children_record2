@@ -7,6 +7,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,7 +40,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
   final _messageStreamController = StreamController<String>();
   Stream<String> get message => _messageStreamController.stream;
 
-  final _showIndicatorStreamController = StreamController<bool>();
+  final _showIndicatorStreamController = BehaviorSubject.seeded(false);
   Stream<bool> get showIndicator => _showIndicatorStreamController.stream;
 
   final _needConfirmInvitationCode = StreamController<void>();
@@ -72,7 +73,10 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   void _signIn(_) async {
-    print("### _signIn()");
+    if (_showIndicatorStreamController.value) {
+      return;
+    }
+
     _showIndicatorStreamController.sink.add(true);
 
     firebaseUser = await googleSignIn.signIn().then((GoogleSignInAccount account) {
