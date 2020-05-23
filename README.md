@@ -2,10 +2,10 @@
 
 # Usage
 
-## Firebase
+## Firebase Configuration
 - Download google-services.json(for Android) and GoogleService-Info.plist(for iOS), and put these files in project respectively.
 
-## Add Internationalized message
+## Add Internationalized Messages
 
 Add a message to `l10n.dart` like following.
 
@@ -22,7 +22,7 @@ $ flutter packages pub run intl_translation:extract_to_arb \
      lib/l10n/l10n.dart
 ```
 
-Add localized a message to `*.arb`.
+Add a localized message to `*.arb`.
 
 Execute `intl_translation:generate_from_arb` to generate `messages_*.dart`.
 ```
@@ -31,4 +31,12 @@ $ flutter packages pub run intl_translation:generate_from_arb \
      --no-use-deferred-loading \
      lib/l10n/l10n.dart \
      lib/l10n/arb/intl_*.arb
+```
+
+## Edit Firestore Rules
+
+Execute next command after edit firestore.rules.
+
+```
+$ firebase deploy --only firestore:rules
 ```
