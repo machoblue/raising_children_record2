@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/homePageView.dart';
+import 'package:raisingchildrenrecord2/view/homeViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
@@ -19,9 +20,8 @@ class HomeView extends StatefulWidget {
   State<StatefulWidget> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProviderStateMixin {
+class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProviderStateMixin, HomeViewTutorial {
   final _pageOffset = 1000; // value enough big
-  final _buttonLabelFont = TextStyle(fontSize: 12, color: Color(0x00FF888888));
   AnimationController _animationController;
   Animation _animation;
 
@@ -127,26 +127,16 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
   }
 
   List<Widget> _buildGridItems(List<RecordType> recordTypes) {
-    return recordTypes.map((recordType) {
-      return FlatButton(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              recordType.assetName,
-              width: 64,
-              height: 64,
-            ),
-            Text(
-              recordType.localizedName,
-              style: _buttonLabelFont,
-            )
-          ],
-        ),
+    List<Widget> items = [];
+    for (int i = 0; i < recordTypes.length; i++) {
+      RecordType recordType = recordTypes[i];
+      items.add(RecordButton(
+        key: i == 0 ? firstRecordButtonKey : null,
+        recordType: recordType,
         onPressed: () => viewModel.addRecord.add(recordType),
-      );
-    }).toList();
+      ));
+    }
+    return items;
   }
 
   void _addRecord(RecordType recordType, User user, Baby baby) {
@@ -190,3 +180,38 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
   }
 }
 
+class RecordButton extends StatefulWidget {
+  final RecordType recordType;
+  final void Function() onPressed;
+
+  RecordButton({ Key key, this.recordType, this.onPressed }): super(key: key);
+
+  @override
+  RecordButtonState createState() => RecordButtonState();
+}
+
+class RecordButtonState extends State<RecordButton> {
+  final _buttonLabelFont = TextStyle(fontSize: 12, color: Color(0x00FF888888));
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            widget.recordType.assetName,
+            width: 64,
+            height: 64,
+          ),
+          Text(
+            widget.recordType.localizedName,
+            style: _buttonLabelFont,
+          )
+        ],
+      ),
+      onPressed: widget.onPressed,
+    );
+  }
+}
