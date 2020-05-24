@@ -1,7 +1,7 @@
 
-import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
@@ -37,11 +37,12 @@ mixin MainViewTutorial on State<MainView> {
   }
 
   void _showTutorial() {
+    L10n l10n = L10n.of(context);
     TutorialCoachMark(
       context,
       targets: targets,
       colorShadow: Colors.black,
-      textSkip: 'スキップ',
+      textSkip: l10n.tutorialSkip,
       paddingFocus: 10,
       opacityShadow: 0.8,
       finish: () {
@@ -66,7 +67,7 @@ mixin MainViewTutorial on State<MainView> {
             child: Column(
               children: <Widget>[
                 Text(
-                  'このアイコンをタップすると、赤ちゃんを切り替えることができます。',
+                  Intl.message('By this button, you can change baby.', name: 'babyButtonTutorial'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -75,7 +76,7 @@ mixin MainViewTutorial on State<MainView> {
                 ),
                 Container(height: 8),
                 Text(
-                  '赤ちゃんの追加・編集は右下の設定からできます。',
+                  Intl.message('NOTE: Baby can be added and edited from Settings at the bottom right.', name: 'babyButtonTutorialDescription'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.0,

@@ -255,5 +255,45 @@
   "@errorMessage": {
     "type": "text",
     "placeholders": {}
+  },
+  "fileAccessError": "ストレージアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。",
+  "@fileAccessError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tutorialSkip": "スキップ",
+  "@tutorialSkip": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordButtonTutorial": "まずは、記録してみましょう！",
+  "@recordButtonTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordButtonTutorialDescription": "※ これらの記録ボタンの順番は、右下の設定から変更することができます。",
+  "@recordButtonTutorialDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyButtonTutorial": "By this button, you can change baby.",
+  "@babyButtonTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyButtonTutorialDescription": "NOTE: Baby can be added and edited from Settings at the bottom right.",
+  "@babyButtonTutorialDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editRecordButtonsOrderTutorial": "You can change order of record buttons in home screen.",
+  "@editRecordButtonsOrderTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editBabyInfoTutorial": "You can edit and add Baby.",
+  "@editBabyInfoTutorial": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -102,4 +102,12 @@ class L10n {
   String get errorMessage => Intl.message('Error has occured.', name: 'errorMessage');
 
   String get fileAccessError => Intl.message('Error has occured on accessing files. Please retry later.', name: 'fileAccessError');
+
+  String get tutorialSkip => Intl.message('Skip', name: 'tutorialSkip');
+  String get recordButtonTutorial => Intl.message('First, Let\'s creating a record.', name: 'recordButtonTutorial');
+  String get recordButtonTutorialDescription => Intl.message('NOTE: These buttons order can be changed from Settings at the bottom right.', name: 'recordButtonTutorialDescription');
+  String get babyButtonTutorial => Intl.message('By this button, you can change baby.', name: 'babyButtonTutorial');
+  String get babyButtonTutorialDescription => Intl.message('NOTE: Baby can be added and edited from Settings at the bottom right.', name: 'babyButtonTutorialDescription');
+  String get editRecordButtonsOrderTutorial => Intl.message('You can change order of record buttons in home screen.', name: 'editRecordButtonsOrderTutorial');
+  String get editBabyInfoTutorial => Intl.message('You can edit and add Baby.', name: 'editBabyInfoTutorial');
 }

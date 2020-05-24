@@ -1,6 +1,7 @@
 
-import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
@@ -36,11 +37,12 @@ mixin HomeViewTutorial on State<HomeView> {
   }
 
   void _showTutorial() {
+    L10n l10n = L10n.of(context);
     TutorialCoachMark(
       context,
       targets: targets,
       colorShadow: Colors.black,
-      textSkip: 'スキップ',
+      textSkip: l10n.tutorialSkip,
       paddingFocus: 10,
       opacityShadow: 0.8,
       finish: () {
@@ -65,7 +67,7 @@ mixin HomeViewTutorial on State<HomeView> {
             child: Column(
               children: <Widget>[
                 Text(
-                  'まずは、記録してみましょう！',
+                  Intl.message('First, Let\'s creating a record.', name: 'recordButtonTutorial'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -74,7 +76,7 @@ mixin HomeViewTutorial on State<HomeView> {
                 ),
                 Container(height: 8),
                 Text(
-                  'これらの記録ボタンの順番は、右下の設定から変更することができます。',
+                  Intl.message('NOTE: These buttons order can be changed from Settings at the bottom right.', name: 'recordButtonTutorialDescription'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.0,

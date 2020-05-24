@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-17T08:27:08.516637",
+  "@@last_modified": "2020-05-24T16:37:04.773129",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -253,6 +253,46 @@
   },
   "errorMessage": "Error has occured.",
   "@errorMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fileAccessError": "Error has occured on accessing files. Please retry later.",
+  "@fileAccessError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tutorialSkip": "Skip",
+  "@tutorialSkip": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordButtonTutorial": "First, Let's creating a record.",
+  "@recordButtonTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recordButtonTutorialDescription": "NOTE: These buttons order can be changed from Settings at the bottom right.",
+  "@recordButtonTutorialDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyButtonTutorial": "By this button, you can change baby.",
+  "@babyButtonTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "babyButtonTutorialDescription": "NOTE: Baby can be added and edited from Settings at the bottom right.",
+  "@babyButtonTutorialDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editRecordButtonsOrderTutorial": "You can change order of record buttons in home screen.",
+  "@editRecordButtonsOrderTutorial": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editBabyInfoTutorial": "You can edit and add Baby.",
+  "@editBabyInfoTutorial": {
     "type": "text",
     "placeholders": {}
   }

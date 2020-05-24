@@ -1,7 +1,7 @@
 
-import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
@@ -37,11 +37,12 @@ mixin SettingsViewTutorial on State<SettingsView> {
   }
 
   void _showTutorial() {
+    L10n l10n = L10n.of(context);
     TutorialCoachMark(
       context,
       targets: targets,
       colorShadow: Colors.black,
-      textSkip: 'スキップ',
+      textSkip: l10n.tutorialSkip,
       paddingFocus: 10,
       opacityShadow: 0.8,
       finish: () {
@@ -66,7 +67,7 @@ mixin SettingsViewTutorial on State<SettingsView> {
             child: Column(
               children: <Widget>[
                 Text(
-                  'ホーム画面の記録ボタンの順番を変更できます。',
+                  Intl.message('You can change order of record buttons in home screen.', name: 'editRecordButtonsOrderTutorial'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -88,7 +89,7 @@ mixin SettingsViewTutorial on State<SettingsView> {
             child: Column(
               children: <Widget>[
                 Text(
-                  '赤ちゃんの追加・編集ができます。',
+                  Intl.message('You can edit and add Baby.', name: 'editBabyInfoTutorial'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
