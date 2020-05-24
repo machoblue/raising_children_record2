@@ -16,6 +16,11 @@ import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
+
+  final void Function() onComplete;
+
+  HomeView({Key key, this.onComplete}): super(key: key);
+
   @override
   State<StatefulWidget> createState() => _HomeViewState();
 }
@@ -156,22 +161,31 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
         return Provider<MilkRecordViewModel>(
           create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: MilkRecordView(isNew: true),
+          child: MilkRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
         );
       }
       case RecordType.snack: {
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(isNew: true),
-        );
+          child: PlainRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+    );
       }
       case RecordType.babyFood: {
         BabyFoodRecord record = BabyFoodRecord.newInstance(DateTime.now(), null, user);
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(isNew: true),
-        );
+          child: PlainRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+    );
       }
       default: {
         throw("This line shouldn't be reached.");

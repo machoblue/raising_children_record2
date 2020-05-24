@@ -9,7 +9,7 @@ class MilkRecordView extends BaseRecordView<MilkRecordViewModel> {
   final _listItemFont = const TextStyle(fontSize: 20.0);
   MilkRecordViewModel viewModel;
 
-  MilkRecordView({ Key key, isNew }): super(key: key, isNew: isNew);
+  MilkRecordView({ Key key, isNew, onComplete }): super(key: key, isNew: isNew, onComplete: onComplete);
 
   @override
   Widget buildContent(BuildContext context) {

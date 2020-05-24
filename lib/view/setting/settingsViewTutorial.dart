@@ -2,14 +2,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
 import 'package:tutorial_coach_mark/target_focus.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-mixin HomeViewTutorial on State<HomeView> {
-
-  final GlobalKey<RecordButtonState> firstRecordButtonKey = GlobalKey();
+mixin SettingsViewTutorial on State<SettingsView> {
+  GlobalKey editRecordButtonsOrderKey = GlobalKey();
+  GlobalKey editBabyInfoKey = GlobalKey();
 
   void initState() {
     super.initState();
@@ -21,7 +22,7 @@ mixin HomeViewTutorial on State<HomeView> {
 
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool('recordButtonTutorialCompleted') ?? false) {
+    if (sharedPreferences.getBool('settingsTutorialCompleted') ?? false) {
       return;
     }
 
@@ -45,7 +46,7 @@ mixin HomeViewTutorial on State<HomeView> {
       opacityShadow: 0.8,
       finish: () {
         SharedPreferences.getInstance().then((sharedPreferences) {
-          sharedPreferences.setBool('recordButtonTutorialCompleted', true);
+          sharedPreferences.setBool('settingsTutorialCompleted', true);
         });
       },
       clickTarget: (target) {},
@@ -56,28 +57,42 @@ mixin HomeViewTutorial on State<HomeView> {
   void _prepareTutorial() {
     this.targets = [
       TargetFocus(
-        identify: 'First Record Button',
-        keyTarget: firstRecordButtonKey,
-        shape: ShapeLightFocus.Circle,
+        identify: 'Edit Record Buttons Order',
+        keyTarget: editRecordButtonsOrderKey,
+        shape: ShapeLightFocus.RRect,
         contents: [
           ContentTarget(
-            align: AlignContent.top,
+            align: AlignContent.bottom,
             child: Column(
               children: <Widget>[
                 Text(
-                  'まずは、記録してみましょう！',
+                  'ホーム画面の記録ボタンの順番を変更できます。',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontSize: 24.0,
                   ),
                 ),
-                Container(height: 8),
+              ],
+            ),
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: 'Edit Baby Info Key',
+        keyTarget: editBabyInfoKey,
+        shape: ShapeLightFocus.RRect,
+        contents: [
+          ContentTarget(
+            align: AlignContent.bottom,
+            child: Column(
+              children: <Widget>[
                 Text(
-                  'これらの記録ボタンの順番は、右下の設定から変更することができます。',
+                  '赤ちゃんの追加・編集ができます。',
                   style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 16.0,
+                    fontSize: 24.0,
                   ),
                 ),
               ],

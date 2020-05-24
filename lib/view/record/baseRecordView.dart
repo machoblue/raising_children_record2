@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 
 abstract class BaseRecordView<VM extends BaseRecordViewModel> extends StatefulWidget {
   final bool isNew;
+  final void Function() onComplete;
 
-  BaseRecordView({ Key key, this.isNew }): super(key: key);
+  BaseRecordView({ Key key, this.isNew, this.onComplete }): super(key: key);
 
   @override
   _BaseRecordViewState createState() => _BaseRecordViewState<VM>();
@@ -34,7 +35,12 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends BaseState<Bas
 
     _noteController = TextEditingController();
 
-    viewModel.onSaveComplete.listen((_) => Navigator.pop(context));
+    viewModel.onSaveComplete.listen((_) {
+      Navigator.pop(context);
+      if (widget.onComplete != null) {
+        widget.onComplete();
+      }
+    });
 
     StreamSubscription subscription;
     subscription = viewModel.note.listen((note) {

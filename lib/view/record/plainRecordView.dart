@@ -6,7 +6,7 @@ import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dar
 
 class PlainRecordView extends BaseRecordView<PlainRecordViewModel> {
 
-  PlainRecordView({ Key key, bool isNew }): super(key: key, isNew: isNew);
+  PlainRecordView({ Key key, bool isNew, onComplete }): super(key: key, isNew: isNew, onComplete: onComplete);
 
   @override
   Widget buildContent(BuildContext context) {

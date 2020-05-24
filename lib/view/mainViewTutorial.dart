@@ -2,16 +2,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/view/mainView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
 import 'package:tutorial_coach_mark/target_focus.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-mixin HomeViewTutorial on State<HomeView> {
+mixin MainViewTutorial on State<MainView> {
 
-  final GlobalKey<RecordButtonState> firstRecordButtonKey = GlobalKey();
+  final GlobalKey appBarBabyButtonKey = GlobalKey();
 
   void initState() {
+    print("### mainViewTUtorial.initState");
     super.initState();
 
     _configureTutorialIfNeeded();
@@ -21,15 +23,14 @@ mixin HomeViewTutorial on State<HomeView> {
 
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool('recordButtonTutorialCompleted') ?? false) {
+    if (sharedPreferences.getBool('mainViewTutorialCompleted') ?? false) {
       return;
     }
 
     _prepareTutorial();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
-  void _afterLayout(_) {
+  void showTutorial() {
     Future.delayed(Duration(milliseconds: 500), () {
       _showTutorial();
     });
@@ -45,7 +46,7 @@ mixin HomeViewTutorial on State<HomeView> {
       opacityShadow: 0.8,
       finish: () {
         SharedPreferences.getInstance().then((sharedPreferences) {
-          sharedPreferences.setBool('recordButtonTutorialCompleted', true);
+          sharedPreferences.setBool('mainViewTutorialCompleted', true);
         });
       },
       clickTarget: (target) {},
@@ -56,16 +57,16 @@ mixin HomeViewTutorial on State<HomeView> {
   void _prepareTutorial() {
     this.targets = [
       TargetFocus(
-        identify: 'First Record Button',
-        keyTarget: firstRecordButtonKey,
+        identify: 'Baby Button',
+        keyTarget: appBarBabyButtonKey,
         shape: ShapeLightFocus.Circle,
         contents: [
           ContentTarget(
-            align: AlignContent.top,
+            align: AlignContent.bottom,
             child: Column(
               children: <Widget>[
                 Text(
-                  'まずは、記録してみましょう！',
+                  'このアイコンをタップすると、赤ちゃんを切り替えることができます。',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -74,7 +75,7 @@ mixin HomeViewTutorial on State<HomeView> {
                 ),
                 Container(height: 8),
                 Text(
-                  'これらの記録ボタンの順番は、右下の設定から変更することができます。',
+                  '赤ちゃんの追加・編集は右下の設定からできます。',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.0,

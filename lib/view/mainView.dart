@@ -8,6 +8,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
@@ -22,7 +23,7 @@ class MainView extends StatefulWidget {
   _MainViewState createState() => _MainViewState();
 }
 
-class _MainViewState extends BaseState<MainView, MainViewModel> {
+class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTutorial {
 
   List<String> _appBarTitles;
 
@@ -66,8 +67,8 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
 
   Widget _babyButton() {
     return Container(
+      key: appBarBabyButtonKey,
       padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-
       child: StreamBuilder(
         stream: viewModel.babies,
         builder: (context, snapshot) {
@@ -121,7 +122,9 @@ class _MainViewState extends BaseState<MainView, MainViewModel> {
       case 0: {
         return Provider<HomeViewModel>(
           create: (_) => HomeViewModel(viewModel.userBehaviorSubject, viewModel.babyBehaviorSubject),
-          child: HomeView(),
+          child: HomeView(
+            onComplete: showTutorial,
+          ),
         );
       }
       case 1: {
