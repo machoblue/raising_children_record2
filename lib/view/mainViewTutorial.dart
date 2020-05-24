@@ -24,7 +24,7 @@ mixin MainViewTutorial on State<MainView> {
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getBool('mainViewTutorialCompleted') ?? false) {
-      return;
+//      return;
     }
 
     _prepareTutorial();

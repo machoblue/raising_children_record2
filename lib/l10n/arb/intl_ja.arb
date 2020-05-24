@@ -276,22 +276,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "babyButtonTutorial": "By this button, you can change baby.",
+  "babyButtonTutorial": "このアイコンをタップすると、赤ちゃんを切り替えることができます。",
   "@babyButtonTutorial": {
     "type": "text",
     "placeholders": {}
   },
-  "babyButtonTutorialDescription": "NOTE: Baby can be added and edited from Settings at the bottom right.",
+  "babyButtonTutorialDescription": "※ 赤ちゃんの追加・編集は右下の設定からできます。",
   "@babyButtonTutorialDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "editRecordButtonsOrderTutorial": "You can change order of record buttons in home screen.",
+  "editRecordButtonsOrderTutorial": "ホーム画面の記録ボタンの順番を変更できます。",
   "@editRecordButtonsOrderTutorial": {
     "type": "text",
     "placeholders": {}
   },
-  "editBabyInfoTutorial": "You can edit and add Baby.",
+  "editBabyInfoTutorial": "赤ちゃん情報を追加・編集できます。",
   "@editBabyInfoTutorial": {
     "type": "text",
     "placeholders": {}

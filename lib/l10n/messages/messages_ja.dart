@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "account" : MessageLookupByLibrary.simpleMessage("アカウント"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 追加"),
+    "babyButtonTutorial" : MessageLookupByLibrary.simpleMessage("このアイコンをタップすると、赤ちゃんを切り替えることができます。"),
+    "babyButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("※ 赤ちゃんの追加・編集は右下の設定からできます。"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
     "basicSettings" : MessageLookupByLibrary.simpleMessage("基本設定"),
@@ -34,9 +36,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataAccessError" : MessageLookupByLibrary.simpleMessage("データアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
+    "editBabyInfoTutorial" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報を追加・編集できます。"),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 編集"),
     "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("記録ボタンの順番を変更する"),
     "editRecordButtonsOrderMessage" : MessageLookupByLibrary.simpleMessage("移動したい項目を長押しした後、移動したい場所にドラッグしてください。"),
+    "editRecordButtonsOrderTutorial" : MessageLookupByLibrary.simpleMessage("ホーム画面の記録ボタンの順番を変更できます。"),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("ユーザー情報 編集"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("データがありません。"),
@@ -44,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorMessage" : MessageLookupByLibrary.simpleMessage("エラーが発生しました。"),
     "failedToReadInvitationCode" : MessageLookupByLibrary.simpleMessage("Failed to read invitation code."),
     "failedToSignIn" : MessageLookupByLibrary.simpleMessage("ログインに失敗しました。"),
+    "fileAccessError" : MessageLookupByLibrary.simpleMessage("ストレージアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを生成中です..."),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("招待コード"),
@@ -63,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを読み込む"),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("招待コードを読み込んで、\n他のユーザーとデータを共有しますか？"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("招待コードの読み取り"),
+    "recordButtonTutorial" : MessageLookupByLibrary.simpleMessage("まずは、記録してみましょう！"),
+    "recordButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("※ これらの記録ボタンの順番は、右下の設定から変更することができます。"),
     "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("削除"),
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("メモ"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("編集"),
@@ -71,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareData" : MessageLookupByLibrary.simpleMessage("データ共有"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを表示する"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ"),
+    "tutorialSkip" : MessageLookupByLibrary.simpleMessage("スキップ"),
     "yes" : MessageLookupByLibrary.simpleMessage("はい、消去します")
   };
 }

@@ -23,7 +23,7 @@ mixin SettingsViewTutorial on State<SettingsView> {
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getBool('settingsTutorialCompleted') ?? false) {
-      return;
+//      return;
     }
 
     _prepareTutorial();

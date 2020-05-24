@@ -23,7 +23,7 @@ mixin HomeViewTutorial on State<HomeView> {
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getBool('recordButtonTutorialCompleted') ?? false) {
-      return;
+//      return;
     }
 
     _prepareTutorial();

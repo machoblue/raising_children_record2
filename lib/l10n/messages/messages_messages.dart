@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "account" : MessageLookupByLibrary.simpleMessage("Account"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("Add Baby"),
+    "babyButtonTutorial" : MessageLookupByLibrary.simpleMessage("By this button, you can change baby."),
+    "babyButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("NOTE: Baby can be added and edited from Settings at the bottom right."),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
     "basicSettings" : MessageLookupByLibrary.simpleMessage("Basic Settings"),
@@ -34,9 +36,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing data. Please retry later."),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
+    "editBabyInfoTutorial" : MessageLookupByLibrary.simpleMessage("You can edit and add Baby."),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("Edit Record Buttons Order"),
     "editRecordButtonsOrderMessage" : MessageLookupByLibrary.simpleMessage("Please keep pressing the item you want to move, and drag it."),
+    "editRecordButtonsOrderTutorial" : MessageLookupByLibrary.simpleMessage("You can change order of record buttons in home screen."),
     "editUserInfo" : MessageLookupByLibrary.simpleMessage("Edit User Info"),
     "editUserTitle" : MessageLookupByLibrary.simpleMessage("Edit User"),
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("No Data"),
@@ -44,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorMessage" : MessageLookupByLibrary.simpleMessage("Error has occured."),
     "failedToReadInvitationCode" : MessageLookupByLibrary.simpleMessage("Failed to read invitation code."),
     "failedToSignIn" : MessageLookupByLibrary.simpleMessage("Failed to sign in."),
+    "fileAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing files. Please retry later."),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("Generating invitation code..."),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("Invitation Code"),
@@ -63,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("Yes, I do."),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("Do you have an invitation code?"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("Reading Invitation Code"),
+    "recordButtonTutorial" : MessageLookupByLibrary.simpleMessage("First, Let\'s creating a record."),
+    "recordButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("NOTE: These buttons order can be changed from Settings at the bottom right."),
     "recordDeleteButtonLabel" : MessageLookupByLibrary.simpleMessage("Delete"),
     "recordLabelNote" : MessageLookupByLibrary.simpleMessage("Note"),
     "recordTitleEdit" : MessageLookupByLibrary.simpleMessage("Edit"),
@@ -71,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareData" : MessageLookupByLibrary.simpleMessage("Share Data"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack"),
+    "tutorialSkip" : MessageLookupByLibrary.simpleMessage("Skip"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes.")
   };
 }
