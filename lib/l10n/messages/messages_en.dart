@@ -64,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
     "minuteUnit" : m0,
     "minutes" : MessageLookupByLibrary.simpleMessage("minutes"),
+    "mothersMilkLabel" : MessageLookupByLibrary.simpleMessage("Mothers Milk"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
     "no" : MessageLookupByLibrary.simpleMessage("No."),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("No, I don\'t."),
