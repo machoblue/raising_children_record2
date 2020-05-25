@@ -40,14 +40,20 @@ class HomeViewModel with ViewModelErrorHandler implements ViewModel {
 
   Future<List<RecordType>> _getRecordTypes() {
     return SharedPreferences.getInstance().then((sharedPreferences) {
-      final List<String> recordTypeStrings = sharedPreferences.getStringList('recordButtonOrder');
-      if (recordTypeStrings == null) {
+      final List<String> orderedRecordTypeStrings = sharedPreferences.getStringList('recordButtonOrder');
+      if (orderedRecordTypeStrings == null) {
         return RecordType.values;
       }
 
-      return recordTypeStrings
+      final List<RecordType> notOrderedRecordType = RecordType.values
+          .where((recordType) => !orderedRecordTypeStrings.contains(recordType.string))
+          .toList();
+
+      final List<RecordType> orderedRecordType = orderedRecordTypeStrings
         .map((recordTypeString) => RecordTypeExtension.fromString(recordTypeString))
         .toList();
+
+      return orderedRecordType + notOrderedRecordType;
     });
   }
 
