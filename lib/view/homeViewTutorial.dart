@@ -10,6 +10,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 mixin HomeViewTutorial on State<HomeView> {
 
+  static final String recordButtonTutorialCompleted = 'recordButtonTutorialCompleted';
   final GlobalKey<RecordButtonState> firstRecordButtonKey = GlobalKey();
 
   void initState() {
@@ -22,7 +23,7 @@ mixin HomeViewTutorial on State<HomeView> {
 
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool('recordButtonTutorialCompleted') ?? false) {
+    if (sharedPreferences.getBool(recordButtonTutorialCompleted) ?? false) {
       return;
     }
 
@@ -47,7 +48,7 @@ mixin HomeViewTutorial on State<HomeView> {
       opacityShadow: 0.8,
       finish: () {
         SharedPreferences.getInstance().then((sharedPreferences) {
-          sharedPreferences.setBool('recordButtonTutorialCompleted', true);
+          sharedPreferences.setBool(recordButtonTutorialCompleted, true);
         });
       },
       clickTarget: (target) {},

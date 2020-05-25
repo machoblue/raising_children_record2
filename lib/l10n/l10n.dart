@@ -110,4 +110,12 @@ class L10n {
   String get babyButtonTutorialDescription => Intl.message('NOTE: Baby can be added and edited from Settings at the bottom right.', name: 'babyButtonTutorialDescription');
   String get editRecordButtonsOrderTutorial => Intl.message('You can change order of record buttons in home screen.', name: 'editRecordButtonsOrderTutorial');
   String get editBabyInfoTutorial => Intl.message('You can edit and add Baby.', name: 'editBabyInfoTutorial');
+
+  String minuteUnit(int minutes) => Intl.message(
+    '${Intl.plural(minutes, one: 'a minute', other: '$minutes minutes')}',
+    name: 'minuteUnit',
+    args: [minutes],
+  );
+
+  String get minutes => Intl.message('minutes', name: 'minutes');
 }

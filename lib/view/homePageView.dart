@@ -10,9 +10,11 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 
 class HomePageView extends StatefulWidget {
@@ -113,6 +115,12 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(),
+        );
+      }
+      case MothersMilkRecord: {
+        return Provider<MothersMilkRecordViewModel>(
+          create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: MothersMilkRecordView(),
         );
       }
       default: {

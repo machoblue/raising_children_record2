@@ -9,7 +9,7 @@ import 'package:tutorial_coach_mark/target_focus.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 mixin MainViewTutorial on State<MainView> {
-
+  static final String mainViewTutorialCompleted = 'mainViewTutorialCompleted';
   final GlobalKey appBarBabyButtonKey = GlobalKey();
 
   void initState() {
@@ -23,7 +23,7 @@ mixin MainViewTutorial on State<MainView> {
 
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool('mainViewTutorialCompleted') ?? false) {
+    if (sharedPreferences.getBool(mainViewTutorialCompleted) ?? false) {
       return;
     }
 
@@ -47,7 +47,7 @@ mixin MainViewTutorial on State<MainView> {
       opacityShadow: 0.8,
       finish: () {
         SharedPreferences.getInstance().then((sharedPreferences) {
-          sharedPreferences.setBool('mainViewTutorialCompleted', true);
+          sharedPreferences.setBool(mainViewTutorialCompleted, true);
         });
       },
       clickTarget: (target) {},

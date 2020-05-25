@@ -9,6 +9,7 @@ import 'package:tutorial_coach_mark/target_focus.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 mixin SettingsViewTutorial on State<SettingsView> {
+  static final String settingsTutorialCompleted = 'settingsTutorialCompleted';
   GlobalKey editRecordButtonsOrderKey = GlobalKey();
   GlobalKey editBabyInfoKey = GlobalKey();
 
@@ -22,7 +23,7 @@ mixin SettingsViewTutorial on State<SettingsView> {
 
   void _configureTutorialIfNeeded() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool('settingsTutorialCompleted') ?? false) {
+    if (sharedPreferences.getBool(settingsTutorialCompleted) ?? false) {
       return;
     }
 
@@ -47,7 +48,7 @@ mixin SettingsViewTutorial on State<SettingsView> {
       opacityShadow: 0.8,
       finish: () {
         SharedPreferences.getInstance().then((sharedPreferences) {
-          sharedPreferences.setBool('settingsTutorialCompleted', true);
+          sharedPreferences.setBool(settingsTutorialCompleted, true);
         });
       },
       clickTarget: (target) {},

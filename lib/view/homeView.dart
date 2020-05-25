@@ -7,12 +7,14 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/homePageView.dart';
 import 'package:raisingchildrenrecord2/view/homeViewTutorial.dart';
+import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
@@ -175,7 +177,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
             isNew: true,
             onComplete: widget.onComplete,
           ),
-    );
+        );
       }
       case RecordType.babyFood: {
         BabyFoodRecord record = BabyFoodRecord.newInstance(DateTime.now(), null, user);
@@ -185,7 +187,17 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
             isNew: true,
             onComplete: widget.onComplete,
           ),
-    );
+        );
+      }
+      case RecordType.mothersMilk: {
+        MothersMilkRecord record = MothersMilkRecord.newInstance(DateTime.now(), null, user);
+        return Provider<MothersMilkRecordViewModel>(
+          create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: MothersMilkRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+        );
       }
       default: {
         throw("This line shouldn't be reached.");

@@ -8,6 +8,7 @@ enum RecordType {
   milk,
   snack,
   babyFood,
+  mothersMilk,
 }
 
 extension RecordTypeExtension on RecordType {
@@ -74,6 +75,11 @@ abstract class Record {
       }
       case RecordType.babyFood: {
         return BabyFoodRecord(id, dateTime, note, user);
+      }
+      case RecordType.mothersMilk: {
+        final int leftMilliseconds = (snapshot['details'] as Map)['leftMilliseconds'];
+        final int rightMilliseconds = (snapshot['details'] as Map)['rightMilliseconds'];
+        return MothersMilkRecord(id, dateTime, note, user, leftMilliseconds, rightMilliseconds);
       }
       default: {
         return null;
@@ -156,4 +162,47 @@ class BabyFoodRecord extends Record {
       User user): super(id, dateTime, note, user);
 
   BabyFoodRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class MothersMilkRecord extends Record {
+  int leftMilliseconds;
+  int rightMilliseconds;
+
+  MothersMilkRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user,
+      this.leftMilliseconds,
+      this.rightMilliseconds): super(id, dateTime, note, user);
+
+  MothersMilkRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'leftMilliseconds': leftMilliseconds, 'rightMilliseconds': rightMilliseconds };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
+
+  @override
+  String get mainDescription {
+    int leftMinutes = (leftMilliseconds / (1000 * 60)).round();
+    String leftMinutesString = Intl.message(
+      '${Intl.plural(leftMinutes, one: 'a minute', other: '$leftMinutes minutes')}',
+      name: 'minuteUnit',
+      args: [leftMinutes],
+    );
+    int rightMinutes = (rightMilliseconds / (1000 * 60)).round();
+    String rightMinutesString = Intl.message(
+      '${Intl.plural(rightMinutes, one: 'a minute', other: '$rightMinutes minutes')}',
+      name: 'minuteUnit',
+      args: [rightMinutes],
+    );
+    return '$leftMinutesString / $rightMinutesString';
+  }
+
+  @override
+  String get subDescription => note ?? "";
 }

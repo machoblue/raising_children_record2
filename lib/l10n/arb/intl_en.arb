@@ -295,5 +295,17 @@
   "@editBabyInfoTutorial": {
     "type": "text",
     "placeholders": {}
+  },
+  "minuteUnit": "{minutes,plural, =1{a minute}other{{minutes} minutes}}",
+  "@minuteUnit": {
+    "type": "text",
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "minutes": "minutes",
+  "@minutes": {
+    "type": "text",
+    "placeholders": {}
   }
 }
