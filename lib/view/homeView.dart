@@ -159,7 +159,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
 
   Widget _buildRecordView(RecordType recordType, User user, Baby baby) {
     switch (recordType) {
-      case RecordType.milk: {
+      case RecordType.milk:
         MilkRecord record = MilkRecord.newInstance(DateTime.now(), null, user, 0);
         return Provider<MilkRecordViewModel>(
           create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
@@ -168,28 +168,13 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
             onComplete: widget.onComplete,
           ),
         );
-      }
-      case RecordType.snack: {
+      case RecordType.snack:
         SnackRecord record = SnackRecord.newInstance(DateTime.now(), null, user);
-        return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(
-            isNew: true,
-            onComplete: widget.onComplete,
-          ),
-        );
-      }
-      case RecordType.babyFood: {
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.babyFood:
         BabyFoodRecord record = BabyFoodRecord.newInstance(DateTime.now(), null, user);
-        return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(
-            isNew: true,
-            onComplete: widget.onComplete,
-          ),
-        );
-      }
-      case RecordType.mothersMilk: {
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.mothersMilk:
         MothersMilkRecord record = MothersMilkRecord.newInstance(DateTime.now(), null, user);
         return Provider<MothersMilkRecordViewModel>(
           create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
@@ -198,11 +183,37 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
             onComplete: widget.onComplete,
           ),
         );
-      }
-      default: {
+      case RecordType.vomit:
+        VomitRecord record = VomitRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.cough:
+        CoughRecord record = CoughRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.rash:
+        RashRecord record = RashRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.medicine:
+        MedicineRecord record = MedicineRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.pee:
+        PeeRecord record = PeeRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.etc:
+        EtcRecord record = EtcRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      default:
         throw("This line shouldn't be reached.");
-      }
     }
+  }
+
+  Widget _buildPlainRecordView(Record record, User user, Baby baby) {
+    return Provider<PlainRecordViewModel>(
+      create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+      child: PlainRecordView(
+        isNew: true,
+        onComplete: widget.onComplete,
+      ),
+    );
   }
 }
 

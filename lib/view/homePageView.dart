@@ -99,33 +99,30 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
 
   Widget _buildRecordView(Record record, User user, Baby baby) {
     switch(record.runtimeType) {
-      case MilkRecord: {
+      case MilkRecord:
         return Provider<MilkRecordViewModel>(
           create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: MilkRecordView(),
         );
-      }
-      case SnackRecord: {
-        return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(),
-        );
-      }
-      case BabyFoodRecord: {
-        return Provider<PlainRecordViewModel>(
-          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
-          child: PlainRecordView(),
-        );
-      }
-      case MothersMilkRecord: {
+      case MothersMilkRecord:
         return Provider<MothersMilkRecordViewModel>(
           create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: MothersMilkRecordView(),
         );
-      }
-      default: {
+      case SnackRecord:
+      case BabyFoodRecord:
+      case VomitRecord:
+      case CoughRecord:
+      case RashRecord:
+      case MedicineRecord:
+      case PeeRecord:
+      case EtcRecord:
+        return Provider<PlainRecordViewModel>(
+          create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: PlainRecordView(),
+        );
+      default:
         throw("This line shouldn't be reached.");
-      }
     }
   }
 }

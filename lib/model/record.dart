@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,12 @@ enum RecordType {
   snack,
   babyFood,
   mothersMilk,
+  vomit,
+  cough,
+  rash,
+  medicine,
+  pee,
+  etc,
 }
 
 extension RecordTypeExtension on RecordType {
@@ -31,21 +38,17 @@ extension RecordTypeExtension on RecordType {
 
   static RecordType fromModel(Record record) {
     switch(record.runtimeType) {
-      case MilkRecord: {
-        return RecordType.milk;
-      }
-      case SnackRecord: {
-        return RecordType.snack;
-      }
-      case BabyFoodRecord: {
-        return RecordType.babyFood;
-      }
-      case MothersMilkRecord: {
-        return RecordType.mothersMilk;
-      }
-      default: {
-        throw('This line should not be reached.');
-      }
+      case MilkRecord: return RecordType.milk;
+      case SnackRecord: return RecordType.snack;
+      case BabyFoodRecord: return RecordType.babyFood;
+      case MothersMilkRecord: return RecordType.mothersMilk;
+      case VomitRecord: return RecordType.vomit;
+      case CoughRecord: return RecordType.cough;
+      case RashRecord: return RecordType.rash;
+      case MedicineRecord: return RecordType.medicine;
+      case PeeRecord: return RecordType.pee;
+      case EtcRecord: return RecordType.etc;
+      default: throw('This line should not be reached.');
     }
   }
 }
@@ -69,24 +72,35 @@ abstract class Record {
     final String note = snapshot['note'];
     final User user = User.fromMap(snapshot['user']);
     switch (RecordTypeExtension.fromString(type)) {
-      case RecordType.milk: {
+      case RecordType.milk:
         final int amount = (snapshot['details'] as Map)['amount'];
         return MilkRecord(id, dateTime, note, user, amount);
-      }
-      case RecordType.snack: {
+      case RecordType.snack:
         return SnackRecord(id, dateTime, note, user);
-      }
-      case RecordType.babyFood: {
+      case RecordType.babyFood:
         return BabyFoodRecord(id, dateTime, note, user);
-      }
-      case RecordType.mothersMilk: {
+      case RecordType.mothersMilk:
         final int leftMilliseconds = (snapshot['details'] as Map)['leftMilliseconds'];
         final int rightMilliseconds = (snapshot['details'] as Map)['rightMilliseconds'];
         return MothersMilkRecord(id, dateTime, note, user, leftMilliseconds, rightMilliseconds);
-      }
-      default: {
-        return null;
-      }
+      case RecordType.vomit:
+        return VomitRecord(id, dateTime, note, user);
+      case RecordType.cough:
+        return CoughRecord(id, dateTime, note, user);
+      case RecordType.rash:
+        return RashRecord(id, dateTime, note, user);
+      case RecordType.medicine:
+        return MedicineRecord(id, dateTime, note, user);
+      case RecordType.pee:
+        return PeeRecord(id, dateTime, note, user);
+      case RecordType.etc:
+        return EtcRecord(id, dateTime, note, user);
+      default:
+        if (kReleaseMode) {
+          return null;
+        } else {
+          throw "This line shouldn't be reached.";
+        }
     }
   }
 
@@ -191,13 +205,13 @@ class MothersMilkRecord extends Record {
 
   @override
   String get mainDescription {
-    int leftMinutes = (leftMilliseconds / (1000 * 60)).round();
+    int leftMinutes = ((leftMilliseconds ?? 0) / (1000 * 60)).round();
     String leftMinutesString = Intl.message(
       '${Intl.plural(leftMinutes, one: 'a minute', other: '$leftMinutes minutes')}',
       name: 'minuteUnit',
       args: [leftMinutes],
     );
-    int rightMinutes = (rightMilliseconds / (1000 * 60)).round();
+    int rightMinutes = ((rightMilliseconds ?? 0) / (1000 * 60)).round();
     String rightMinutesString = Intl.message(
       '${Intl.plural(rightMinutes, one: 'a minute', other: '$rightMinutes minutes')}',
       name: 'minuteUnit',
@@ -208,4 +222,106 @@ class MothersMilkRecord extends Record {
 
   @override
   String get subDescription => note ?? "";
+}
+
+class VomitRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  VomitRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  VomitRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class CoughRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  CoughRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  CoughRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class RashRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  RashRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  RashRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class MedicineRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  MedicineRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  MedicineRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class PeeRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  PeeRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  PeeRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class EtcRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  EtcRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  EtcRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
 }
