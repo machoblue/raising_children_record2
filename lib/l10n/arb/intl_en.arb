@@ -312,5 +312,15 @@
   "@minutes": {
     "type": "text",
     "placeholders": {}
+  },
+  "left": "Left",
+  "@left": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "right": "Right",
+  "@right": {
+    "type": "text",
+    "placeholders": {}
   }
 }

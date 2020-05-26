@@ -18,9 +18,15 @@ class ButtonOrderViewModel with ViewModelErrorHandler implements ViewModel {
 
   ButtonOrderViewModel() {
     SharedPreferences.getInstance().then((sharedPreferences) {
-      List<String> recordOrder = sharedPreferences.getStringList('recordButtonOrder')
-        ?? RecordType.values.map((recordType) => recordType.string).toList();
-      _buttonOrderBehaviorSubject.sink.add(recordOrder);
+      List<String> orderedRecordTypeStrings = sharedPreferences.getStringList('recordButtonOrder');
+      List<String> allRecordTypeStrings = RecordType.values.map((recordType) => recordType.string).toList();
+      if (orderedRecordTypeStrings == null) {
+        _buttonOrderBehaviorSubject.sink.add(allRecordTypeStrings);
+        return;
+      }
+
+      List<String> notContainedRecordTypeStrings = allRecordTypeStrings.where((recordTypeString) => !orderedRecordTypeStrings.contains(recordTypeString)).toList();
+      _buttonOrderBehaviorSubject.sink.add(orderedRecordTypeStrings + notContainedRecordTypeStrings);
     });
 
     _onButtonOrderChangedStreamController.stream.listen((buttonOrder) {

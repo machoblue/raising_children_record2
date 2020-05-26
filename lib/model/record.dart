@@ -40,6 +40,9 @@ extension RecordTypeExtension on RecordType {
       case BabyFoodRecord: {
         return RecordType.babyFood;
       }
+      case MothersMilkRecord: {
+        return RecordType.mothersMilk;
+      }
       default: {
         throw('This line should not be reached.');
       }

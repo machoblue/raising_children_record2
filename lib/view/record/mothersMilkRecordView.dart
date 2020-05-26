@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,14 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
       children: <Widget>[
         Row(
           children: <Widget>[
+            Text(
+                '${Intl.message('Left', name: 'left')}:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )
+            ),
+            Container(width: 10),
             StreamBuilder(
                 stream: viewModel.leftMinutes,
                 builder: (context, snapshot) {
@@ -66,10 +75,19 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
         ),
         Row(
           children: <Widget>[
+            Text(
+                '${Intl.message('Right', name: 'right')}:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )
+            ),
+            Container(width: 10),
             StreamBuilder(
                 stream: viewModel.rightMinutes,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
+                    print("### !snapshot.hasData");
                     return Container();
                   }
                   return DropdownButton<int>(

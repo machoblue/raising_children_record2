@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-26T07:46:38.336854",
+  "@@last_modified": "2020-05-26T10:09:02.580935",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -310,6 +310,16 @@
   },
   "minutes": "minutes",
   "@minutes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "left": "Left",
+  "@left": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "right": "Right",
+  "@right": {
     "type": "text",
     "placeholders": {}
   }

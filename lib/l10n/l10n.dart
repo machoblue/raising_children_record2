@@ -119,4 +119,6 @@ class L10n {
   );
 
   String get minutes => Intl.message('minutes', name: 'minutes');
+  String get left => Intl.message('Left', name: 'left');
+  String get right => Intl.message('Right', name: 'right');
 }

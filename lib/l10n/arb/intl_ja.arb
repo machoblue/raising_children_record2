@@ -312,5 +312,15 @@
   "@minutes": {
     "type": "text",
     "placeholders": {}
+  },
+  "left": "左",
+  "@left": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "right": "右",
+  "@right": {
+    "type": "text",
+    "placeholders": {}
   }
 }

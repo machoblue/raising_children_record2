@@ -8,11 +8,11 @@ import 'package:raisingchildrenrecord2/viewmodel/record/baseRecordViewModel.dart
 
 class MothersMilkRecordViewModel extends BaseRecordViewModel<MothersMilkRecord> {
 
-  Stream<int> get leftMinutes => recordBehaviorSubject.stream.map((record) => (record.leftMilliseconds / (1000 * 60)).round() ?? 0);
+  Stream<int> get leftMinutes => recordBehaviorSubject.stream.map((record) => ((record.leftMilliseconds ?? 0) / (1000 * 60)).round());
   final StreamController<int> _onLeftMinutesSelectedStreamController = StreamController<int>();
   StreamSink<int> get onLeftMinutesSelected => _onLeftMinutesSelectedStreamController.sink;
 
-  Stream<int> get rightMinutes => recordBehaviorSubject.stream.map((record) => (record.rightMilliseconds / (1000 * 60)).round() ?? 0);
+  Stream<int> get rightMinutes => recordBehaviorSubject.stream.map((record) => ((record.rightMilliseconds ?? 0) / (1000 * 60)).round());
   final StreamController<int> _onRightMinutesSelectedStreamController = StreamController<int>();
   StreamSink<int> get onRightMinutesSelected => _onRightMinutesSelectedStreamController.sink;
 
