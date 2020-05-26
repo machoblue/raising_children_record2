@@ -46,6 +46,36 @@
     "type": "text",
     "placeholders": {}
   },
+  "vomitLabel": "おうと",
+  "@vomitLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coughLabel": "せき",
+  "@coughLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rashLabel": "ほっしん",
+  "@rashLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "medicineLabel": "くすり",
+  "@medicineLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "peeLabel": "おしっこ",
+  "@peeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "etcLabel": "その他",
+  "@etcLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "新規作成",
   "@recordTitleNew": {
     "type": "text",

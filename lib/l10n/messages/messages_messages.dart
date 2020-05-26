@@ -34,7 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("Clear all data"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("Are you sure clear all data?"),
-    "danger" : MessageLookupByLibrary.simpleMessage("*** Danger ***"),
+    "coughLabel" : MessageLookupByLibrary.simpleMessage("Cough"),
+    "danger" : MessageLookupByLibrary.simpleMessage("*** DANGER ***"),
     "dataAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing data. Please retry later."),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit baby info"),
@@ -48,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("No Data"),
     "error" : MessageLookupByLibrary.simpleMessage("Error"),
     "errorMessage" : MessageLookupByLibrary.simpleMessage("Error has occured."),
+    "etcLabel" : MessageLookupByLibrary.simpleMessage("etc."),
     "failedToReadInvitationCode" : MessageLookupByLibrary.simpleMessage("Failed to read invitation code."),
     "failedToSignIn" : MessageLookupByLibrary.simpleMessage("Failed to sign in."),
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing files. Please retry later."),
@@ -62,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("Login"),
     "logout" : MessageLookupByLibrary.simpleMessage("Sign out"),
+    "medicineLabel" : MessageLookupByLibrary.simpleMessage("Medicine"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("Milk"),
     "minuteUnit" : m0,
     "minutes" : MessageLookupByLibrary.simpleMessage("minutes"),
@@ -70,7 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "no" : MessageLookupByLibrary.simpleMessage("No."),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("No, I don\'t."),
     "ok" : MessageLookupByLibrary.simpleMessage("OK"),
+    "peeLabel" : MessageLookupByLibrary.simpleMessage("Pee"),
     "permissionError" : MessageLookupByLibrary.simpleMessage("Cannot access data. This operation is unexpected. Please tell us what did you do."),
+    "rashLabel" : MessageLookupByLibrary.simpleMessage("Rash"),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("Yes, I do."),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("Do you have an invitation code?"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("Reading Invitation Code"),
@@ -86,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("Skip"),
+    "vomitLabel" : MessageLookupByLibrary.simpleMessage("Vomit"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes.")
   };
 }

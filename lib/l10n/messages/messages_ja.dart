@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("退会する（全データ消去）"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("退会すると全てのデータが消去されますが、よろしいですか？"),
+    "coughLabel" : MessageLookupByLibrary.simpleMessage("せき"),
     "danger" : MessageLookupByLibrary.simpleMessage("※取扱い注意"),
     "dataAccessError" : MessageLookupByLibrary.simpleMessage("データアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("データ共有の設定が完了しました。"),
@@ -48,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyMessage" : MessageLookupByLibrary.simpleMessage("データがありません。"),
     "error" : MessageLookupByLibrary.simpleMessage("エラー"),
     "errorMessage" : MessageLookupByLibrary.simpleMessage("エラーが発生しました。"),
+    "etcLabel" : MessageLookupByLibrary.simpleMessage("その他"),
     "failedToReadInvitationCode" : MessageLookupByLibrary.simpleMessage("Failed to read invitation code."),
     "failedToSignIn" : MessageLookupByLibrary.simpleMessage("ログインに失敗しました。"),
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("ストレージアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
@@ -62,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginButtonLabel" : MessageLookupByLibrary.simpleMessage("Googleでログイン"),
     "loginTitle" : MessageLookupByLibrary.simpleMessage("ログイン"),
     "logout" : MessageLookupByLibrary.simpleMessage("ログアウト"),
+    "medicineLabel" : MessageLookupByLibrary.simpleMessage("くすり"),
     "milkLabel" : MessageLookupByLibrary.simpleMessage("ミルク"),
     "minuteUnit" : m0,
     "minutes" : MessageLookupByLibrary.simpleMessage("分"),
@@ -70,7 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "no" : MessageLookupByLibrary.simpleMessage("いいえ、消去しません"),
     "noInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを持っていない"),
     "ok" : MessageLookupByLibrary.simpleMessage("OK"),
+    "peeLabel" : MessageLookupByLibrary.simpleMessage("おしっこ"),
     "permissionError" : MessageLookupByLibrary.simpleMessage("データにアクセスする権限がありません。想定されていない操作です。どのような操作をしたかを添えてお問い合わせください。"),
+    "rashLabel" : MessageLookupByLibrary.simpleMessage("ほっしん"),
     "readInvitationCodeButton" : MessageLookupByLibrary.simpleMessage("招待コードを読み込む"),
     "readingInvitationCodeMessage" : MessageLookupByLibrary.simpleMessage("招待コードを読み込んで、\n他のユーザーとデータを共有しますか？"),
     "readingInvitationCodeTitle" : MessageLookupByLibrary.simpleMessage("招待コードの読み取り"),
@@ -86,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを表示する"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("スキップ"),
+    "vomitLabel" : MessageLookupByLibrary.simpleMessage("おうと"),
     "yes" : MessageLookupByLibrary.simpleMessage("はい、消去します")
   };
 }

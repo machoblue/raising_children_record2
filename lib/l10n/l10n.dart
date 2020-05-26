@@ -44,6 +44,12 @@ class L10n {
   String get snackLabel => Intl.message('Snack', name: 'snackLabel');
   String get babyFoodLabel => Intl.message('Baby Food', name: 'babyFoodLabel');
   String get mothersMilkLabel => Intl.message('Mothers Milk', name: 'mothersMilkLabel');
+  String get vomitLabel => Intl.message('Vomit', name: 'vomitLabel');
+  String get coughLabel => Intl.message('Cough', name: 'coughLabel');
+  String get rashLabel => Intl.message('Rash', name: 'rashLabel');
+  String get medicineLabel => Intl.message('Medicine', name: 'medicineLabel');
+  String get peeLabel => Intl.message('Pee', name: 'peeLabel');
+  String get etcLabel => Intl.message('etc.', name: 'etcLabel');
 
   String get recordTitleNew => Intl.message('New', name: 'recordTitleNew');
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');
@@ -92,7 +98,7 @@ class L10n {
 
   String get basicSettings => Intl.message('Basic Settings', name: 'basicSettings');
   String get account => Intl.message('Account', name: 'account');
-  String get danger => Intl.message('*** Danger ***', name: 'danger');
+  String get danger => Intl.message('*** DANGER ***', name: 'danger');
 
   String get ok => Intl.message('OK', name: 'ok');
 

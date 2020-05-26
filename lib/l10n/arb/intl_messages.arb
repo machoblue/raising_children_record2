@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-26T10:09:02.580935",
+  "@@last_modified": "2020-05-27T07:21:45.899986",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -43,6 +43,36 @@
   },
   "mothersMilkLabel": "Mothers Milk",
   "@mothersMilkLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "vomitLabel": "Vomit",
+  "@vomitLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coughLabel": "Cough",
+  "@coughLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rashLabel": "Rash",
+  "@rashLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "medicineLabel": "Medicine",
+  "@medicineLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "peeLabel": "Pee",
+  "@peeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "etcLabel": "etc.",
+  "@etcLabel": {
     "type": "text",
     "placeholders": {}
   },
@@ -231,7 +261,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "danger": "*** Danger ***",
+  "danger": "*** DANGER ***",
   "@danger": {
     "type": "text",
     "placeholders": {}
