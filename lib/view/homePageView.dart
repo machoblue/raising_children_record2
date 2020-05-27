@@ -1,4 +1,5 @@
 
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -172,7 +173,10 @@ class _RecordListTile extends StatelessWidget {
                 ),
                 Text(
                   record.type.localizedName,
-                )
+                  style: TextStyle(
+                    fontSize: min(12, 12 / (record.type.localizedName.length / 8)),
+                  ),
+                ),
               ],
             ),
             Container(

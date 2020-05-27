@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
@@ -228,8 +229,6 @@ class RecordButton extends StatefulWidget {
 }
 
 class RecordButtonState extends State<RecordButton> {
-  final _buttonLabelFont = TextStyle(fontSize: 12, color: Color(0x00FF888888));
-
   @override
   Widget build(BuildContext context) {
     return FlatButton(
@@ -244,7 +243,10 @@ class RecordButtonState extends State<RecordButton> {
           ),
           Text(
             widget.recordType.localizedName,
-            style: _buttonLabelFont,
+            style: TextStyle(
+              fontSize: min(12, 12 / (widget.recordType.localizedName.length / 10)),
+              color: Color(0x00FF888888),
+            ),
           )
         ],
       ),
