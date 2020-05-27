@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "account" : MessageLookupByLibrary.simpleMessage("アカウント"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 追加"),
+    "awakeLabel" : MessageLookupByLibrary.simpleMessage("起きた"),
     "babyButtonTutorial" : MessageLookupByLibrary.simpleMessage("このアイコンをタップすると、赤ちゃんを切り替えることができます。"),
     "babyButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("※ 赤ちゃんの追加・編集は右下の設定からできます。"),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("離乳食"),
@@ -89,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("設定"),
     "shareData" : MessageLookupByLibrary.simpleMessage("データ共有"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを表示する"),
+    "sleepLabel" : MessageLookupByLibrary.simpleMessage("寝た"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("スキップ"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("おうと"),

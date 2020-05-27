@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "account" : MessageLookupByLibrary.simpleMessage("Account"),
     "addBabyTitle" : MessageLookupByLibrary.simpleMessage("Add Baby"),
+    "awakeLabel" : MessageLookupByLibrary.simpleMessage("Awake"),
     "babyButtonTutorial" : MessageLookupByLibrary.simpleMessage("By this button, you can change baby."),
     "babyButtonTutorialDescription" : MessageLookupByLibrary.simpleMessage("NOTE: Baby can be added and edited from Settings at the bottom right."),
     "babyFoodLabel" : MessageLookupByLibrary.simpleMessage("Baby Food"),
@@ -89,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsTitle" : MessageLookupByLibrary.simpleMessage("Settings"),
     "shareData" : MessageLookupByLibrary.simpleMessage("Share Data"),
     "showInvitationCode" : MessageLookupByLibrary.simpleMessage("Show Invitation Code"),
+    "sleepLabel" : MessageLookupByLibrary.simpleMessage("Sleep"),
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("Skip"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("Vomit"),
