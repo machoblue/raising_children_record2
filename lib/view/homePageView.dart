@@ -118,6 +118,8 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
       case MedicineRecord:
       case PeeRecord:
       case EtcRecord:
+      case SleepRecord:
+      case AwakeRecord:
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(),

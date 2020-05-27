@@ -76,6 +76,16 @@
     "type": "text",
     "placeholders": {}
   },
+  "sleepLabel": "寝た",
+  "@sleepLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "awakeLabel": "起きた",
+  "@awakeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "新規作成",
   "@recordTitleNew": {
     "type": "text",

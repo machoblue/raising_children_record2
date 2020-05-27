@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-27T07:21:45.899986",
+  "@@last_modified": "2020-05-28T07:47:23.925920",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -73,6 +73,16 @@
   },
   "etcLabel": "etc.",
   "@etcLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sleepLabel": "Sleep",
+  "@sleepLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "awakeLabel": "Awake",
+  "@awakeLabel": {
     "type": "text",
     "placeholders": {}
   },

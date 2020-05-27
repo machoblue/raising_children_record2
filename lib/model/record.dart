@@ -16,6 +16,8 @@ enum RecordType {
   medicine,
   pee,
   etc,
+  sleep,
+  awake,
 }
 
 extension RecordTypeExtension on RecordType {
@@ -48,6 +50,8 @@ extension RecordTypeExtension on RecordType {
       case MedicineRecord: return RecordType.medicine;
       case PeeRecord: return RecordType.pee;
       case EtcRecord: return RecordType.etc;
+      case SleepRecord: return RecordType.sleep;
+      case AwakeRecord: return RecordType.awake;
       default: throw('This line should not be reached.');
     }
   }
@@ -95,6 +99,10 @@ abstract class Record {
         return PeeRecord(id, dateTime, note, user);
       case RecordType.etc:
         return EtcRecord(id, dateTime, note, user);
+      case RecordType.sleep:
+        return SleepRecord(id, dateTime, note, user);
+      case RecordType.awake:
+        return AwakeRecord(id, dateTime, note, user);
       default:
         if (kReleaseMode) {
           return null;
@@ -324,4 +332,38 @@ class EtcRecord extends Record {
       User user): super(id, dateTime, note, user);
 
   EtcRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class SleepRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  SleepRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  SleepRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+class AwakeRecord extends Record {
+
+  @override
+  String get mainDescription => note ?? "";
+
+  @override
+  String get subDescription => "";
+
+  AwakeRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user): super(id, dateTime, note, user);
+
+  AwakeRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
 }

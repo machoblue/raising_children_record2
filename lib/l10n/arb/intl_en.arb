@@ -76,6 +76,16 @@
     "type": "text",
     "placeholders": {}
   },
+  "sleepLabel": "Sleep",
+  "@sleepLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "awakeLabel": "Awake",
+  "@awakeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "New",
   "@recordTitleNew": {
     "type": "text",

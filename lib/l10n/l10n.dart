@@ -50,6 +50,8 @@ class L10n {
   String get medicineLabel => Intl.message('Medicine', name: 'medicineLabel');
   String get peeLabel => Intl.message('Pee', name: 'peeLabel');
   String get etcLabel => Intl.message('etc.', name: 'etcLabel');
+  String get sleepLabel => Intl.message('Sleep', name: 'sleepLabel');
+  String get awakeLabel => Intl.message('Awake', name: 'awakeLabel');
 
   String get recordTitleNew => Intl.message('New', name: 'recordTitleNew');
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');

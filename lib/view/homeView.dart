@@ -202,6 +202,12 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       case RecordType.etc:
         EtcRecord record = EtcRecord.newInstance(DateTime.now(), null, user);
         return _buildPlainRecordView(record, user, baby);
+      case RecordType.sleep:
+        SleepRecord record = SleepRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
+      case RecordType.awake:
+        AwakeRecord record = AwakeRecord.newInstance(DateTime.now(), null, user);
+        return _buildPlainRecordView(record, user, baby);
       default:
         throw("This line shouldn't be reached.");
     }
