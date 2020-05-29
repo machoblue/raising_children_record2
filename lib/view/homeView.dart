@@ -11,12 +11,14 @@ import 'package:raisingchildrenrecord2/view/homeViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/poopRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
 
@@ -208,6 +210,15 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       case RecordType.awake:
         AwakeRecord record = AwakeRecord.newInstance(DateTime.now(), null, user);
         return _buildPlainRecordView(record, user, baby);
+      case RecordType.poop:
+        PoopRecord record = PoopRecord.newInstance(DateTime.now(), null, user);
+        return Provider<PoopRecordViewModel>(
+          create: (_) => PoopRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: PoopRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+        );
       default:
         throw("This line shouldn't be reached.");
     }

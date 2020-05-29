@@ -53,6 +53,7 @@ extension RecordTypeExtension on RecordType {
       case EtcRecord: return RecordType.etc;
       case SleepRecord: return RecordType.sleep;
       case AwakeRecord: return RecordType.awake;
+      case PoopRecord: return RecordType.poop;
       default: throw('This line should not be reached.');
     }
   }

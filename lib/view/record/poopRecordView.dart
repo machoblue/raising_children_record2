@@ -1,0 +1,110 @@
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
+import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
+import 'package:intl/intl.dart';
+
+class PoopRecordView extends BaseRecordView<PoopRecordViewModel> {
+  final _listItemFont = const TextStyle(fontSize: 20.0);
+  PoopRecordViewModel viewModel;
+
+  PoopRecordView({ Key key, isNew, onComplete }): super(key: key, isNew: isNew, onComplete: onComplete);
+
+  @override
+  Widget buildContent(BuildContext context) {
+    viewModel = Provider.of<PoopRecordViewModel>(context);
+    return _amountDropDown();
+  }
+
+  Widget _amountDropDown() {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text(
+                '${Intl.message('Hardness', name: 'hardnessLabel')}:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )
+            ),
+            Container(width: 10),
+            StreamBuilder(
+                stream: viewModel.hardness,
+                builder: (context, snapshot) {
+                  Hardness hardness = snapshot.data ?? Hardness.normal;
+                  return DropdownButton<Hardness>(
+                    value: hardness,
+                    items: Hardness.values.map((hardness) {
+                      return DropdownMenuItem<Hardness>(
+                          value: hardness,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 12, 0),
+                              child: Text(
+                                "${hardness.localizedName}",
+                                style: _listItemFont,
+                              )
+                          )
+                      );
+                    }).toList(),
+                    icon: Icon(Icons.expand_more),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.black54,
+                    ),
+                    onChanged: (Hardness newValue) => viewModel.onHardnessSelected.add(newValue),
+                  );
+                }
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text(
+                '${Intl.message('Amount', name: 'amountLabel')}:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )
+            ),
+            Container(width: 10),
+            StreamBuilder(
+                stream: viewModel.amount,
+                builder: (context, snapshot) {
+                  Amount amount = snapshot.data ?? Amount.normal;
+                  return DropdownButton<Amount>(
+                    value: amount,
+                    items: Amount.values.map((amount) {
+                      return DropdownMenuItem<Amount>(
+                          value: amount,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 12, 0),
+                              child: Text(
+                                "${amount.localizedName}",
+                                style: _listItemFont,
+                              )
+                          )
+                      );
+                    }).toList(),
+                    icon: Icon(Icons.expand_more),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.black54,
+                    ),
+                    onChanged: (Amount newValue) => viewModel.onAmountSelected.add(newValue),
+                  );
+                }
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

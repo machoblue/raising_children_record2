@@ -13,10 +13,12 @@ import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/poopRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
 
 class HomePageView extends StatefulWidget {
   final _biggerFont = const TextStyle(fontSize: 24.0);
@@ -123,6 +125,11 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
         return Provider<PlainRecordViewModel>(
           create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PlainRecordView(),
+        );
+      case PoopRecord:
+        return Provider<PoopRecordViewModel>(
+          create: (_) => PoopRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: PoopRecordView(),
         );
       default:
         throw("This line shouldn't be reached.");
