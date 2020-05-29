@@ -18,6 +18,7 @@ enum RecordType {
   etc,
   sleep,
   awake,
+  poop,
 }
 
 extension RecordTypeExtension on RecordType {
@@ -103,6 +104,10 @@ abstract class Record {
         return SleepRecord(id, dateTime, note, user);
       case RecordType.awake:
         return AwakeRecord(id, dateTime, note, user);
+      case RecordType.poop:
+        final Hardness hardness = HardnessExtension.fromRawValue((snapshot['details'] as Map)['hardness']);
+        final Amount amount = AmountExtension.fromRawValue((snapshot['details'] as Map)['amount']);
+        return PoopRecord(id, dateTime, note, user, hardness, amount);
       default:
         if (kReleaseMode) {
           return null;
@@ -366,4 +371,95 @@ class AwakeRecord extends Record {
       User user): super(id, dateTime, note, user);
 
   AwakeRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+}
+
+enum Hardness {
+  soft, normal, hard
+}
+
+extension HardnessExtension on Hardness {
+  int get rawValue {
+    switch (this) {
+      case Hardness.soft: return 0;
+      case Hardness.normal: return 1;
+      case Hardness.hard: return 2;
+    }
+  }
+
+  static Hardness fromRawValue(int rawValue) {
+    switch (rawValue) {
+      case 0: return Hardness.soft;
+      case 2: return Hardness.hard;
+      default: return Hardness.normal;
+    }
+  }
+
+  String get localizedName {
+    switch (this) {
+      case Hardness.soft: return Intl.message('Soft', name: 'hardnessSoft');
+      case Hardness.normal: return Intl.message('Normal', name: 'hardnessNormal');
+      case Hardness.hard: return Intl.message('Hard', name: 'hardnessHard');
+    }
+  }
+}
+
+enum Amount {
+  little, normal, much
+}
+
+extension AmountExtension on Amount {
+  int get rawValue {
+    switch (this) {
+      case Amount.little: return 0;
+      case Amount.normal: return 1;
+      case Amount.much: return 2;
+    }
+  }
+
+  static Amount fromRawValue(int rawValue) {
+    switch (rawValue) {
+      case 0: return Amount.little;
+      case 2: return Amount.much;
+      default: return Amount.normal;
+    }
+  }
+
+  String get localizedName {
+    switch (this) {
+      case Amount.little: return Intl.message('Little', name: 'amountLittle');
+      case Amount.normal: return Intl.message('Normal', name: 'amountNormal');
+      case Amount.much: return Intl.message('Much', name: 'amountMuch');
+    }
+  }
+}
+
+class PoopRecord extends Record {
+  Hardness hardness;
+  Amount amount;
+
+  PoopRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user,
+      this.hardness,
+      this.amount): super(id, dateTime, note, user);
+
+  PoopRecord.newInstance(DateTime dateTime, String note, User user): super.newInstance(dateTime, note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'hardness': hardness.rawValue, 'amount': amount.rawValue };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
+
+  @override
+  String get mainDescription {
+    return '${hardness.localizedName} / ${amount.localizedName}';
+  }
+
+  @override
+  String get subDescription => note ?? "";
 }
