@@ -244,7 +244,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           ),
         );
       case RecordType.weight:
-        WeightRecord record = WeightRecord.newInstance(DateTime.now(), null, user, 50.0);
+        WeightRecord record = WeightRecord.newInstance(DateTime.now(), null, user, 5.0);
         return Provider<WeightRecordViewModel>(
           create: (_) => WeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: WeightRecordView(
