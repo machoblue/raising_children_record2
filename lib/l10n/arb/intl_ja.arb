@@ -91,6 +91,21 @@
     "type": "text",
     "placeholders": {}
   },
+  "bodyTemperatureLabel": "体温",
+  "@bodyTemperatureLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "heightLabel": "身長",
+  "@heightLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "weightLabel": "体重",
+  "@weightLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "新規作成",
   "@recordTitleNew": {
     "type": "text",

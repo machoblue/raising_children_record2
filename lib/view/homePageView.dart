@@ -10,15 +10,21 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/record/bodyTemperatureRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/heightRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/poopRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/weightRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/bodyTemperatureRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/heightRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/weightRecordViewModel.dart';
 
 class HomePageView extends StatefulWidget {
   final _biggerFont = const TextStyle(fontSize: 24.0);
@@ -130,6 +136,21 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
         return Provider<PoopRecordViewModel>(
           create: (_) => PoopRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PoopRecordView(),
+        );
+      case BodyTemperatureRecord:
+        return Provider<BodyTemperatureRecordViewModel>(
+          create: (_) => BodyTemperatureRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: BodyTemperatureRecordView(),
+        );
+      case HeightRecord:
+        return Provider<HeightRecordViewModel>(
+          create: (_) => HeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: HeightRecordView(),
+        );
+      case WeightRecord:
+        return Provider<WeightRecordViewModel>(
+          create: (_) => WeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: WeightRecordView(),
         );
       default:
         throw("This line shouldn't be reached.");

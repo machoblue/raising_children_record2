@@ -119,10 +119,10 @@ abstract class Record {
         final double temperature = (snapshot['details'] as Map)['temperature'];
         return BodyTemperatureRecord(id, dateTime, note, user, temperature);
       case RecordType.height:
-        final double height = (snapshot['height'] as Map)['height'];
+        final double height = (snapshot['details'] as Map)['height'];
         return HeightRecord(id, dateTime, note, user, height);
       case RecordType.weight:
-        final double weight = (snapshot['weight'] as Map)['weight'];
+        final double weight = (snapshot['details'] as Map)['weight'];
         return WeightRecord(id, dateTime, note, user, weight);
       default:
         if (kReleaseMode) {

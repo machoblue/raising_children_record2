@@ -1,0 +1,49 @@
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/bodyTemperatureRecordViewModel.dart';
+
+class BodyTemperatureRecordView extends BaseRecordView<BodyTemperatureRecordViewModel> {
+  BodyTemperatureRecordViewModel viewModel;
+
+  BodyTemperatureRecordView({ Key key, isNew, onComplete }): super(key: key, isNew: isNew, onComplete: onComplete);
+
+  @override
+  Widget buildContent(BuildContext context) {
+    viewModel = Provider.of<BodyTemperatureRecordViewModel>(context);
+    return _amountDropDown(context);
+  }
+
+  Widget _amountDropDown(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        StreamBuilder(
+            stream: viewModel.bodyTemperature,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Container();
+              }
+              return SimpleDropdownButton<double>(
+                value: snapshot.data ?? 36.5,
+                items: List<double>.generate(80, (i) => 34.0 + i * 0.1),
+                itemLabel: (value) => '$value',
+                onChanged: (double newValue) => viewModel.onBodyTemperatureSelected.add(newValue),
+              );
+            }
+        ),
+
+        Container(width: 10),
+        Text(
+            L10n.of(context).degreesCelsius,
+            style: TextStyle(
+              fontSize: 20,
+            )
+        ),
+      ],
+    );
+  }
+}

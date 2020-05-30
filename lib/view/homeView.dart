@@ -8,17 +8,23 @@ import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/homePageView.dart';
 import 'package:raisingchildrenrecord2/view/homeViewTutorial.dart';
+import 'package:raisingchildrenrecord2/view/record/bodyTemperatureRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/heightRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/mothersMilkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/record/poopRecordView.dart';
+import 'package:raisingchildrenrecord2/view/record/weightRecordView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/bodyTemperatureRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/heightRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/record/weightRecordViewModel.dart';
 
 class HomeView extends StatefulWidget {
 
@@ -215,6 +221,33 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
         return Provider<PoopRecordViewModel>(
           create: (_) => PoopRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PoopRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+        );
+      case RecordType.bodyTemperature:
+        BodyTemperatureRecord record = BodyTemperatureRecord.newInstance(DateTime.now(), null, user, 36.5);
+        return Provider<BodyTemperatureRecordViewModel>(
+          create: (_) => BodyTemperatureRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: BodyTemperatureRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+        );
+      case RecordType.height:
+        HeightRecord record = HeightRecord.newInstance(DateTime.now(), null, user, 50.0);
+        return Provider<HeightRecordViewModel>(
+          create: (_) => HeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: HeightRecordView(
+            isNew: true,
+            onComplete: widget.onComplete,
+          ),
+        );
+      case RecordType.weight:
+        WeightRecord record = WeightRecord.newInstance(DateTime.now(), null, user, 50.0);
+        return Provider<WeightRecordViewModel>(
+          create: (_) => WeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          child: WeightRecordView(
             isNew: true,
             onComplete: widget.onComplete,
           ),

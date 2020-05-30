@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("Baby List"),
     "basicSettings" : MessageLookupByLibrary.simpleMessage("Basic Settings"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("Birthday"),
+    "bodyTemperatureLabel" : MessageLookupByLibrary.simpleMessage("Body Temperature"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("Clear all data"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("Are you sure clear all data?"),
@@ -65,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hardnessLabel" : MessageLookupByLibrary.simpleMessage("Hardness"),
     "hardnessNormal" : MessageLookupByLibrary.simpleMessage("Normal"),
     "hardnessSoft" : MessageLookupByLibrary.simpleMessage("Soft"),
+    "heightLabel" : MessageLookupByLibrary.simpleMessage("Height"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("Invitation Code"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("Expiration date time(for 5 minutes): \nUntil %s"),
@@ -106,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "snackLabel" : MessageLookupByLibrary.simpleMessage("Snack"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("Skip"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("Vomit"),
+    "weightLabel" : MessageLookupByLibrary.simpleMessage("Weight"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes.")
   };
 }

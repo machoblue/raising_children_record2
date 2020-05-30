@@ -53,6 +53,9 @@ class L10n {
   String get sleepLabel => Intl.message('Sleep', name: 'sleepLabel');
   String get awakeLabel => Intl.message('Awake', name: 'awakeLabel');
   String get poopLabel => Intl.message('Poop', name: 'poopLabel');
+  String get bodyTemperatureLabel => Intl.message('Body Temperature', name: 'bodyTemperatureLabel');
+  String get heightLabel => Intl.message('Height', name: 'heightLabel');
+  String get weightLabel => Intl.message('Weight', name: 'weightLabel');
 
   String get recordTitleNew => Intl.message('New', name: 'recordTitleNew');
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');

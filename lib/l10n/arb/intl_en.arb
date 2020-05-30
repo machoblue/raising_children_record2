@@ -91,6 +91,21 @@
     "type": "text",
     "placeholders": {}
   },
+  "bodyTemperatureLabel": "Body Temperature",
+  "@bodyTemperatureLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "heightLabel": "Height",
+  "@heightLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "weightLabel": "Weight",
+  "@weightLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "New",
   "@recordTitleNew": {
     "type": "text",

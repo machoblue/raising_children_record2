@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/viewmodel/record/baseRecordViewModel.dart
 
 class WeightRecordViewModel extends BaseRecordViewModel<WeightRecord> {
 
-  Stream<double> get bodyTemperature => recordBehaviorSubject.stream.map((record) => record.weight ?? 0);
+  Stream<double> get weight => recordBehaviorSubject.stream.map((record) => record.weight ?? 0);
   final StreamController<double> _onWeightSelectedStreamController = StreamController<double>();
   StreamSink<double> get onWeightSelected => _onWeightSelectedStreamController.sink;
 

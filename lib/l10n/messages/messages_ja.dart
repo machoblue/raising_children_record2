@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "babyListTitle" : MessageLookupByLibrary.simpleMessage("赤ちゃん情報 一覧"),
     "basicSettings" : MessageLookupByLibrary.simpleMessage("基本設定"),
     "birthdayLabel" : MessageLookupByLibrary.simpleMessage("生年月日"),
+    "bodyTemperatureLabel" : MessageLookupByLibrary.simpleMessage("体温"),
     "cameraAccessDenied" : MessageLookupByLibrary.simpleMessage("This app cannot use camera. Please grant the camera permission from the setting app."),
     "clearAllData" : MessageLookupByLibrary.simpleMessage("退会する（全データ消去）"),
     "clearAllDataMessage" : MessageLookupByLibrary.simpleMessage("退会すると全てのデータが消去されますが、よろしいですか？"),
@@ -65,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hardnessLabel" : MessageLookupByLibrary.simpleMessage("かたさ"),
     "hardnessNormal" : MessageLookupByLibrary.simpleMessage("ふつう"),
     "hardnessSoft" : MessageLookupByLibrary.simpleMessage("やわらかい"),
+    "heightLabel" : MessageLookupByLibrary.simpleMessage("身長"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("招待コード"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("有効期限(5分間): %s まで"),
@@ -106,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "snackLabel" : MessageLookupByLibrary.simpleMessage("おやつ"),
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("スキップ"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("おうと"),
+    "weightLabel" : MessageLookupByLibrary.simpleMessage("体重"),
     "yes" : MessageLookupByLibrary.simpleMessage("はい、消去します")
   };
 }
