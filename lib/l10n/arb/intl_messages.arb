@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-28T07:47:23.925920",
+  "@@last_modified": "2020-05-30T14:12:46.202017",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -83,6 +83,11 @@
   },
   "awakeLabel": "Awake",
   "@awakeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "poopLabel": "Poop",
+  "@poopLabel": {
     "type": "text",
     "placeholders": {}
   },
@@ -360,6 +365,46 @@
   },
   "right": "Right",
   "@right": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessLabel": "Hardness",
+  "@hardnessLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountLabel": "Amount",
+  "@amountLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessSoft": "Soft",
+  "@hardnessSoft": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessNormal": "Normal",
+  "@hardnessNormal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessHard": "Hard",
+  "@hardnessHard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountLittle": "Little",
+  "@amountLittle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountNormal": "Normal",
+  "@amountNormal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountMuch": "Much",
+  "@amountMuch": {
     "type": "text",
     "placeholders": {}
   }

@@ -52,6 +52,7 @@ class L10n {
   String get etcLabel => Intl.message('etc.', name: 'etcLabel');
   String get sleepLabel => Intl.message('Sleep', name: 'sleepLabel');
   String get awakeLabel => Intl.message('Awake', name: 'awakeLabel');
+  String get poopLabel => Intl.message('Poop', name: 'poopLabel');
 
   String get recordTitleNew => Intl.message('New', name: 'recordTitleNew');
   String get recordTitleEdit => Intl.message('Edit', name: 'recordTitleEdit');
@@ -129,4 +130,13 @@ class L10n {
   String get minutes => Intl.message('minutes', name: 'minutes');
   String get left => Intl.message('Left', name: 'left');
   String get right => Intl.message('Right', name: 'right');
+
+  String get hardnessLabel => Intl.message('Hardness', name: 'hardnessLabel');
+  String get amountLabel => Intl.message('Amount', name: 'amountLabel');
+  String get hardnessSoft => Intl.message('Soft', name: 'hardnessSoft');
+  String get hardnessNormal => Intl.message('Normal', name: 'hardnessNormal');
+  String get hardnessHard => Intl.message('Hard', name: 'hardnessHard');
+  String get amountLittle => Intl.message('Little', name: 'amountLittle');
+  String get amountNormal => Intl.message('Normal', name: 'amountNormal');
+  String get amountMuch => Intl.message('Much', name: 'amountMuch');
 }

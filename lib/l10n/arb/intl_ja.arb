@@ -86,6 +86,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "poopLabel": "うんち",
+  "@poopLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
   "recordTitleNew": "新規作成",
   "@recordTitleNew": {
     "type": "text",
@@ -360,6 +365,46 @@
   },
   "right": "右",
   "@right": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessLabel": "かたさ",
+  "@hardnessLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountLabel": "量",
+  "@amountLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessSoft": "やわらかい",
+  "@hardnessSoft": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessNormal": "ふつう",
+  "@hardnessNormal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessHard": "かたい",
+  "@hardnessHard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountLittle": "少ない",
+  "@amountLittle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountNormal": "ふつう",
+  "@amountNormal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountMuch": "多い",
+  "@amountMuch": {
     "type": "text",
     "placeholders": {}
   }
