@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
@@ -17,16 +18,17 @@ class PoopRecordView extends BaseRecordView<PoopRecordViewModel> {
   @override
   Widget buildContent(BuildContext context) {
     viewModel = Provider.of<PoopRecordViewModel>(context);
-    return _amountDropDown();
+    return _amountDropDown(context);
   }
 
-  Widget _amountDropDown() {
+  Widget _amountDropDown(BuildContext context) {
+    L10n l10n = L10n.of(context);
     return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
             Text(
-                '${Intl.message('Hardness', name: 'hardnessLabel')}:',
+                l10n.hardnessLabel,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -50,7 +52,7 @@ class PoopRecordView extends BaseRecordView<PoopRecordViewModel> {
         Row(
           children: <Widget>[
             Text(
-                '${Intl.message('Amount', name: 'amountLabel')}:',
+                l10n.amountLabel,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

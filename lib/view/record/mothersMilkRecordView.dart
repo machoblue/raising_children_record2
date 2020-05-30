@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/mothersMilkRecordViewModel.dart';
@@ -15,16 +16,17 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
   @override
   Widget buildContent(BuildContext context) {
     viewModel = Provider.of<MothersMilkRecordViewModel>(context);
-    return _amountDropDown();
+    return _amountDropDown(context);
   }
 
-  Widget _amountDropDown() {
+  Widget _amountDropDown(BuildContext context) {
+    L10n l10n = L10n.of(context);
     return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
             Text(
-                '${Intl.message('Left', name: 'left')}:',
+                l10n.left,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -48,7 +50,7 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
 
             Container(width: 10),
             Text(
-                Intl.message('minutes', name: 'minutes'),
+                l10n.minutes,
                 style: TextStyle(
                   fontSize: 20,
                 )
@@ -58,7 +60,7 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
         Row(
           children: <Widget>[
             Text(
-                '${Intl.message('Right', name: 'right')}:',
+                l10n.right,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -69,7 +71,6 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
                 stream: viewModel.rightMinutes,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    print("### !snapshot.hasData");
                     return Container();
                   }
                   return SimpleDropdownButton<int>(
@@ -83,7 +84,7 @@ class MothersMilkRecordView extends BaseRecordView<MothersMilkRecordViewModel> {
 
             Container(width: 10),
             Text(
-                Intl.message('minutes', name: 'minutes'),
+                l10n.minutes,
                 style: TextStyle(
                   fontSize: 20,
                 )
