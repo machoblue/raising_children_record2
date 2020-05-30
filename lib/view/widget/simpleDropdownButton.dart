@@ -1,13 +1,11 @@
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class SimpleDropdownButton<T> extends StatefulWidget {
-  T value;
-  List<T> items;
-  String Function(T) itemLabel;
-  void Function(T) onChanged;
+  final T value;
+  final List<T> items;
+  final String Function(T value) itemLabel;
+  final ValueChanged<T> onChanged;
 
   SimpleDropdownButton({ Key key, this.value, this.items, this.itemLabel, this.onChanged }): super(key: key);
 
@@ -15,14 +13,19 @@ class SimpleDropdownButton<T> extends StatefulWidget {
   _SimpleDropdownButtonState<T> createState() => _SimpleDropdownButtonState<T>();
 }
 
-class _SimpleDropdownButtonState<T> extends State<SimpleDropdownButton> {
+class _SimpleDropdownButtonState<U> extends State<SimpleDropdownButton<U>> {
   final _listItemFont = const TextStyle(fontSize: 20.0);
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
-    return DropdownButton<T>(
+    return DropdownButton<U>(
       value: widget.value,
       items: widget.items.map((item) {
-        return DropdownMenuItem<T>(
+        return DropdownMenuItem<U>(
             value: item,
             child: Container(
                 padding: EdgeInsets.fromLTRB(20, 0, 12, 0),

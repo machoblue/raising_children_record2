@@ -384,6 +384,7 @@ extension HardnessExtension on Hardness {
       case Hardness.soft: return 0;
       case Hardness.normal: return 1;
       case Hardness.hard: return 2;
+      default: throw "This line shouldn't be reached.";
     }
   }
 
@@ -400,6 +401,7 @@ extension HardnessExtension on Hardness {
       case Hardness.soft: return Intl.message('Soft', name: 'hardnessSoft');
       case Hardness.normal: return Intl.message('Normal', name: 'hardnessNormal');
       case Hardness.hard: return Intl.message('Hard', name: 'hardnessHard');
+      default: throw "This line shouldn't be reached.";
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/poopMilkRecordViewModel.dart';
 import 'package:intl/intl.dart';
 
@@ -36,27 +37,10 @@ class PoopRecordView extends BaseRecordView<PoopRecordViewModel> {
                 stream: viewModel.hardness,
                 builder: (context, snapshot) {
                   Hardness hardness = snapshot.data ?? Hardness.normal;
-                  return DropdownButton<Hardness>(
+                  return SimpleDropdownButton<Hardness>(
                     value: hardness,
-                    items: Hardness.values.map((hardness) {
-                      return DropdownMenuItem<Hardness>(
-                          value: hardness,
-                          child: Container(
-                              padding: EdgeInsets.fromLTRB(20, 0, 12, 0),
-                              child: Text(
-                                "${hardness.localizedName}",
-                                style: _listItemFont,
-                              )
-                          )
-                      );
-                    }).toList(),
-                    icon: Icon(Icons.expand_more),
-                    iconSize: 24,
-                    elevation: 16,
-                    underline: Container(
-                      height: 2,
-                      color: Colors.black54,
-                    ),
+                    items: Hardness.values,
+                    itemLabel: (Hardness hardness) => hardness.localizedName,
                     onChanged: (Hardness newValue) => viewModel.onHardnessSelected.add(newValue),
                   );
                 }
