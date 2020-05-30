@@ -407,5 +407,20 @@
   "@amountMuch": {
     "type": "text",
     "placeholders": {}
+  },
+  "degreesCelsius": "℃",
+  "@degreesCelsius": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cm": "cm",
+  "@cm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "kg": "kg",
+  "@kg": {
+    "type": "text",
+    "placeholders": {}
   }
 }

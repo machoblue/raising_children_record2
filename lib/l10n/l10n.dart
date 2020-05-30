@@ -139,4 +139,8 @@ class L10n {
   String get amountLittle => Intl.message('Little', name: 'amountLittle');
   String get amountNormal => Intl.message('Normal', name: 'amountNormal');
   String get amountMuch => Intl.message('Much', name: 'amountMuch');
+
+  String get degreesCelsius => Intl.message('℃', name: 'degreesCelsius');
+  String get cm => Intl.message('cm', name: 'cm');
+  String get kg => Intl.message('kg', name: 'kg');
 }

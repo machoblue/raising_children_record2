@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-30T14:12:46.202017",
+  "@@last_modified": "2020-05-30T14:30:50.480848",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -405,6 +405,21 @@
   },
   "amountMuch": "Much",
   "@amountMuch": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "degreesCelsius": "℃",
+  "@degreesCelsius": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cm": "cm",
+  "@cm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "kg": "kg",
+  "@kg": {
     "type": "text",
     "placeholders": {}
   }

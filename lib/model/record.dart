@@ -19,6 +19,9 @@ enum RecordType {
   sleep,
   awake,
   poop,
+  bodyTemperature,
+  height,
+  weight
 }
 
 extension RecordTypeExtension on RecordType {
@@ -54,6 +57,9 @@ extension RecordTypeExtension on RecordType {
       case SleepRecord: return RecordType.sleep;
       case AwakeRecord: return RecordType.awake;
       case PoopRecord: return RecordType.poop;
+      case BodyTemperatureRecord: return RecordType.bodyTemperature;
+      case HeightRecord: return RecordType.height;
+      case WeightRecord: return RecordType.weight;
       default: throw('This line should not be reached.');
     }
   }
@@ -109,6 +115,15 @@ abstract class Record {
         final Hardness hardness = HardnessExtension.fromRawValue((snapshot['details'] as Map)['hardness']);
         final Amount amount = AmountExtension.fromRawValue((snapshot['details'] as Map)['amount']);
         return PoopRecord(id, dateTime, note, user, hardness, amount);
+      case RecordType.bodyTemperature:
+        final double temperature = (snapshot['details'] as Map)['temperature'];
+        return BodyTemperatureRecord(id, dateTime, note, user, temperature);
+      case RecordType.height:
+        final double height = (snapshot['height'] as Map)['height'];
+        return HeightRecord(id, dateTime, note, user, height);
+      case RecordType.weight:
+        final double weight = (snapshot['weight'] as Map)['weight'];
+        return WeightRecord(id, dateTime, note, user, weight);
       default:
         if (kReleaseMode) {
           return null;
@@ -465,4 +480,85 @@ class PoopRecord extends Record {
 
   @override
   String get subDescription => note ?? "";
+}
+
+class BodyTemperatureRecord extends Record {
+  double temperature;
+
+  BodyTemperatureRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user,
+      this.temperature): super(id, dateTime, note, user);
+
+  BodyTemperatureRecord.newInstance(DateTime dateTime, String note, User user, this.temperature): super.newInstance(dateTime, note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'temperature': temperature };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
+
+  @override
+  String get mainDescription => "${this.temperature} ${Intl.message('℃', name: 'degreesCelsius')}";
+
+  @override
+  String get subDescription => note;
+}
+
+class HeightRecord extends Record {
+  double height;
+
+  HeightRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user,
+      this.height): super(id, dateTime, note, user);
+
+  HeightRecord.newInstance(DateTime dateTime, String note, User user, this.height): super.newInstance(dateTime, note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'height': height };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
+
+  @override
+  String get mainDescription => "${this.height} ${Intl.message('cm', name: 'cm')}";
+
+  @override
+  String get subDescription => note;
+}
+
+class WeightRecord extends Record {
+  double weight;
+
+  WeightRecord(
+      String id,
+      DateTime dateTime,
+      String note,
+      User user,
+      this.weight): super(id, dateTime, note, user);
+
+  WeightRecord.newInstance(DateTime dateTime, String note, User user, this.weight): super.newInstance(dateTime, note, user);
+
+  @override
+  Map<String, dynamic> get map {
+    Map superMap = super.map;
+    Map<String, dynamic> detailsMap = { 'weight': weight };
+    superMap['details'] = detailsMap;
+    return superMap;
+  }
+
+  @override
+  String get mainDescription => "${this.weight} ${Intl.message('kg', name: 'kg')}";
+
+  @override
+  String get subDescription => note;
 }
