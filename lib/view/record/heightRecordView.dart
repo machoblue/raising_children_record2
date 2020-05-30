@@ -6,8 +6,10 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
 import 'package:raisingchildrenrecord2/viewmodel/record/heightRecordViewModel.dart';
+import 'package:intl/intl.dart';
 
 class HeightRecordView extends BaseRecordView<HeightRecordViewModel> {
+  final _numberFormat = NumberFormat('###.0');
   HeightRecordViewModel viewModel;
 
   HeightRecordView({ Key key, isNew, onComplete }): super(key: key, isNew: isNew, onComplete: onComplete);
@@ -30,7 +32,7 @@ class HeightRecordView extends BaseRecordView<HeightRecordViewModel> {
               return SimpleDropdownButton<double>(
                 value: snapshot.data ?? 50.0,
                 items: List<double>.generate(800, (i) => 20.0 + i * 0.1),
-                itemLabel: (value) => '$value',
+                itemLabel: (value) => _numberFormat.format(value),
                 onChanged: (double newValue) => viewModel.onHeightSelected.add(newValue),
               );
             }

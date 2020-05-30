@@ -41,7 +41,7 @@ class HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
   final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
-  final DateFormat _timeFormat = DateFormat('HH:m');
+  final DateFormat _timeFormat = DateFormat('HH:mm');
 
   @override
   void initState() {
