@@ -10,12 +10,11 @@ import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
-import 'package:raisingchildrenrecord2/viewmodel/homeViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/home/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
-
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 import 'package:raisingchildrenrecord2/view/setting/settingsView.dart';
-import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/view/home/homeView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/settingsViewModel.dart';
 
 class MainView extends StatefulWidget {
@@ -23,9 +22,19 @@ class MainView extends StatefulWidget {
   _MainViewState createState() => _MainViewState();
 }
 
-class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTutorial {
+class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTutorial, SingleTickerProviderStateMixin {
 
   List<String> _appBarTitles;
+
+  final chartTabs = <Tab>[
+    Tab(text: 'ミルク'),
+    Tab(text: '睡眠'),
+    Tab(text: '排泄'),
+    Tab(text: '体温'),
+    Tab(text: '身長・体重')
+  ];
+
+  TabController _chartTabController;
 
   @override
   void initState() {
@@ -42,12 +51,20 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         ),
       );
     });
+
+    _chartTabController = TabController(vsync: this, length: chartTabs.length);
+  }
+
+  @override
+  void dispose() {
+    _chartTabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
-    _appBarTitles = [l10n.homeTitle, l10n.settingsTitle];
+    _appBarTitles = [l10n.homeTitle, 'グラフ', l10n.settingsTitle];
 
     return StreamBuilder(
       stream: viewModel.selectedIndex,
@@ -57,6 +74,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
           appBar: AppBar(
             leading: selectedIndex == 0 ? _babyButton() : null,
             title: Text(_appBarTitles[selectedIndex]),
+            bottom: selectedIndex == 1 ? _buildTabBar() : null,
           ),
           body: _buildContent(selectedIndex),
           bottomNavigationBar: _buildBottomNavigation(selectedIndex),
@@ -117,6 +135,14 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
     );
   }
 
+  Widget _buildTabBar() {
+    return TabBar(
+      controller: _chartTabController,
+      tabs: chartTabs,
+      isScrollable: true,
+    );
+  }
+
   Widget _buildContent(int selectedIndex) {
     switch (selectedIndex) {
       case 0: {
@@ -128,6 +154,28 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         );
       }
       case 1: {
+        return TabBarView(
+          controller: _chartTabController,
+          children: <Widget>[
+            Center(
+              child: Text('実装中'),
+            ),
+            Center(
+              child: Text('実装中'),
+            ),
+            Center(
+              child: Text('実装中'),
+            ),
+            Center(
+              child: Text('実装中'),
+            ),
+            Center(
+              child: Text('実装中'),
+            ),
+          ],
+        );
+      }
+      case 2: {
         return Provider<SettingsViewModel>(
           create: (_) => SettingsViewModel(
             Provider.of<MainViewModel>(context).userBehaviorSubject.value,
@@ -151,6 +199,10 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           title: Text(l10n.homeTitle),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.show_chart),
+          title: Text('グラフ'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),

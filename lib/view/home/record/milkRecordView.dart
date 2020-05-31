@@ -2,9 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/view/home/record/baseRecordView.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
-import 'package:raisingchildrenrecord2/viewmodel/record/milkRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/home/record/milkRecordViewModel.dart';
 
 class MilkRecordView extends BaseRecordView<MilkRecordViewModel> {
   MilkRecordViewModel viewModel;

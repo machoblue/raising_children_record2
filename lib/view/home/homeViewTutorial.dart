@@ -2,7 +2,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
-import 'package:raisingchildrenrecord2/view/homeView.dart';
+import 'package:raisingchildrenrecord2/view/home/homeView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
 import 'package:tutorial_coach_mark/target_focus.dart';

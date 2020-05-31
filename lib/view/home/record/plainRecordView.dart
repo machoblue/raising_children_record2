@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:raisingchildrenrecord2/view/record/baseRecordView.dart';
-import 'package:raisingchildrenrecord2/viewmodel/record/plainRecordViewModel.dart';
+import 'package:raisingchildrenrecord2/view/home/record/baseRecordView.dart';
+import 'package:raisingchildrenrecord2/viewmodel/home/record/plainRecordViewModel.dart';
 
 class PlainRecordView extends BaseRecordView<PlainRecordViewModel> {
 
