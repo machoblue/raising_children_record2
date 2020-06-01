@@ -1,5 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
@@ -13,6 +14,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
 
   @override
   Widget build(BuildContext context) {
+    L10n l10n = L10n.of(context);
     return Column(
       children: <Widget>[
         Container(height: 12),
@@ -21,15 +23,27 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
           builder: (context, snapshot) {
             return SimpleSegmentedControl(
               currentIndex: snapshot.data,
-              labels: ['1週間', '3週間', '1ヶ月'],
-              onSelect: (selectedIndex) {
-                viewModel.onSelected.add(selectedIndex);
-              },
+              labels: MilkViewTabItem.values.map((item) => item.getLabel(l10n)).toList(),
+              onSelect: viewModel.onSelected.add,
             );
           },
         ),
         Container(),
       ],
     );
+  }
+}
+
+enum MilkViewTabItem {
+  oneWeek, threeWeeks, threeMonths,
+}
+
+extension MilkViewTabItemExtension on MilkViewTabItem {
+  String getLabel(L10n l10n) {
+    switch (this) {
+      case MilkViewTabItem.oneWeek: return l10n.oneWeek;
+      case MilkViewTabItem.threeWeeks: return l10n.threeWeeks;
+      case MilkViewTabItem.threeMonths: return l10n.threeMonths;
+    }
   }
 }

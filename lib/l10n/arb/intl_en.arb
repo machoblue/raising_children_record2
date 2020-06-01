@@ -467,5 +467,20 @@
   "@growthTab": {
     "type": "text",
     "placeholders": {}
+  },
+  "oneWeek": "1 Week",
+  "@oneWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeWeeks": "3 Weeks",
+  "@threeWeeks": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeMonths": "3 Months",
+  "@threeMonths": {
+    "type": "text",
+    "placeholders": {}
   }
 }

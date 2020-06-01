@@ -467,5 +467,20 @@
   "@growthTab": {
     "type": "text",
     "placeholders": {}
+  },
+  "oneWeek": "1週間",
+  "@oneWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeWeeks": "3週間",
+  "@threeWeeks": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeMonths": "3ヶ月",
+  "@threeMonths": {
+    "type": "text",
+    "placeholders": {}
   }
 }

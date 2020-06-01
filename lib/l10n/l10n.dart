@@ -153,4 +153,8 @@ class L10n {
   String get excretionTab => Intl.message('Excretion', name: 'excretionTab');
   String get conditionTab => Intl.message('Condition', name: 'conditionTab');
   String get growthTab => Intl.message('Growth', name: 'growthTab');
+
+  String get oneWeek => Intl.message('1 Week', name: 'oneWeek');
+  String get threeWeeks => Intl.message('3 Weeks', name: 'threeWeeks');
+  String get threeMonths => Intl.message('3 Months', name: 'threeMonths');
 }

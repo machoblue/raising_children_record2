@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-01T10:16:39.043141",
+  "@@last_modified": "2020-06-02T06:26:24.540662",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -465,6 +465,21 @@
   },
   "growthTab": "Growth",
   "@growthTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "oneWeek": "1 Week",
+  "@oneWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeWeeks": "3 Weeks",
+  "@threeWeeks": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeMonths": "3 Months",
+  "@threeMonths": {
     "type": "text",
     "placeholders": {}
   }
