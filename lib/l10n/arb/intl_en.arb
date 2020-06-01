@@ -437,5 +437,35 @@
   "@kg": {
     "type": "text",
     "placeholders": {}
+  },
+  "chartTitle": "Chart",
+  "@chartTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "milkTab": "Milk",
+  "@milkTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sleepTab": "Sleep",
+  "@sleepTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "excretionTab": "Excretion",
+  "@excretionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "conditionTab": "Condition",
+  "@conditionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthTab": "Growth",
+  "@growthTab": {
+    "type": "text",
+    "placeholders": {}
   }
 }

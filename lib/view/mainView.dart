@@ -1,15 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/familyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -24,14 +27,12 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTutorial, SingleTickerProviderStateMixin {
 
-  List<String> _appBarTitles;
-
   final chartTabs = <Tab>[
-    Tab(text: 'ミルク'),
-    Tab(text: '睡眠'),
-    Tab(text: '排泄'),
-    Tab(text: '体温'),
-    Tab(text: '身長・体重')
+    Tab(text: Intl.message('Milk', name: 'milkTab')),
+    Tab(text: Intl.message('Sleep', name: 'sleepTab')),
+    Tab(text: Intl.message('Excretion', name: 'excretionTab')),
+    Tab(text: Intl.message('Condition', name: 'conditionTab')),
+    Tab(text: Intl.message('Growth', name: 'growthTab')),
   ];
 
   TabController _chartTabController;
@@ -64,7 +65,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
-    _appBarTitles = [l10n.homeTitle, 'グラフ', l10n.settingsTitle];
+    final appBarTitles = [l10n.homeTitle, l10n.chartTitle, l10n.settingsTitle];
 
     return StreamBuilder(
       stream: viewModel.selectedIndex,
@@ -73,7 +74,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         return Scaffold(
           appBar: AppBar(
             leading: selectedIndex == 0 ? _babyButton() : null,
-            title: Text(_appBarTitles[selectedIndex]),
+            title: Text(appBarTitles[selectedIndex]),
             bottom: selectedIndex == 1 ? _buildTabBar() : null,
           ),
           body: _buildContent(selectedIndex),
@@ -157,20 +158,21 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         return TabBarView(
           controller: _chartTabController,
           children: <Widget>[
-            Center(
-              child: Text('実装中'),
+            Provider<MilkChartViewModel>(
+              create: (_) => MilkChartViewModel(),
+              child: MilkChartView(),
             ),
             Center(
-              child: Text('実装中'),
+              child: Text('Under Implementation'),
             ),
             Center(
-              child: Text('実装中'),
+              child: Text('Under Implementation'),
             ),
             Center(
-              child: Text('実装中'),
+              child: Text('Under Implementation'),
             ),
             Center(
-              child: Text('実装中'),
+              child: Text('Under Implementation'),
             ),
           ],
         );
@@ -202,7 +204,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.show_chart),
-          title: Text('グラフ'),
+          title: Text(l10n.chartTitle),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),

@@ -437,5 +437,35 @@
   "@kg": {
     "type": "text",
     "placeholders": {}
+  },
+  "chartTitle": "グラフ",
+  "@chartTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "milkTab": "ミルク",
+  "@milkTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sleepTab": "睡眠",
+  "@sleepTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "excretionTab": "排泄",
+  "@excretionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "conditionTab": "体調",
+  "@conditionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthTab": "成長",
+  "@growthTab": {
+    "type": "text",
+    "placeholders": {}
   }
 }

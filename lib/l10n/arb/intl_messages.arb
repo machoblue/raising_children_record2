@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-05-30T14:56:57.214554",
+  "@@last_modified": "2020-06-01T10:16:39.043141",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -435,6 +435,36 @@
   },
   "kg": "kg",
   "@kg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "chartTitle": "Chart",
+  "@chartTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "milkTab": "Milk",
+  "@milkTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sleepTab": "Sleep",
+  "@sleepTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "excretionTab": "Excretion",
+  "@excretionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "conditionTab": "Condition",
+  "@conditionTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthTab": "Growth",
+  "@growthTab": {
     "type": "text",
     "placeholders": {}
   }

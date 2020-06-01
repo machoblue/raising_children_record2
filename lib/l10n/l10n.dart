@@ -146,4 +146,11 @@ class L10n {
   String get degreesCelsius => Intl.message('℃', name: 'degreesCelsius');
   String get cm => Intl.message('cm', name: 'cm');
   String get kg => Intl.message('kg', name: 'kg');
+
+  String get chartTitle => Intl.message('Chart', name: 'chartTitle');
+  String get milkTab => Intl.message('Milk', name: 'milkTab');
+  String get sleepTab => Intl.message('Sleep', name: 'sleepTab');
+  String get excretionTab => Intl.message('Excretion', name: 'excretionTab');
+  String get conditionTab => Intl.message('Condition', name: 'conditionTab');
+  String get growthTab => Intl.message('Growth', name: 'growthTab');
 }
