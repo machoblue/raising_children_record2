@@ -38,6 +38,10 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                   painter: MilkChartFramePainter(),
                   child: Container(),
                 ),
+                CustomPaint(
+                  painter: MilkChartPainter(),
+                  child: Container(),
+                ),
               ],
             ),
           ),
@@ -57,6 +61,24 @@ extension MilkChartPeriodExtension on MilkChartPeriod {
       case MilkChartPeriod.oneWeek: return l10n.oneWeek;
       case MilkChartPeriod.threeWeeks: return l10n.threeWeeks;
       case MilkChartPeriod.threeMonths: return l10n.threeMonths;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  int get days {
+    switch (this) {
+      case MilkChartPeriod.oneWeek: return 7;
+      case MilkChartPeriod.threeWeeks: return 21;
+      case MilkChartPeriod.threeMonths: return 90;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  static MilkChartPeriod fromIndex(int index) {
+    switch (index) {
+      case 0: return MilkChartPeriod.oneWeek;
+      case 1: return MilkChartPeriod.threeWeeks;
+      case 2: return MilkChartPeriod.threeMonths;
       default: throw 'This line shouldn\'t be reached';
     }
   }
@@ -150,9 +172,25 @@ class MilkChartFramePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+class MilkChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
 class MilkChartData {
+  final MilkChartPeriod period;
+  final MilkChartSubData data1;
+  final MilkChartSubData data2;
+  MilkChartData(this.period, this.data1, this.data2);
+}
+
+class MilkChartSubData {
   final String name;
   final Color color;
   final Map<DateTime, double> dateToValue;
-  MilkChartData(this.name, this.color, this.dateToValue);
+  MilkChartSubData(this.name, this.color, this.dateToValue);
 }

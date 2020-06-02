@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/familyRepository.dart';
+import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
@@ -159,7 +160,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
           controller: _chartTabController,
           children: <Widget>[
             Provider<MilkChartViewModel>(
-              create: (_) => MilkChartViewModel(),
+              create: (_) => MilkChartViewModel(FirestoreRecordRepository()),
               child: MilkChartView(),
             ),
             Center(
