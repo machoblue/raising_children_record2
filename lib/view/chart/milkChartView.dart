@@ -73,9 +73,9 @@ class MilkChartFramePainter extends CustomPainter {
       style: baseTextStyle,
       children: <TextSpan>[
         TextSpan(text: '●' ,style: TextStyle(color: Colors.yellow, fontSize: fontSize)),
-        TextSpan(text: 'ミルク '),
+        TextSpan(text: 'ミルク(ml) '),
         TextSpan(text: '●' ,style: TextStyle(color: Colors.pink, fontSize: fontSize)),
-        TextSpan(text: '母乳'),
+        TextSpan(text: '母乳(時間)'),
       ],
     );
 
@@ -99,12 +99,51 @@ class MilkChartFramePainter extends CustomPainter {
     path.lineTo(x3, y3);
 
     Paint paint = Paint()
-        ..color = Colors.black
-        ..strokeCap = StrokeCap.round
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1;
+      ..color = Colors.black
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
 
     canvas.drawPath(path, paint);
+
+    Path horizontalLinePath = Path();
+    double unitHeight = (size.height - margin * 2) / 32;
+    for (int i = 0; i < 32; i++) {
+      double y = margin + i * unitHeight;
+      horizontalLinePath.moveTo(x0, y);
+      horizontalLinePath.lineTo(x2, y);
+    }
+
+    Paint horizontalLinePaint = Paint()
+      ..color = Colors.grey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    canvas.drawPath(horizontalLinePath, horizontalLinePaint);
+
+    for (int i = 0; i < 7; i++) {
+      final textSpan = TextSpan(style: baseTextStyle, text: (500 * i).toString());
+      final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr, textAlign: TextAlign.right);
+      textPainter.layout(minWidth: margin - 2.5, maxWidth: size.width);
+      textPainter.paint(canvas, Offset(0, size.height - margin - fontSize / 2 - unitHeight * 5 * i));
+    }
+
+    final unitTextSpan = TextSpan(style: baseTextStyle, text: '(ml)');
+    final unitTextPainter = TextPainter(text: unitTextSpan, textDirection: TextDirection.ltr, textAlign: TextAlign.right);
+    unitTextPainter.layout(minWidth: margin - 2.5, maxWidth: size.width);
+    unitTextPainter.paint(canvas, Offset(0, margin - fontSize / 2));
+
+    for (int i = 0; i < 16; i++) {
+      final textSpan = TextSpan(style: baseTextStyle, text: (0.5 * i).toString());
+      final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+      textPainter.layout(minWidth: 0, maxWidth: size.width);
+      textPainter.paint(canvas, Offset(size.width - margin + 2.5, size.height - margin - fontSize / 2 - unitHeight * 2 * i));
+    }
+
+    final unitTextSpan2 = TextSpan(style: baseTextStyle, text: '(時間)');
+    final unitTextPainter2 = TextPainter(text: unitTextSpan2, textDirection: TextDirection.ltr);
+    unitTextPainter2.layout(minWidth: 0, maxWidth: size.width);
+    unitTextPainter2.paint(canvas, Offset(size.width - margin + 2.5, margin - fontSize / 2));
   }
 
   @override
