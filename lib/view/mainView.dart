@@ -160,7 +160,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
           controller: _chartTabController,
           children: <Widget>[
             Provider<MilkChartViewModel>(
-              create: (_) => MilkChartViewModel(FirestoreRecordRepository()),
+              create: (_) => MilkChartViewModel(viewModel.baby, FirestoreRecordRepository()),
               child: MilkChartView(),
             ),
             Center(

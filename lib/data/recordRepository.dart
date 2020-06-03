@@ -9,7 +9,7 @@ class RecordRepository {
   Stream<List<Record>> observeRecords(String familyId, String babyId, {DateTime from, DateTime to}) {}
   Future<void> save(String familyId, String babyId, Record record) {}
   Future<void> delete(String familyId, String babyId, Record record) {}
-  Future<List<Record>> getRecords(String familyId, String babyId, {RecordType recordType, DateTime from, DateTime to}) {}
+  Future<List<Record>> getRecords(String familyId, String babyId, {List<RecordType> recordTypesIn, DateTime from, DateTime to}) {}
 }
 
 class FirestoreRecordRepository with FirestoreErrorHandler, FirestoreUtil implements RecordRepository {
@@ -57,8 +57,8 @@ class FirestoreRecordRepository with FirestoreErrorHandler, FirestoreUtil implem
         .delete();
   }
 
-  Future<List<Record>> getRecords(String familyId, String babyId, {RecordType recordType, DateTime from, DateTime to}) {
-    final type = recordType.string;
+  Future<List<Record>> getRecords(String familyId, String babyId, {List<RecordType> recordTypesIn, DateTime from, DateTime to}) {
+    final types = recordTypesIn.map((recordType) => recordType.string).toList();
     final fromTimeStamp = Timestamp.fromDate(from);
     final toTimeStamp = Timestamp.fromDate(to);
     return rootRef
@@ -68,7 +68,8 @@ class FirestoreRecordRepository with FirestoreErrorHandler, FirestoreUtil implem
       .document(babyId)
       .collection(records)
       .where('dateTime', isGreaterThanOrEqualTo: fromTimeStamp, isLessThan: toTimeStamp)
-      .where('type', isEqualTo: type)
+//      .where('type', isEqualTo: type)
+      .where('type', whereIn: types)
       .getDocuments()
       .then((querySnapshot) {
         List<DocumentSnapshot> snapshots = querySnapshot.documents;
