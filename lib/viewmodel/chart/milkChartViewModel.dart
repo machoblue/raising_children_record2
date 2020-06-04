@@ -26,29 +26,39 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   MilkChartViewModel(this.babyStream, this.recordRepository) {
     _currentIndexBehaviorSubject.listen((index) {
-      _getData(index).then((data) {
+      _getData(index).listen((data) {
         _dataBehaviorSubject.sink.add(data);
       });
     });
   }
 
-  Future<MilkChartData> _getData(int index) {
-    SharedPreferences.getInstance().then((sharedPreferences) {
-      final String familyId = sharedPreferences.getString("familyId");
+  Stream<MilkChartData> _getData(int index) {
+    return babyStream.asyncMap((baby) {
+      return SharedPreferences.getInstance().then((sharedPreferences) {
+        final familyId = sharedPreferences.getString('familyId');
 
-      _subscription = babyStream.listen((baby) {
         final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
         final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.hour);
         final milkChartPeriod = MilkChartPeriodExtension.fromIndex(index);
         final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
-        recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.milk, RecordType.mothersMilk], from: fromDateTime, to: toDateTime).then((records) {
+
+        return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.milk, RecordType.mothersMilk], from: fromDateTime, to: toDateTime).then((records) {
           final List<MilkRecord> milkRecords = records.where((record) => record.runtimeType == MilkRecord).toList();
           final MilkChartSubData milkSubData = MilkChartSubData(
             RecordType.milk.localizedName,
             Colors.yellow,
             Map.fromIterable(milkRecords, key: (record) => record.dateTime, value: (record) => record.amount),
           );
-        }).catchError(handleError);
+
+          final List<MothersMilkRecord> mothersMilkRecords = records.where((record) => record.runtimeType == MothersMilkRecord).toList();
+          final MilkChartSubData mothersMilkSubData = MilkChartSubData(
+            RecordType.mothersMilk.localizedName,
+            Colors.pink,
+            Map.fromIterable(mothersMilkRecords, key: (record) => record.dateTime, value: (record) => record.leftMilliseconds + record.rightMilliseconds)
+          );
+
+          return MilkChartData(milkChartPeriod, milkSubData, mothersMilkSubData);
+        });
       });
     });
   }
