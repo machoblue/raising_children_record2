@@ -203,12 +203,34 @@ class MilkChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 最初のメモリになる日付を見つける
-    DateTime dateTime;
+    _drawBackground(canvas, size);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+
+  void _drawBackground(Canvas canvas, Size size) {
+    DateTime dateTime = _getStartDateTime();
+
+    final double margin = min(size.width * 0.1, size.height * 0.1);
+    final paint = Paint()
+      ..color = Color(0x004400aaff);
+    final y0 = margin;
+    final y1 = size.height - margin;
+    final double unitWidth = (size.width - margin * 2) * (data.period.unitDays / data.period.days);
+    double x0 = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - data.fromDateTime.millisecondsSinceEpoch) / (data.period.days * 1000 * 60 * 60 * 24));
+    double x1 = x0 + unitWidth;
+    while (x0 < size.width - margin) {
+      canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), paint);
+      x0 += unitWidth * 2;
+      x1 = min(x1 + unitWidth * 2, size.width - margin);
+    }
+  }
+
+  DateTime _getStartDateTime() {
     switch (data.period) {
       case MilkChartPeriod.oneWeek:
-        dateTime = DateTime.fromMillisecondsSinceEpoch(data.fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
-        break;
+        return DateTime.fromMillisecondsSinceEpoch(data.fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
       case MilkChartPeriod.threeWeeks:
       case MilkChartPeriod.threeMonths:
         DateTime tempDateTime = data.fromDateTime;
@@ -217,30 +239,10 @@ class MilkChartPainter extends CustomPainter {
           if (tempDateTime.weekday != DateTime.monday) {
             continue;
           }
-          dateTime = tempDateTime;
-          break;
+          return tempDateTime;
         }
-        break;
-    }
-
-    // rectのお尻がtoDateTimeを超えるまで、forLoop
-    final double margin = min(size.width * 0.1, size.height * 0.1);
-    final paint = Paint()
-      ..color = Colors.lightBlue;
-    final y0 = margin;
-    final y1 = size.height - margin;
-    final double unitWidth = (size.width - margin * 2) * (data.period.unitDays / data.period.days);
-    double x0 = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - data.fromDateTime.millisecondsSinceEpoch) / (data.period.days * 1000 * 60 * 60 * 24));
-    double x1 = x0 + unitWidth;
-    while (x1 < size.width - margin) {
-      canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), paint);
-      x0 += unitWidth * 2;
-      x1 += unitWidth * 2;
     }
   }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
 class MilkChartData {
