@@ -1,6 +1,6 @@
 
 import 'dart:math';
-
+import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
@@ -88,11 +88,11 @@ extension MilkChartPeriodExtension on MilkChartPeriod {
     }
   }
 
-  int get unitDays {
+  bool isScaleBoundDay(DateTime dateTime) {
     switch (this) {
-      case MilkChartPeriod.oneWeek: return 1;
-      case MilkChartPeriod.threeWeeks: return 7;
-      case MilkChartPeriod.threeMonths: return 7;
+      case MilkChartPeriod.oneWeek: return dateTime.hour == 0 && dateTime.minute == 0;
+      case MilkChartPeriod.threeWeeks: return dateTime.weekday == DateTime.monday;
+      case MilkChartPeriod.threeMonths: return dateTime.weekday == DateTime.monday;
       default: throw 'This line shouldn\'t be reached';
     }
   }
@@ -196,6 +196,7 @@ class MilkChartFramePainter extends CustomPainter {
 }
 
 class MilkChartPainter extends CustomPainter {
+  final dateFormat = intl.DateFormat.Md();
 
   final MilkChartData data;
 
@@ -210,20 +211,36 @@ class MilkChartPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   void _drawBackground(Canvas canvas, Size size) {
-    DateTime dateTime = _getStartDateTime();
-
-    final double margin = min(size.width * 0.1, size.height * 0.1);
-    final paint = Paint()
+    final oddPaint = Paint()
+      ..color = Color(0x0000000000);
+    final evenPaint = Paint()
       ..color = Color(0x004400aaff);
-    final y0 = margin;
-    final y1 = size.height - margin;
-    final double unitWidth = (size.width - margin * 2) * (data.period.unitDays / data.period.days);
-    double x0 = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - data.fromDateTime.millisecondsSinceEpoch) / (data.period.days * 1000 * 60 * 60 * 24));
-    double x1 = x0 + unitWidth;
-    while (x0 < size.width - margin) {
-      canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), paint);
-      x0 += unitWidth * 2;
-      x1 = min(x1 + unitWidth * 2, size.width - margin);
+
+    final fromDateTime = data.fromDateTime;
+    final toDateTime = data.toDateTime;
+    final spanMilliseconds = data.toDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch;
+    DateTime scaleLeftDateTime = fromDateTime;
+    DateTime tempDateTime = fromDateTime.add(Duration(days: 1));
+    Paint scalePaint = oddPaint;
+    final double margin = min(size.width * 0.1, size.height * 0.1);
+    final double y0 = margin;
+    final double y1 = size.height - margin;
+    while (true) {
+      if (tempDateTime.isAfter(toDateTime)) {
+        break;
+      }
+
+      if (data.period.isScaleBoundDay(tempDateTime) || tempDateTime == toDateTime) {
+        final double x0 = margin + (size.width - margin * 2) * ((scaleLeftDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
+        final double x1 = margin + (size.width - margin * 2) * ((tempDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
+        canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), scalePaint);
+
+        // 値の更新
+        scaleLeftDateTime = tempDateTime;
+        scalePaint = scalePaint == oddPaint ? evenPaint : oddPaint;
+      }
+
+      tempDateTime = tempDateTime.add(Duration(days: 1));
     }
   }
 
