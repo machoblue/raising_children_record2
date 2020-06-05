@@ -17,17 +17,18 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   StreamSubscription _subscription;
 
-  BehaviorSubject<int> _currentIndexBehaviorSubject = BehaviorSubject.seeded(0);
+  final _currentIndexBehaviorSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
   StreamSink<int> get onSelected => _currentIndexBehaviorSubject.sink;
 
-  BehaviorSubject<MilkChartData> _dataBehaviorSubject = BehaviorSubject.seeded(MilkChartData(MilkChartPeriod.oneWeek, MilkChartSubData('ミルク', Colors.yellow, {}), MilkChartSubData('母乳', Colors.pink, {})));
-  Stream<MilkChartData> get data => _dataBehaviorSubject.stream;
+  final _dataStreamController = StreamController<MilkChartData>();
+  Stream<MilkChartData> get data => _dataStreamController.stream;
 
   MilkChartViewModel(this.babyStream, this.recordRepository) {
     _currentIndexBehaviorSubject.listen((index) {
+      print("### ${_currentIndexBehaviorSubject.value}");
       _getData(index).listen((data) {
-        _dataBehaviorSubject.sink.add(data);
+        _dataStreamController.sink.add(data);
       });
     });
   }
@@ -38,26 +39,26 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
         final familyId = sharedPreferences.getString('familyId');
 
         final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
-        final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.hour);
+        final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
         final milkChartPeriod = MilkChartPeriodExtension.fromIndex(index);
         final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
 
         return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.milk, RecordType.mothersMilk], from: fromDateTime, to: toDateTime).then((records) {
-          final List<MilkRecord> milkRecords = records.where((record) => record.runtimeType == MilkRecord).toList();
+          final List<MilkRecord> milkRecords = records.where((record) => record.runtimeType == MilkRecord).map((record) => record as MilkRecord).toList();
           final MilkChartSubData milkSubData = MilkChartSubData(
             RecordType.milk.localizedName,
             Colors.yellow,
             Map.fromIterable(milkRecords, key: (record) => record.dateTime, value: (record) => record.amount),
           );
 
-          final List<MothersMilkRecord> mothersMilkRecords = records.where((record) => record.runtimeType == MothersMilkRecord).toList();
+          final List<MothersMilkRecord> mothersMilkRecords = records.where((record) => record.runtimeType == MothersMilkRecord).map((record) => record as MothersMilkRecord).toList();
           final MilkChartSubData mothersMilkSubData = MilkChartSubData(
             RecordType.mothersMilk.localizedName,
             Colors.pink,
-            Map.fromIterable(mothersMilkRecords, key: (record) => record.dateTime, value: (record) => record.leftMilliseconds + record.rightMilliseconds)
+            Map.fromIterable(mothersMilkRecords, key: (record) => record.dateTime, value: (record) => (record.leftMilliseconds ?? 0) + (record.rightMilliseconds ?? 0))
           );
 
-          return MilkChartData(milkChartPeriod, milkSubData, mothersMilkSubData);
+          return MilkChartData(milkChartPeriod, fromDateTime, toDateTime, milkSubData, mothersMilkSubData);
         });
       });
     });
@@ -67,7 +68,7 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   void dispose() {
     super.dispose();
     _currentIndexBehaviorSubject.close();
-    _dataBehaviorSubject.close();
-    _subscription.cancel();
+    _dataStreamController.close();
+    _subscription?.cancel();
   }
 }

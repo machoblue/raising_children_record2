@@ -38,9 +38,23 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                   painter: MilkChartFramePainter(),
                   child: Container(),
                 ),
-                CustomPaint(
-                  painter: MilkChartPainter(),
-                  child: Container(),
+                Container(
+
+                child: StreamBuilder(
+                  stream: viewModel.data,
+                  builder: (context, snapshot) {
+                    print("### streamBuilder START");
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
+                    print("### streamBuilder from: ${snapshot.data.fromDateTime}");
+                    print("### streamBuilder to  : ${snapshot.data.toDateTime}");
+                    return CustomPaint(
+                      painter: MilkChartPainter(snapshot.data),
+                      child: Container(),
+                    );
+                  }
+                ),
                 ),
               ],
             ),
@@ -70,6 +84,15 @@ extension MilkChartPeriodExtension on MilkChartPeriod {
       case MilkChartPeriod.oneWeek: return 7;
       case MilkChartPeriod.threeWeeks: return 21;
       case MilkChartPeriod.threeMonths: return 90;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  int get unitDays {
+    switch (this) {
+      case MilkChartPeriod.oneWeek: return 1;
+      case MilkChartPeriod.threeWeeks: return 7;
+      case MilkChartPeriod.threeMonths: return 7;
       default: throw 'This line shouldn\'t be reached';
     }
   }
@@ -173,24 +196,65 @@ class MilkChartFramePainter extends CustomPainter {
 }
 
 class MilkChartPainter extends CustomPainter {
+
+  final MilkChartData data;
+
+  MilkChartPainter(this.data);
+
   @override
   void paint(Canvas canvas, Size size) {
+    // 最初のメモリになる日付を見つける
+    DateTime dateTime;
+    switch (data.period) {
+      case MilkChartPeriod.oneWeek:
+        dateTime = DateTime.fromMillisecondsSinceEpoch(data.fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
+        break;
+      case MilkChartPeriod.threeWeeks:
+      case MilkChartPeriod.threeMonths:
+        DateTime tempDateTime = data.fromDateTime;
+        while(true) {
+          tempDateTime = DateTime.fromMillisecondsSinceEpoch(tempDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
+          if (tempDateTime.weekday != DateTime.monday) {
+            continue;
+          }
+          dateTime = tempDateTime;
+          break;
+        }
+        break;
+    }
+
+    // rectのお尻がtoDateTimeを超えるまで、forLoop
+    final double margin = min(size.width * 0.1, size.height * 0.1);
+    final paint = Paint()
+      ..color = Colors.lightBlue;
+    final y0 = margin;
+    final y1 = size.height - margin;
+    final double unitWidth = (size.width - margin * 2) * (data.period.unitDays / data.period.days);
+    double x0 = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - data.fromDateTime.millisecondsSinceEpoch) / (data.period.days * 1000 * 60 * 60 * 24));
+    double x1 = x0 + unitWidth;
+    while (x1 < size.width - margin) {
+      canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), paint);
+      x0 += unitWidth * 2;
+      x1 += unitWidth * 2;
+    }
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
 class MilkChartData {
   final MilkChartPeriod period;
+  final DateTime fromDateTime;
+  final DateTime toDateTime;
   final MilkChartSubData data1;
   final MilkChartSubData data2;
-  MilkChartData(this.period, this.data1, this.data2);
+  MilkChartData(this.period, this.fromDateTime, this.toDateTime, this.data1, this.data2);
 }
 
 class MilkChartSubData {
   final String name;
   final Color color;
-  final Map<DateTime, double> dateToValue;
+  final Map<DateTime, int> dateToValue;
   MilkChartSubData(this.name, this.color, this.dateToValue);
 }
