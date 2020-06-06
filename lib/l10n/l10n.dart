@@ -157,4 +157,7 @@ class L10n {
   String get oneWeek => Intl.message('1 Week', name: 'oneWeek');
   String get threeWeeks => Intl.message('3 Weeks', name: 'threeWeeks');
   String get threeMonths => Intl.message('3 Months', name: 'threeMonths');
+
+  String get ml => Intl.message('ml', name: 'ml');
+  String get hour => Intl.message('Hours', name: 'hour');
 }

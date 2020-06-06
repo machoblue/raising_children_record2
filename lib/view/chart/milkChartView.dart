@@ -18,6 +18,8 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
   @override
   Widget build(BuildContext context) {
     L10n l10n = L10n.of(context);
+    final milkLegend = Legend(Colors.yellow, l10n.milkLabel, l10n.ml);
+    final mothersMilkLegend = Legend(Colors.pink, l10n.mothersMilkLabel, l10n.hour);
     return Column(
       children: <Widget>[
         Container(height: 12),
@@ -47,7 +49,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                   }
                 ),
                 CustomPaint(
-                  painter: MilkChartFramePainter(),
+                  painter: MilkChartFramePainter(milkLegend, mothersMilkLegend),
                   child: Container(),
                 ),
                 StreamBuilder(
@@ -70,58 +72,12 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
   }
 }
 
-enum PeriodType {
-  oneWeek, threeWeeks, threeMonths,
-}
-
-extension PeriodTypeExtension on PeriodType {
-  String getLabel(L10n l10n) {
-    switch (this) {
-      case PeriodType.oneWeek: return l10n.oneWeek;
-      case PeriodType.threeWeeks: return l10n.threeWeeks;
-      case PeriodType.threeMonths: return l10n.threeMonths;
-      default: throw 'This line shouldn\'t be reached';
-    }
-  }
-
-  int get days {
-    switch (this) {
-      case PeriodType.oneWeek: return 7;
-      case PeriodType.threeWeeks: return 21;
-      case PeriodType.threeMonths: return 90;
-      default: throw 'This line shouldn\'t be reached';
-    }
-  }
-
-  int get unitDays {
-    switch (this) {
-      case PeriodType.oneWeek: return 1;
-      case PeriodType.threeWeeks: return 7;
-      case PeriodType.threeMonths: return 7;
-      default: throw 'This line shouldn\'t be reached';
-    }
-  }
-
-  bool isScaleBoundDay(DateTime dateTime) {
-    switch (this) {
-      case PeriodType.oneWeek: return dateTime.hour == 0 && dateTime.minute == 0;
-      case PeriodType.threeWeeks: return dateTime.weekday == DateTime.monday;
-      case PeriodType.threeMonths: return dateTime.weekday == DateTime.monday;
-      default: throw 'This line shouldn\'t be reached';
-    }
-  }
-
-  static PeriodType fromIndex(int index) {
-    switch (index) {
-      case 0: return PeriodType.oneWeek;
-      case 1: return PeriodType.threeWeeks;
-      case 2: return PeriodType.threeMonths;
-      default: throw 'This line shouldn\'t be reached';
-    }
-  }
-}
-
 class MilkChartFramePainter extends CustomPainter {
+  final Legend legend1;
+  final Legend legend2;
+
+  MilkChartFramePainter(this.legend1, this.legend2);
+
   @override
   void paint(Canvas canvas, Size size) {
     final double margin = min(size.width * 0.1, size.height * 0.1);
@@ -131,10 +87,10 @@ class MilkChartFramePainter extends CustomPainter {
     final textSpan = TextSpan(
       style: baseTextStyle,
       children: <TextSpan>[
-        TextSpan(text: '●' ,style: TextStyle(color: Colors.yellow, fontSize: fontSize)),
-        TextSpan(text: 'ミルク(ml) '),
-        TextSpan(text: '●' ,style: TextStyle(color: Colors.pink, fontSize: fontSize)),
-        TextSpan(text: '母乳(時間)'),
+        TextSpan(text: '●' ,style: TextStyle(color: legend1.color, fontSize: fontSize)),
+        TextSpan(text: '${legend1.name}(${legend1.unit}) '),
+        TextSpan(text: '●' ,style: TextStyle(color: legend2.color, fontSize: fontSize)),
+        TextSpan(text: '${legend2.name}(${legend2.unit}) '),
       ],
     );
 
@@ -187,7 +143,7 @@ class MilkChartFramePainter extends CustomPainter {
       textPainter.paint(canvas, Offset(0, size.height - margin - fontSize / 2 - unitHeight * 5 * i));
     }
 
-    final unitTextSpan = TextSpan(style: baseTextStyle, text: '(ml)');
+    final unitTextSpan = TextSpan(style: baseTextStyle, text: '(${legend1.unit})');
     final unitTextPainter = TextPainter(text: unitTextSpan, textDirection: TextDirection.ltr, textAlign: TextAlign.right);
     unitTextPainter.layout(minWidth: margin - 2.5, maxWidth: size.width);
     unitTextPainter.paint(canvas, Offset(0, margin - fontSize / 2));
@@ -199,7 +155,7 @@ class MilkChartFramePainter extends CustomPainter {
       textPainter.paint(canvas, Offset(size.width - margin + 2.5, size.height - margin - fontSize / 2 - unitHeight * 2 * i));
     }
 
-    final unitTextSpan2 = TextSpan(style: baseTextStyle, text: '(時間)');
+    final unitTextSpan2 = TextSpan(style: baseTextStyle, text: '(${legend2.unit})');
     final unitTextPainter2 = TextPainter(text: unitTextSpan2, textDirection: TextDirection.ltr);
     unitTextPainter2.layout(minWidth: 0, maxWidth: size.width);
     unitTextPainter2.paint(canvas, Offset(size.width - margin + 2.5, margin - fontSize / 2));
@@ -330,6 +286,57 @@ class MilkChartPainter extends CustomPainter {
   }
 }
 
+enum PeriodType {
+  oneWeek, threeWeeks, threeMonths,
+}
+
+extension PeriodTypeExtension on PeriodType {
+  String getLabel(L10n l10n) {
+    switch (this) {
+      case PeriodType.oneWeek: return l10n.oneWeek;
+      case PeriodType.threeWeeks: return l10n.threeWeeks;
+      case PeriodType.threeMonths: return l10n.threeMonths;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  int get days {
+    switch (this) {
+      case PeriodType.oneWeek: return 7;
+      case PeriodType.threeWeeks: return 21;
+      case PeriodType.threeMonths: return 90;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  int get unitDays {
+    switch (this) {
+      case PeriodType.oneWeek: return 1;
+      case PeriodType.threeWeeks: return 7;
+      case PeriodType.threeMonths: return 7;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  bool isScaleBoundDay(DateTime dateTime) {
+    switch (this) {
+      case PeriodType.oneWeek: return dateTime.hour == 0 && dateTime.minute == 0;
+      case PeriodType.threeWeeks: return dateTime.weekday == DateTime.monday;
+      case PeriodType.threeMonths: return dateTime.weekday == DateTime.monday;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  static PeriodType fromIndex(int index) {
+    switch (index) {
+      case 0: return PeriodType.oneWeek;
+      case 1: return PeriodType.threeWeeks;
+      case 2: return PeriodType.threeMonths;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+}
+
 class MilkChartData {
   final Period period;
   final MilkChartSubData data1;
@@ -349,4 +356,11 @@ class Period {
   final DateTime to;
   final PeriodType type;
   Period(this.from, this.to, this.type);
+}
+
+class Legend {
+  final Color color;
+  final String name;
+  final String unit;
+  Legend(this.color, this.name, this.unit);
 }

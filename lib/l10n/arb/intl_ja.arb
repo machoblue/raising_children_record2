@@ -482,5 +482,15 @@
   "@threeMonths": {
     "type": "text",
     "placeholders": {}
+  },
+  "ml": "ml",
+  "@ml": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hour": "時間",
+  "@hour": {
+    "type": "text",
+    "placeholders": {}
   }
 }

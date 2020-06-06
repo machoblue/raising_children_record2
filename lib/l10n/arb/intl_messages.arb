@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-02T06:26:24.540662",
+  "@@last_modified": "2020-06-07T07:42:54.813987",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -480,6 +480,16 @@
   },
   "threeMonths": "3 Months",
   "@threeMonths": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ml": "ml",
+  "@ml": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hour": "Hours",
+  "@hour": {
     "type": "text",
     "placeholders": {}
   }

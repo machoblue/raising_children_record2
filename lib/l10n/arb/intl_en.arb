@@ -482,5 +482,15 @@
   "@threeMonths": {
     "type": "text",
     "placeholders": {}
+  },
+  "ml": "ml",
+  "@ml": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hour": "Hours",
+  "@hour": {
+    "type": "text",
+    "placeholders": {}
   }
 }
