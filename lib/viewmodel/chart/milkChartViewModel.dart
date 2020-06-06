@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
@@ -9,6 +10,7 @@ import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
 
@@ -47,18 +49,42 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
         final familyId = sharedPreferences.getString('familyId');
 
         return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.milk, RecordType.mothersMilk], from: fromDateTime, to: toDateTime).then((records) {
-          final List<MilkRecord> milkRecords = records.where((record) => record.runtimeType == MilkRecord).map((record) => record as MilkRecord).toList();
+          final List<Tuple2<DateTime, int>> milkTuples = records
+            .where((record) => record.runtimeType == MilkRecord)
+            .map((record) => record as MilkRecord)
+            .map((milkRecord) {
+              final dateTime = milkRecord.dateTime;
+              final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
+              return Tuple2(newDateTime, milkRecord.amount);
+            })
+            .toList();
+          Map<DateTime, int> milkMap = Map();
+          for (var tuple in milkTuples) {
+            milkMap[tuple.item1] = (milkMap[tuple.item1] ?? 0) + tuple.item2;
+          }
           final MilkChartSubData milkSubData = MilkChartSubData(
             RecordType.milk.localizedName,
             Colors.yellow,
-            Map.fromIterable(milkRecords, key: (record) => record.dateTime, value: (record) => record.amount),
+            milkMap,
           );
 
-          final List<MothersMilkRecord> mothersMilkRecords = records.where((record) => record.runtimeType == MothersMilkRecord).map((record) => record as MothersMilkRecord).toList();
+          final List<Tuple2<DateTime, int>> mothersMilkTuples= records
+              .where((record) => record.runtimeType == MothersMilkRecord)
+              .map((record) => record as MothersMilkRecord)
+              .map((mothersMilkRecord) {
+                final dateTime = mothersMilkRecord.dateTime;
+                final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
+                return Tuple2(newDateTime, mothersMilkRecord.leftMilliseconds ?? 0 + mothersMilkRecord.rightMilliseconds ?? 0);
+              })
+              .toList();
+          Map<DateTime, int> mothersMilkMap = Map();
+          for (var tuple in mothersMilkTuples) {
+            mothersMilkMap[tuple.item1] = (mothersMilkMap[tuple.item1] ?? 0) + tuple.item2;
+          }
           final MilkChartSubData mothersMilkSubData = MilkChartSubData(
             RecordType.mothersMilk.localizedName,
             Colors.pink,
-            Map.fromIterable(mothersMilkRecords, key: (record) => record.dateTime, value: (record) => (record.leftMilliseconds ?? 0) + (record.rightMilliseconds ?? 0))
+            mothersMilkMap,
           );
 
           return MilkChartData(milkChartPeriod, fromDateTime, toDateTime, milkSubData, mothersMilkSubData);
