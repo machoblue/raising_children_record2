@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
+import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
 
 class MilkChartView extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
           builder: (context, snapshot) {
             return SimpleSegmentedControl(
               currentIndex: snapshot.data,
-              labels: MilkChartPeriod.values.map((item) => item.getLabel(l10n)).toList(),
+              labels: PeriodType.values.map((item) => item.getLabel(l10n)).toList(),
               onSelect: viewModel.onSelected.add,
             );
           },
@@ -34,27 +35,23 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
           child: Container(
             child: Stack(
               children: <Widget>[
+                Container(
+                  child: StreamBuilder(
+                    stream: viewModel.period,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return CustomPaint(
+                        painter: MilkChartHorizontalScalePainter(snapshot.data),
+                        child: Container(),
+                      );
+                    }
+                  ),
+                ),
                 CustomPaint(
                   painter: MilkChartFramePainter(),
                   child: Container(),
-                ),
-                Container(
-
-                child: StreamBuilder(
-                  stream: viewModel.data,
-                  builder: (context, snapshot) {
-                    print("### streamBuilder START");
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-                    print("### streamBuilder from: ${snapshot.data.fromDateTime}");
-                    print("### streamBuilder to  : ${snapshot.data.toDateTime}");
-                    return CustomPaint(
-                      painter: MilkChartPainter(snapshot.data),
-                      child: Container(),
-                    );
-                  }
-                ),
                 ),
               ],
             ),
@@ -65,43 +62,52 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
   }
 }
 
-enum MilkChartPeriod {
+enum PeriodType {
   oneWeek, threeWeeks, threeMonths,
 }
 
-extension MilkChartPeriodExtension on MilkChartPeriod {
+extension PeriodTypeExtension on PeriodType {
   String getLabel(L10n l10n) {
     switch (this) {
-      case MilkChartPeriod.oneWeek: return l10n.oneWeek;
-      case MilkChartPeriod.threeWeeks: return l10n.threeWeeks;
-      case MilkChartPeriod.threeMonths: return l10n.threeMonths;
+      case PeriodType.oneWeek: return l10n.oneWeek;
+      case PeriodType.threeWeeks: return l10n.threeWeeks;
+      case PeriodType.threeMonths: return l10n.threeMonths;
       default: throw 'This line shouldn\'t be reached';
     }
   }
 
   int get days {
     switch (this) {
-      case MilkChartPeriod.oneWeek: return 7;
-      case MilkChartPeriod.threeWeeks: return 21;
-      case MilkChartPeriod.threeMonths: return 90;
+      case PeriodType.oneWeek: return 7;
+      case PeriodType.threeWeeks: return 21;
+      case PeriodType.threeMonths: return 90;
+      default: throw 'This line shouldn\'t be reached';
+    }
+  }
+
+  int get unitDays {
+    switch (this) {
+      case PeriodType.oneWeek: return 1;
+      case PeriodType.threeWeeks: return 7;
+      case PeriodType.threeMonths: return 7;
       default: throw 'This line shouldn\'t be reached';
     }
   }
 
   bool isScaleBoundDay(DateTime dateTime) {
     switch (this) {
-      case MilkChartPeriod.oneWeek: return dateTime.hour == 0 && dateTime.minute == 0;
-      case MilkChartPeriod.threeWeeks: return dateTime.weekday == DateTime.monday;
-      case MilkChartPeriod.threeMonths: return dateTime.weekday == DateTime.monday;
+      case PeriodType.oneWeek: return dateTime.hour == 0 && dateTime.minute == 0;
+      case PeriodType.threeWeeks: return dateTime.weekday == DateTime.monday;
+      case PeriodType.threeMonths: return dateTime.weekday == DateTime.monday;
       default: throw 'This line shouldn\'t be reached';
     }
   }
 
-  static MilkChartPeriod fromIndex(int index) {
+  static PeriodType fromIndex(int index) {
     switch (index) {
-      case 0: return MilkChartPeriod.oneWeek;
-      case 1: return MilkChartPeriod.threeWeeks;
-      case 2: return MilkChartPeriod.threeMonths;
+      case 0: return PeriodType.oneWeek;
+      case 1: return PeriodType.threeWeeks;
+      case 2: return PeriodType.threeMonths;
       default: throw 'This line shouldn\'t be reached';
     }
   }
@@ -195,12 +201,12 @@ class MilkChartFramePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-class MilkChartPainter extends CustomPainter {
+class MilkChartHorizontalScalePainter extends CustomPainter {
   final dateFormat = intl.DateFormat.Md();
 
-  final MilkChartData data;
+  final Period period;
 
-  MilkChartPainter(this.data);
+  MilkChartHorizontalScalePainter(this.period);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -216,24 +222,34 @@ class MilkChartPainter extends CustomPainter {
     final evenPaint = Paint()
       ..color = Color(0x004400aaff);
 
-    final fromDateTime = data.fromDateTime;
-    final toDateTime = data.toDateTime;
-    final spanMilliseconds = data.toDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch;
+    final fromDateTime = period.from;
+    final toDateTime = period.to;
+    final spanMilliseconds = toDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch;
     DateTime scaleLeftDateTime = fromDateTime;
     DateTime tempDateTime = fromDateTime.add(Duration(days: 1));
     Paint scalePaint = oddPaint;
     final double margin = min(size.width * 0.1, size.height * 0.1);
     final double y0 = margin;
     final double y1 = size.height - margin;
+    final double oneScaleWidth = (size.width - margin * 2) / (spanMilliseconds / (period.type.unitDays * 1000 * 60 * 60 * 24));
+    final double fontSize = min(12.0, (oneScaleWidth * 0.8) / 5 * 2);
+    final textStyle = TextStyle(fontSize: min(12, fontSize), color: Colors.black, );
     while (true) {
       if (tempDateTime.isAfter(toDateTime)) {
         break;
       }
 
-      if (data.period.isScaleBoundDay(tempDateTime) || tempDateTime == toDateTime) {
+      if (period.type.isScaleBoundDay(tempDateTime) || tempDateTime == toDateTime) {
         final double x0 = margin + (size.width - margin * 2) * ((scaleLeftDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
         final double x1 = margin + (size.width - margin * 2) * ((tempDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
         canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), scalePaint);
+
+        canvas.drawText(
+          dateFormat.format(scaleLeftDateTime),
+          textStyle,
+          period.type == PeriodType.oneWeek ? TextAlign.center : TextAlign.start,
+          Rect.fromLTRB(x0, size.height - margin, x1, size.height)
+        );
 
         // 値の更新
         scaleLeftDateTime = tempDateTime;
@@ -243,27 +259,10 @@ class MilkChartPainter extends CustomPainter {
       tempDateTime = tempDateTime.add(Duration(days: 1));
     }
   }
-
-  DateTime _getStartDateTime() {
-    switch (data.period) {
-      case MilkChartPeriod.oneWeek:
-        return DateTime.fromMillisecondsSinceEpoch(data.fromDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
-      case MilkChartPeriod.threeWeeks:
-      case MilkChartPeriod.threeMonths:
-        DateTime tempDateTime = data.fromDateTime;
-        while(true) {
-          tempDateTime = DateTime.fromMillisecondsSinceEpoch(tempDateTime.millisecondsSinceEpoch + 1000 * 60 * 60 * 24);
-          if (tempDateTime.weekday != DateTime.monday) {
-            continue;
-          }
-          return tempDateTime;
-        }
-    }
-  }
 }
 
 class MilkChartData {
-  final MilkChartPeriod period;
+  final PeriodType period;
   final DateTime fromDateTime;
   final DateTime toDateTime;
   final MilkChartSubData data1;
@@ -276,4 +275,11 @@ class MilkChartSubData {
   final Color color;
   final Map<DateTime, int> dateToValue;
   MilkChartSubData(this.name, this.color, this.dateToValue);
+}
+
+class Period {
+  final DateTime from;
+  final DateTime to;
+  final PeriodType type;
+  Period(this.from, this.to, this.type);
 }

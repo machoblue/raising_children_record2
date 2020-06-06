@@ -24,9 +24,11 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   final _dataStreamController = StreamController<MilkChartData>();
   Stream<MilkChartData> get data => _dataStreamController.stream;
 
+  final _periodStreamController = StreamController<Period>();
+  Stream<Period> get period => _periodStreamController.stream;
+
   MilkChartViewModel(this.babyStream, this.recordRepository) {
     _currentIndexBehaviorSubject.listen((index) {
-      print("### ${_currentIndexBehaviorSubject.value}");
       _getData(index).listen((data) {
         _dataStreamController.sink.add(data);
       });
@@ -34,14 +36,15 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Stream<MilkChartData> _getData(int index) {
+    final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
+    final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
+    final milkChartPeriod = PeriodTypeExtension.fromIndex(index);
+    final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
+    _periodStreamController.sink.add(Period(fromDateTime, toDateTime, milkChartPeriod));
+
     return babyStream.asyncMap((baby) {
       return SharedPreferences.getInstance().then((sharedPreferences) {
         final familyId = sharedPreferences.getString('familyId');
-
-        final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
-        final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
-        final milkChartPeriod = MilkChartPeriodExtension.fromIndex(index);
-        final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
 
         return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.milk, RecordType.mothersMilk], from: fromDateTime, to: toDateTime).then((records) {
           final List<MilkRecord> milkRecords = records.where((record) => record.runtimeType == MilkRecord).map((record) => record as MilkRecord).toList();
@@ -70,5 +73,6 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
     _subscription?.cancel();
+    _periodStreamController.close();
   }
 }
