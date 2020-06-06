@@ -2,7 +2,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
@@ -42,7 +41,8 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
     final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
     final milkChartPeriod = PeriodTypeExtension.fromIndex(index);
     final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
-    _periodStreamController.sink.add(Period(fromDateTime, toDateTime, milkChartPeriod));
+    final period = Period(fromDateTime, toDateTime, milkChartPeriod);
+    _periodStreamController.sink.add(period);
 
     return babyStream.asyncMap((baby) {
       return SharedPreferences.getInstance().then((sharedPreferences) {
@@ -54,7 +54,7 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
             .map((record) => record as MilkRecord)
             .map((milkRecord) {
               final dateTime = milkRecord.dateTime;
-              final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
+              final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day, 12);
               return Tuple2(newDateTime, milkRecord.amount);
             })
             .toList();
@@ -73,8 +73,8 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
               .map((record) => record as MothersMilkRecord)
               .map((mothersMilkRecord) {
                 final dateTime = mothersMilkRecord.dateTime;
-                final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
-                return Tuple2(newDateTime, mothersMilkRecord.leftMilliseconds ?? 0 + mothersMilkRecord.rightMilliseconds ?? 0);
+                final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day, 12);
+                return Tuple2(newDateTime, (mothersMilkRecord.leftMilliseconds ?? 0) + (mothersMilkRecord.rightMilliseconds ?? 0));
               })
               .toList();
           Map<DateTime, int> mothersMilkMap = Map();
@@ -87,7 +87,7 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
             mothersMilkMap,
           );
 
-          return MilkChartData(milkChartPeriod, fromDateTime, toDateTime, milkSubData, mothersMilkSubData);
+          return MilkChartData(period, milkSubData, mothersMilkSubData);
         });
       });
     });

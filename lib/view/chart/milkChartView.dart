@@ -35,23 +35,31 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
           child: Container(
             child: Stack(
               children: <Widget>[
-                Container(
-                  child: StreamBuilder(
-                    stream: viewModel.period,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Container();
-                      }
-                      return CustomPaint(
+                StreamBuilder(
+                  stream: viewModel.period,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                      ? CustomPaint(
                         painter: MilkChartHorizontalScalePainter(snapshot.data),
                         child: Container(),
-                      );
-                    }
-                  ),
+                      )
+                      : Container();
+                  }
                 ),
                 CustomPaint(
                   painter: MilkChartFramePainter(),
                   child: Container(),
+                ),
+                StreamBuilder(
+                  stream: viewModel.data,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                      ? CustomPaint(
+                        painter: MilkChartPainter(snapshot.data),
+                        child: Container(),
+                      )
+                      : Container();
+                  }
                 ),
               ],
             ),
@@ -261,13 +269,72 @@ class MilkChartHorizontalScalePainter extends CustomPainter {
   }
 }
 
+class MilkChartPainter extends CustomPainter {
+
+  final MilkChartData data;
+
+  MilkChartPainter(this.data);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    _drawChart(canvas, size, data.period, data.data1, 0, 3200);
+    _drawChart(canvas, size, data.period, data.data2, 0, 1000 * 60 * 60 * 8);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+
+  void _drawChart(Canvas canvas, Size size, Period period, MilkChartSubData subData, int minY, int maxY) {
+    final Map<DateTime, int> dateToValue = subData.dateToValue;
+    if (dateToValue == null || dateToValue.length == 0) {
+      return;
+    }
+
+    final double margin = min(size.width * 0.1, size.height * 0.1);
+
+    final int spanMilliseconds = period.to.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch;
+    List<Point<double>> points = dateToValue.entries
+      .map((entry) {
+        final DateTime dateTime = entry.key;
+        final int value = entry.value;
+        final double x = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds);
+        final double y = margin + (size.height - margin * 2) * ((maxY - value) / (maxY - minY));
+        return Point(x, y);
+      })
+      .toList();
+
+    Paint pointPaint = Paint()
+      ..color = subData.color
+      ..style = PaintingStyle.fill;
+
+    Path chartPath = Path();
+    chartPath.moveTo(points.first.x, points.first.y);
+
+    canvas.drawCircle(Offset(points.first.x, points.first.y), 3.5, pointPaint);
+
+    if (points.length > 1) {
+      for (int i = 1; i < points.length; i++) {
+        final point = points[i];
+        chartPath.lineTo(point.x, point.y);
+        canvas.drawCircle(Offset(point.x, point.y), 3.5, pointPaint);
+      }
+    }
+
+    Paint chartPaint = Paint()
+      ..color = subData.color
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5;
+
+    canvas.drawPath(chartPath, chartPaint);
+  }
+}
+
 class MilkChartData {
-  final PeriodType period;
-  final DateTime fromDateTime;
-  final DateTime toDateTime;
+  final Period period;
   final MilkChartSubData data1;
   final MilkChartSubData data2;
-  MilkChartData(this.period, this.fromDateTime, this.toDateTime, this.data1, this.data2);
+  MilkChartData(this.period, this.data1, this.data2);
 }
 
 class MilkChartSubData {
