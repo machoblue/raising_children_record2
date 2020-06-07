@@ -16,6 +16,7 @@ class MilkChartView extends StatefulWidget {
 }
 
 class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
+  final _numberFormat = intl.NumberFormat('##0.0');
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                               builder: (context, snapshot) {
                                 return snapshot.hasData
                                     ? CustomPaint(
-                                  painter: MilkChartSummaryTextPainter(l10n.ml, snapshot.data.milkSum, snapshot.data.milkAverage),
+                                  painter: MilkChartSummaryTextPainter(l10n.ml, snapshot.data.milkSum.toString(), snapshot.data.milkAverage.toString()),
                                 )
                                     : Container();
                               }
@@ -97,7 +98,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                           builder: (context, snapshot) {
                             return snapshot.hasData
                               ? CustomPaint(
-                                painter: MilkChartSummaryTextPainter(l10n.hour, snapshot.data.mothersMilkSum, snapshot.data.mothersMilkAverage),
+                                painter: MilkChartSummaryTextPainter(l10n.hour, _numberFormat.format(snapshot.data.mothersMilkSum), _numberFormat.format(snapshot.data.mothersMilkAverage)),
                               )
                               : Container();
                           }
@@ -365,10 +366,10 @@ class MilkChartPainter extends CustomPainter {
 
 class MilkChartSummaryTextPainter extends CustomPainter {
   final String unit;
-  final int sum;
-  final int average;
+  final String sumText;
+  final String averageText;
 
-  MilkChartSummaryTextPainter(this.unit, this.sum, this.average);
+  MilkChartSummaryTextPainter(this.unit, this.sumText, this.averageText);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -379,10 +380,10 @@ class MilkChartSummaryTextPainter extends CustomPainter {
       style: mediumTextStyle,
       children: <TextSpan> [
         TextSpan(text: '合計 ', style: smallTextStyle),
-        TextSpan(text: '$sum', style: largeTextStyle),
+        TextSpan(text: '$sumText', style: largeTextStyle),
         TextSpan(text: '$unit', style: smallTextStyle),
         TextSpan(text: '(平均 ', style: smallTextStyle),
-        TextSpan(text: '$average', style: mediumTextStyle),
+        TextSpan(text: '$averageText', style: mediumTextStyle),
         TextSpan(text: '$unit)', style: smallTextStyle),
       ],
     );
@@ -477,7 +478,7 @@ class Legend {
 class MilkChartSummary {
   final int milkSum;
   final int milkAverage;
-  final int mothersMilkSum;
-  final int mothersMilkAverage;
+  final double mothersMilkSum;
+  final double mothersMilkAverage;
   MilkChartSummary(this.milkSum, this.milkAverage, this.mothersMilkSum, this.mothersMilkAverage);
 }

@@ -47,8 +47,8 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
       final int milkSum = data.data1.dateToValue.entries.fold<int>(0, (previousValue, entry) => previousValue + entry.value);
       final int milkAverage = (milkSum / data.period.type.days).round();
       final int mothersMilkSumMilliseconds = data.data2.dateToValue.entries.fold<int>(0, (previousValue, entry) => previousValue + entry.value);
-      final int mothersMilkSum = (mothersMilkSumMilliseconds / (1000 * 60 * 60)).round();
-      final int mothersMilkAverage = (mothersMilkSum / data.period.type.days).round();
+      final double mothersMilkSum = mothersMilkSumMilliseconds / (1000 * 60 * 60);
+      final double mothersMilkAverage = mothersMilkSum / data.period.type.days;
       _milkChartSummaryStreamController.sink.add(MilkChartSummary(milkSum, milkAverage, mothersMilkSum, mothersMilkAverage));
     });
   }
