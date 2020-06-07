@@ -22,17 +22,34 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
   StreamSink<int> get onSelected => _currentIndexBehaviorSubject.sink;
 
-  final _dataStreamController = StreamController<MilkChartData>();
+//  final _dataStreamController = StreamController<MilkChartData>();
+  final _dataStreamController = BehaviorSubject<MilkChartData>.seeded(null);
   Stream<MilkChartData> get data => _dataStreamController.stream;
 
   final _periodStreamController = StreamController<Period>();
   Stream<Period> get period => _periodStreamController.stream;
+
+//  final _milkChartSummaryStreamController = StreamController<MilkChartSummary>();
+  final _milkChartSummaryStreamController = BehaviorSubject<MilkChartSummary>.seeded(null);
+  Stream<MilkChartSummary> get milkChartSummary => _milkChartSummaryStreamController.stream;
 
   MilkChartViewModel(this.babyStream, this.recordRepository) {
     _currentIndexBehaviorSubject.listen((index) {
       _getData(index).listen((data) {
         _dataStreamController.sink.add(data);
       });
+    });
+
+    _dataStreamController.stream.listen((data) {
+      if (data == null) {
+        return;
+      }
+      final int milkSum = data.data1.dateToValue.entries.fold<int>(0, (previousValue, entry) => previousValue + entry.value);
+      final int milkAverage = (milkSum / data.period.type.days).round();
+      final int mothersMilkSumMilliseconds = data.data2.dateToValue.entries.fold<int>(0, (previousValue, entry) => previousValue + entry.value);
+      final int mothersMilkSum = (mothersMilkSumMilliseconds / (1000 * 60 * 60)).round();
+      final int mothersMilkAverage = (mothersMilkSum / data.period.type.days).round();
+      _milkChartSummaryStreamController.sink.add(MilkChartSummary(milkSum, milkAverage, mothersMilkSum, mothersMilkAverage));
     });
   }
 
@@ -100,5 +117,6 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
     _dataStreamController.close();
     _subscription?.cancel();
     _periodStreamController.close();
+    _milkChartSummaryStreamController.close();
   }
 }

@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
 import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
@@ -30,6 +32,81 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
               currentIndex: snapshot.data,
               labels: PeriodType.values.map((item) => item.getLabel(l10n)).toList(),
               onSelect: viewModel.onSelected.add,
+            );
+          },
+        ),
+        StreamBuilder(
+          stream: viewModel.milkChartSummary,
+          builder: (context, snapshot) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(32, 8, 8, 0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleImage(
+                        AssetImage(RecordType.milk.assetName),
+                        width: 24,
+                        height: 24,
+                      ),
+                      Container(height: 24, width: 4),
+                      Text(
+                        '${RecordType.milk.localizedName}: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Container(height: 24, width: 8),
+                      Expanded(
+                          child: StreamBuilder(
+                              stream: viewModel.milkChartSummary,
+                              builder: (context, snapshot) {
+                                return snapshot.hasData
+                                    ? CustomPaint(
+                                  painter: MilkChartSummaryTextPainter(l10n.ml, snapshot.data.milkSum, snapshot.data.milkAverage),
+                                )
+                                    : Container();
+                              }
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(32, 16, 8, 0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleImage(
+                        AssetImage(RecordType.mothersMilk.assetName),
+                        width: 24,
+                        height: 24,
+                      ),
+                      Container(height: 24, width: 4),
+                      Text(
+                        '${RecordType.mothersMilk.localizedName}: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Container(height: 24, width: 8),
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: viewModel.milkChartSummary,
+                          builder: (context, snapshot) {
+                            return snapshot.hasData
+                              ? CustomPaint(
+                                painter: MilkChartSummaryTextPainter(l10n.hour, snapshot.data.mothersMilkSum, snapshot.data.mothersMilkAverage),
+                              )
+                              : Container();
+                          }
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),
@@ -286,6 +363,38 @@ class MilkChartPainter extends CustomPainter {
   }
 }
 
+class MilkChartSummaryTextPainter extends CustomPainter {
+  final String unit;
+  final int sum;
+  final int average;
+
+  MilkChartSummaryTextPainter(this.unit, this.sum, this.average);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final smallTextStyle = TextStyle(color: Colors.black, fontSize: 12);
+    final mediumTextStyle = TextStyle(color: Colors.black, fontSize: 16);
+    final largeTextStyle = TextStyle(color: Colors.black, fontSize: 20);
+    final textSpan = TextSpan(
+      style: mediumTextStyle,
+      children: <TextSpan> [
+        TextSpan(text: '合計 ', style: smallTextStyle),
+        TextSpan(text: '$sum', style: largeTextStyle),
+        TextSpan(text: '$unit', style: smallTextStyle),
+        TextSpan(text: '(平均 ', style: smallTextStyle),
+        TextSpan(text: '$average', style: mediumTextStyle),
+        TextSpan(text: '$unit)', style: smallTextStyle),
+      ],
+    );
+    final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: size.width);
+    textPainter.paint(canvas, Offset(0, -12));
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
 enum PeriodType {
   oneWeek, threeWeeks, threeMonths,
 }
@@ -363,4 +472,12 @@ class Legend {
   final String name;
   final String unit;
   Legend(this.color, this.name, this.unit);
+}
+
+class MilkChartSummary {
+  final int milkSum;
+  final int milkAverage;
+  final int mothersMilkSum;
+  final int mothersMilkAverage;
+  MilkChartSummary(this.milkSum, this.milkAverage, this.mothersMilkSum, this.mothersMilkAverage);
 }
