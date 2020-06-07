@@ -160,4 +160,6 @@ class L10n {
 
   String get ml => Intl.message('ml', name: 'ml');
   String get hour => Intl.message('Hours', name: 'hour');
+  String get total => Intl.message('Total', name: 'total');
+  String get average => Intl.message('Average', name: 'average');
 }

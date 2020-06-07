@@ -379,10 +379,10 @@ class MilkChartSummaryTextPainter extends CustomPainter {
     final textSpan = TextSpan(
       style: mediumTextStyle,
       children: <TextSpan> [
-        TextSpan(text: '合計 ', style: smallTextStyle),
+        TextSpan(text: intl.Intl.message('Total', name: 'total'), style: smallTextStyle),
         TextSpan(text: '$sumText', style: largeTextStyle),
         TextSpan(text: '$unit', style: smallTextStyle),
-        TextSpan(text: '(平均 ', style: smallTextStyle),
+        TextSpan(text: '(${intl.Intl.message('Average', name: 'average')} ', style: smallTextStyle),
         TextSpan(text: '$averageText', style: mediumTextStyle),
         TextSpan(text: '$unit)', style: smallTextStyle),
       ],

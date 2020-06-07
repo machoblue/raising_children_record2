@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-07T07:42:54.813987",
+  "@@last_modified": "2020-06-08T07:35:06.183203",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -490,6 +490,16 @@
   },
   "hour": "Hours",
   "@hour": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "total": "Total",
+  "@total": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "average": "Average",
+  "@average": {
     "type": "text",
     "placeholders": {}
   }
