@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/model/period.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
@@ -16,20 +17,16 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;
 
-  StreamSubscription _subscription;
-
   final _currentIndexBehaviorSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
   StreamSink<int> get onSelected => _currentIndexBehaviorSubject.sink;
 
-//  final _dataStreamController = StreamController<MilkChartData>();
   final _dataStreamController = BehaviorSubject<MilkChartData>.seeded(null);
   Stream<MilkChartData> get data => _dataStreamController.stream;
 
   final _periodStreamController = StreamController<Period>();
   Stream<Period> get period => _periodStreamController.stream;
 
-//  final _milkChartSummaryStreamController = StreamController<MilkChartSummary>();
   final _milkChartSummaryStreamController = BehaviorSubject<MilkChartSummary>.seeded(null);
   Stream<MilkChartSummary> get milkChartSummary => _milkChartSummaryStreamController.stream;
 
@@ -115,7 +112,6 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
     super.dispose();
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
-    _subscription?.cancel();
     _periodStreamController.close();
     _milkChartSummaryStreamController.close();
   }
