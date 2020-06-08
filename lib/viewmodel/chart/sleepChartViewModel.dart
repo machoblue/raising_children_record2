@@ -4,13 +4,19 @@ import 'dart:async';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/period.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:raisingchildrenrecord2/shared/listExtension.dart';
 
 class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;
+
+  StreamSubscription _currentIndexSubscription;
+  StreamSubscription _babySubscription;
 
   final _currentIndexBehaviorSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
@@ -26,11 +32,86 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<SleepChartSummary> get summary => _summaryStreamController.stream;
 
   SleepChartViewModel(this.babyStream, this.recordRepository) {
+    _currentIndexSubscription = _currentIndexBehaviorSubject.stream.listen((index) {
+      _babySubscription = _getData(index).listen((data) {
+        _dataStreamController.sink.add(data);
+      });
+    });
+  }
+
+  Stream<SleepChartData> _getData(int index) {
+    final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
+    final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
+    final milkChartPeriod = PeriodTypeExtension.fromIndex(index);
+    final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
+    final period = Period(fromDateTime, toDateTime, milkChartPeriod);
+    _periodStreamController.sink.add(period);
+
+    return babyStream.asyncMap((baby) {
+      return SharedPreferences.getInstance().then((sharedPreferences) {
+        final String familyId = sharedPreferences.getString('familyId');
+        return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.sleep, RecordType.awake], from: fromDateTime, to: toDateTime).then((records) {
+          if (records == null || records.length == 0) {
+            return SleepChartData(period, {});
+          }
+
+          List<Record> sortedRecords = records.sorted((record1, record2) => record1.dateTime.compareTo(record2.dateTime));
+          List<SleepTime> sleepTimeList = [];
+          DateTime sleepDateTime = sortedRecords.first.runtimeType == AwakeRecord ? fromDateTime : null;
+          for (Record record in sortedRecords) {
+            switch (record.runtimeType) {
+              case SleepRecord:
+                if (sleepDateTime == null) {
+                  sleepDateTime = record.dateTime;
+                }
+                break;
+              case AwakeRecord:
+                if (sleepDateTime == null) {
+                  continue;
+                }
+                sleepTimeList.add(SleepTime(sleepDateTime, record.dateTime));
+                break;
+            }
+          }
+
+          List<SleepTime> sleepTimeList2 = [];
+          for (SleepTime sleepTime in sleepTimeList) {
+            final DateTime from = sleepTime.from;
+            final DateTime to = sleepTime.to;
+            if (from.year == to.year && from.month == to.month && from.day == to.day) {
+              sleepTimeList2.add(sleepTime);
+              continue;
+            }
+
+            DateTime tempFrom = from;
+            DateTime tempTo = DateTime(from.year, from.month, from.day + 1);
+            while(tempTo.isBefore(to)) {
+              sleepTimeList2.add(SleepTime(tempFrom, tempTo));
+              tempFrom = tempTo;
+              tempTo.add(Duration(days: 1));
+            }
+            sleepTimeList2.add(SleepTime(tempFrom, to));
+          }
+
+          Map<DateTime, int> dateTimeToMilliseconds = {};
+          for (SleepTime sleepTime in sleepTimeList2) {
+            DateTime dateTime = DateTime(sleepTime.from.year, sleepTime.from.month, sleepTime.from.day);
+            dateTimeToMilliseconds[dateTime] = (dateTimeToMilliseconds[dateTime] ?? 0) + (sleepTime.to.millisecondsSinceEpoch - sleepTime.from.millisecondsSinceEpoch);
+          }
+
+          return SleepChartData(period, dateTimeToMilliseconds);
+        });
+      });
+    });
   }
 
   @override
   dispose() {
     super.dispose();
+
+    _babySubscription.cancel();
+    _currentIndexSubscription.cancel();
+
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
     _periodStreamController.close();
