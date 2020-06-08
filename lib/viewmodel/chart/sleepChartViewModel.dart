@@ -17,6 +17,7 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   StreamSubscription _currentIndexSubscription;
   StreamSubscription _babySubscription;
+  StreamSubscription _dataSubscription;
 
   final _currentIndexBehaviorSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
@@ -36,6 +37,12 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
       _babySubscription = _getData(index).listen((data) {
         _dataStreamController.sink.add(data);
       });
+    });
+
+    _dataSubscription = _dataStreamController.stream.listen((data) {
+      final double total = data.dateTimeToMilliseconds.entries.fold(0, (previousValue, entry) => previousValue + entry.value);
+      final double average = total / data.period.type.days;
+      _summaryStreamController.sink.add(SleepChartSummary(total, average));
     });
   }
 
@@ -111,6 +118,7 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
 
     _babySubscription.cancel();
     _currentIndexSubscription.cancel();
+    _dataSubscription.cancel();
 
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
