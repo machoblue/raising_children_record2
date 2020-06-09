@@ -10,10 +10,12 @@ import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
+import 'package:raisingchildrenrecord2/view/chart/sleepChartView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/chart/sleepChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -163,8 +165,9 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
               create: (_) => MilkChartViewModel(viewModel.baby, FirestoreRecordRepository()),
               child: MilkChartView(),
             ),
-            Center(
-              child: Text('Under Implementation'),
+            Provider<SleepChartViewModel>(
+              create: (_) => SleepChartViewModel(viewModel.baby, FirestoreRecordRepository()),
+              child: SleepChartView(),
             ),
             Center(
               child: Text('Under Implementation'),
