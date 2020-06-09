@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
+import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/model/period.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
@@ -22,8 +23,8 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
   @override
   Widget build(BuildContext context) {
     L10n l10n = L10n.of(context);
-    final milkLegend = Legend(Colors.yellow, l10n.milkLabel, l10n.ml);
-    final mothersMilkLegend = Legend(Colors.pink, l10n.mothersMilkLabel, l10n.hour);
+    final milkLegend = ChartLegend(Colors.yellow, l10n.milkLabel, l10n.ml);
+    final mothersMilkLegend = ChartLegend(Colors.pink, l10n.mothersMilkLabel, l10n.hours);
     return Column(
       children: <Widget>[
         Container(height: 12),
@@ -99,7 +100,7 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
                           builder: (context, snapshot) {
                             return snapshot.hasData
                               ? CustomPaint(
-                                painter: MilkChartSummaryTextPainter(l10n.hour, _numberFormat.format(snapshot.data.mothersMilkSum), _numberFormat.format(snapshot.data.mothersMilkAverage)),
+                                painter: MilkChartSummaryTextPainter(l10n.hours, _numberFormat.format(snapshot.data.mothersMilkSum), _numberFormat.format(snapshot.data.mothersMilkAverage)),
                               )
                               : Container();
                           }
@@ -152,8 +153,8 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
 }
 
 class MilkChartFramePainter extends CustomPainter {
-  final Legend legend1;
-  final Legend legend2;
+  final ChartLegend legend1;
+  final ChartLegend legend2;
 
   MilkChartFramePainter(this.legend1, this.legend2);
 
@@ -409,14 +410,6 @@ class MilkChartSubData {
   final Color color;
   final Map<DateTime, int> dateToValue;
   MilkChartSubData(this.name, this.color, this.dateToValue);
-}
-
-
-class Legend {
-  final Color color;
-  final String name;
-  final String unit;
-  Legend(this.color, this.name, this.unit);
 }
 
 class MilkChartSummary {

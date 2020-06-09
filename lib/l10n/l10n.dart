@@ -159,7 +159,7 @@ class L10n {
   String get threeMonths => Intl.message('3 Months', name: 'threeMonths');
 
   String get ml => Intl.message('ml', name: 'ml');
-  String get hour => Intl.message('Hours', name: 'hour');
+  String get hours => Intl.message('Hours', name: 'hours');
   String get total => Intl.message('Total', name: 'total');
   String get average => Intl.message('Average', name: 'average');
 }
