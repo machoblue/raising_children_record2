@@ -1,5 +1,6 @@
 
 import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
@@ -9,6 +10,7 @@ import 'package:raisingchildrenrecord2/model/period.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/sleepChartViewModel.dart';
+import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
 
 class SleepChartView extends StatefulWidget {
   @override
@@ -82,6 +84,7 @@ class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel
 }
 
 class _SleepChartHorizontalScalePainter extends CustomPainter {
+  final _dateFormat = intl.DateFormat.Md();
 
   final EdgeInsets chartMargin;
   final Period period;
@@ -90,6 +93,46 @@ class _SleepChartHorizontalScalePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final oddPaint = Paint()
+      ..color = Color(0x0000000000);
+    final evenPaint = Paint()
+      ..color = Color(0x004400aaff);
+
+    final fromDateTime = period.from;
+    final toDateTime = period.to;
+    final spanMilliseconds = toDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch;
+    DateTime scaleLeftDateTime = fromDateTime;
+    DateTime tempDateTime = fromDateTime.add(Duration(days: 1));
+    Paint scalePaint = oddPaint;
+    final double y0 = chartMargin.top;
+    final double y1 = size.height - chartMargin.bottom;
+
+    // configure label
+    final chartWidth = size.width - (chartMargin.left + chartMargin.right);
+    final double oneScaleWidth = chartWidth / (spanMilliseconds / (period.type.unitDays * 1000 * 60 * 60 * 24));
+    final double fontSize = min(12.0, (oneScaleWidth * 0.8) / 5 * 2);
+    final textStyle = TextStyle(fontSize: min(12, fontSize), color: Colors.black, );
+
+    while (!tempDateTime.isAfter(toDateTime)) {
+      if (period.type.isScaleBoundDay(tempDateTime) || tempDateTime == toDateTime) {
+        final double x0 = chartMargin.left + chartWidth * ((scaleLeftDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
+        final double x1 = chartMargin.left + chartWidth * ((tempDateTime.millisecondsSinceEpoch - fromDateTime.millisecondsSinceEpoch) / spanMilliseconds);
+        canvas.drawRect(Rect.fromLTRB(x0, y0, x1, y1), scalePaint);
+
+        canvas.drawText(
+            _dateFormat.format(scaleLeftDateTime),
+            textStyle,
+            period.type == PeriodType.oneWeek ? TextAlign.center : TextAlign.start,
+            Rect.fromLTRB(x0, size.height - chartMargin.bottom, x1, size.height)
+        );
+
+        // 値の更新
+        scaleLeftDateTime = tempDateTime;
+        scalePaint = scalePaint == oddPaint ? evenPaint : oddPaint;
+      }
+
+      tempDateTime = tempDateTime.add(Duration(days: 1));
+    }
   }
 
   @override
