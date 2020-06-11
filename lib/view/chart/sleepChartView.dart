@@ -247,15 +247,16 @@ class _SleepChartPainter extends CustomPainter {
       return;
     }
 
-    final double margin = min(size.width * 0.1, size.height * 0.1);
-
     final int spanMilliseconds = period.to.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch;
+    final double chartWidth = size.width - (chartMargin.left + chartMargin.right);
+    final double xOffset = (chartWidth / period.type.days) / 2;
+    final double chartHeight = size.height - (chartMargin.top + chartMargin.bottom);
     List<Point<double>> points = dateTimeToMilliseconds.entries
         .map((entry) {
       final DateTime dateTime = entry.key;
       final int value = entry.value;
-      final double x = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds);
-      final double y = margin + (size.height - margin * 2) * ((maximumSleepMilliseconds - value) / (maximumSleepMilliseconds - minimumSleepMilliseconds));
+      final double x = chartMargin.left + chartWidth * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds) + xOffset;
+      final double y = chartMargin.top + chartHeight * ((maximumSleepMilliseconds - value) / (maximumSleepMilliseconds - minimumSleepMilliseconds));
       return Point(x, y);
     })
         .toList();

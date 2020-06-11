@@ -329,12 +329,15 @@ class MilkChartPainter extends CustomPainter {
     final double margin = min(size.width * 0.1, size.height * 0.1);
 
     final int spanMilliseconds = period.to.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch;
+    final double chartWidth = size.width - margin * 2;
+    final double xOffset = chartWidth / period.type.days / 2;
+    final double chartHeight = size.height - margin * 2;
     List<Point<double>> points = dateToValue.entries
       .map((entry) {
         final DateTime dateTime = entry.key;
         final int value = entry.value;
-        final double x = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds);
-        final double y = margin + (size.height - margin * 2) * ((maxY - value) / (maxY - minY));
+        final double x = margin + chartWidth * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds) + xOffset;
+        final double y = margin + chartHeight * ((maxY - value) / (maxY - minY));
         return Point(x, y);
       })
       .toList();

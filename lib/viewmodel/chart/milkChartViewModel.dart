@@ -68,7 +68,7 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
             .map((record) => record as MilkRecord)
             .map((milkRecord) {
               final dateTime = milkRecord.dateTime;
-              final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day, 12);
+              final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
               return Tuple2(newDateTime, milkRecord.amount);
             })
             .toList();
@@ -87,7 +87,7 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
               .map((record) => record as MothersMilkRecord)
               .map((mothersMilkRecord) {
                 final dateTime = mothersMilkRecord.dateTime;
-                final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day, 12);
+                final newDateTime = DateTime(dateTime.year,dateTime.month, dateTime.day);
                 return Tuple2(newDateTime, (mothersMilkRecord.leftMilliseconds ?? 0) + (mothersMilkRecord.rightMilliseconds ?? 0));
               })
               .toList();
