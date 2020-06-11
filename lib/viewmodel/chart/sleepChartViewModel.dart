@@ -51,8 +51,8 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Stream<SleepChartData> _getData(int index) {
-    final yesterdayNow = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 1000 * 60 * 60 * 24);
-    final toDateTime = DateTime(yesterdayNow.year, yesterdayNow.month, yesterdayNow.day);
+    final now = DateTime.now();
+    final toDateTime = DateTime(now.year, now.month, now.day);
     final milkChartPeriod = PeriodTypeExtension.fromIndex(index);
     final fromDateTime = DateTime.fromMillisecondsSinceEpoch(toDateTime.millisecondsSinceEpoch - 1000 * 60 * 60 * 24 * milkChartPeriod.days);
     final period = Period(fromDateTime, toDateTime, milkChartPeriod);
