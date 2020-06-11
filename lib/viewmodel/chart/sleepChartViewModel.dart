@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/period.dart';
@@ -40,6 +41,9 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
     });
 
     _dataSubscription = _dataStreamController.stream.listen((data) {
+      if (data == null) {
+        return;
+      }
       final double total = data.dateTimeToMilliseconds.entries.fold(0, (previousValue, entry) => previousValue + entry.value);
       final double average = total / data.period.type.days;
       _summaryStreamController.sink.add(SleepChartSummary(total, average));
@@ -59,7 +63,7 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
         final String familyId = sharedPreferences.getString('familyId');
         return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.sleep, RecordType.awake], from: fromDateTime, to: toDateTime).then((records) {
           if (records == null || records.length == 0) {
-            return SleepChartData(period, {});
+            return SleepChartData(period, {}, Colors.blueAccent);
           }
 
           List<Record> sortedRecords = records.sorted((record1, record2) => record1.dateTime.compareTo(record2.dateTime));
@@ -106,14 +110,14 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
             dateTimeToMilliseconds[dateTime] = (dateTimeToMilliseconds[dateTime] ?? 0) + (sleepTime.to.millisecondsSinceEpoch - sleepTime.from.millisecondsSinceEpoch);
           }
 
-          return SleepChartData(period, dateTimeToMilliseconds);
+          return SleepChartData(period, dateTimeToMilliseconds, Colors.blueAccent);
         });
       });
     });
   }
 
   @override
-  dispose() {
+  void dispose() {
     super.dispose();
 
     _babySubscription.cancel();
@@ -130,7 +134,8 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
 class SleepChartData {
   final Period period;
   final Map<DateTime, int> dateTimeToMilliseconds;
-  SleepChartData(this.period, this.dateTimeToMilliseconds);
+  final Color color;
+  SleepChartData(this.period, this.dateTimeToMilliseconds, this.color);
 }
 
 class SleepTime {

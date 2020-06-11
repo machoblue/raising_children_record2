@@ -1,5 +1,4 @@
 
-import 'dart:html';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -34,50 +33,59 @@ class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel
           builder: (context, snapshot) {
             return SimpleSegmentedControl(
               currentIndex: snapshot.data,
-              labels: PeriodType.values.map((periodType) => periodType.getLabel(l10n)),
+              labels: PeriodType.values.map((periodType) => periodType.getLabel(l10n)).toList(),
               onSelect: viewModel.onSelected.add,
             );
           }
         ),
-        StreamBuilder(
-          stream: viewModel.period,
-          builder: (context, snapshot) {
-            return CustomPaint(
-              painter: _SleepChartHorizontalScalePainter(
-                chartMargin,
-                snapshot.data,
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              StreamBuilder(
+                  stream: viewModel.period,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? CustomPaint(
+                      painter: _SleepChartHorizontalScalePainter(
+                        chartMargin,
+                        snapshot.data,
+                      ),
+                      child: Container(),
+                    )
+                        : Container();
+                  }
               ),
-              child: Container(),
-            );
-          }
-        ),
-        CustomPaint(
-          painter: _SleepChartVerticalScalePainter(
-            chartMargin,
-            minimumSleepMilliseconds,
-            maximumSleepMilliseconds,
-            chartLegend,
-          ),
-          child: Container(),
-        ),
-        StreamBuilder(
-          stream: viewModel.data,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Container();
-            }
-            return CustomPaint(
-              painter: _SleepChartPainter(
-                chartMargin,
-                snapshot.data.period,
-                minimumSleepMilliseconds,
-                maximumSleepMilliseconds,
-                snapshot.data,
+              CustomPaint(
+                painter: _SleepChartVerticalScalePainter(
+                  chartMargin,
+                  minimumSleepMilliseconds,
+                  maximumSleepMilliseconds,
+                  chartLegend,
+                ),
+                child: Container(),
               ),
-              child: Container(),
-            );
-          }
-        )
+              StreamBuilder(
+                  stream: viewModel.data,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
+                    return CustomPaint(
+                      painter: _SleepChartPainter(
+                        chartMargin,
+                        snapshot.data.period,
+                        minimumSleepMilliseconds,
+                        maximumSleepMilliseconds,
+                        snapshot.data,
+                      ),
+                      child: Container(),
+                    );
+                  }
+              )
+            ],
+          ) ,
+        ),
+
       ],
     );
   }
@@ -230,6 +238,52 @@ class _SleepChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    _drawChart(canvas, size);
+  }
+
+  void _drawChart(Canvas canvas, Size size) {
+    final Map<DateTime, int> dateTimeToMilliseconds = data.dateTimeToMilliseconds;
+    if (dateTimeToMilliseconds == null || dateTimeToMilliseconds.length == 0) {
+      return;
+    }
+
+    final double margin = min(size.width * 0.1, size.height * 0.1);
+
+    final int spanMilliseconds = period.to.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch;
+    List<Point<double>> points = dateTimeToMilliseconds.entries
+        .map((entry) {
+      final DateTime dateTime = entry.key;
+      final int value = entry.value;
+      final double x = margin + (size.width - margin * 2) * ((dateTime.millisecondsSinceEpoch - period.from.millisecondsSinceEpoch) / spanMilliseconds);
+      final double y = margin + (size.height - margin * 2) * ((maximumSleepMilliseconds - value) / (maximumSleepMilliseconds - minimumSleepMilliseconds));
+      return Point(x, y);
+    })
+        .toList();
+
+    Paint pointPaint = Paint()
+      ..color = data.color
+      ..style = PaintingStyle.fill;
+
+    Path chartPath = Path();
+    chartPath.moveTo(points.first.x, points.first.y);
+
+    canvas.drawCircle(Offset(points.first.x, points.first.y), 3.5, pointPaint);
+
+    if (points.length > 1) {
+      for (int i = 1; i < points.length; i++) {
+        final point = points[i];
+        chartPath.lineTo(point.x, point.y);
+        canvas.drawCircle(Offset(point.x, point.y), 3.5, pointPaint);
+      }
+    }
+
+    Paint chartPaint = Paint()
+      ..color = data.color
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5;
+
+    canvas.drawPath(chartPath, chartPaint);
   }
 
   @override
