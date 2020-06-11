@@ -99,7 +99,7 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
             while(tempTo.isBefore(to)) {
               sleepTimeList2.add(SleepTime(tempFrom, tempTo));
               tempFrom = tempTo;
-              tempTo.add(Duration(days: 1));
+              tempTo = tempTo.add(Duration(days: 1));
             }
             sleepTimeList2.add(SleepTime(tempFrom, to));
           }
