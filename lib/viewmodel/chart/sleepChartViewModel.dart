@@ -45,8 +45,10 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
         return;
       }
       final double total = data.dateTimeToMilliseconds.entries.fold(0, (previousValue, entry) => previousValue + entry.value);
+      final double totalHour = total / (1000 * 60 * 60);
       final double average = total / data.period.type.days;
-      _summaryStreamController.sink.add(SleepChartSummary(total, average));
+      final double averageHour = average / (1000 * 60 * 60);
+      _summaryStreamController.sink.add(SleepChartSummary(totalHour, averageHour));
     });
   }
 

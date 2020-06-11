@@ -6,7 +6,10 @@ import 'package:intl/intl.dart' as intl;
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/model/period.dart';
+import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
+import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/sleepChartViewModel.dart';
 import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
@@ -18,7 +21,7 @@ class SleepChartView extends StatefulWidget {
 
 class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel> {
   final _numberFormat = intl.NumberFormat('##0.0');
-  final EdgeInsets chartMargin = EdgeInsets.fromLTRB(48, 12, 36, 24);
+  final EdgeInsets chartMargin = EdgeInsets.fromLTRB(56, 36, 24, 24);
   final int minimumSleepMilliseconds = 0;
   final int maximumSleepMilliseconds = 1000 * 60 * 60 * 24;
 
@@ -37,6 +40,44 @@ class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel
               onSelect: viewModel.onSelected.add,
             );
           }
+        ),
+
+        Container(
+          padding: EdgeInsets.fromLTRB(48, 16, 8, 0),
+          child: Row(
+            children: <Widget>[
+              CircleImage(
+                AssetImage(RecordType.sleep.assetName),
+                width: 24,
+                height: 24,
+              ),
+              Container(height: 24, width: 4),
+              Text(
+                '${RecordType.sleep.localizedName}: ',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Container(height: 24, width: 8),
+              Expanded(
+                  child: StreamBuilder(
+                      stream: viewModel.summary,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                          ? CustomPaint(
+                            painter: MilkChartSummaryTextPainter(
+                              l10n.hours,
+                              _numberFormat.format(snapshot.data.totalHour),
+                              _numberFormat.format(snapshot.data.averageHour)
+                            ),
+                          )
+                          : Container();
+                      }
+                  )
+              ),
+            ],
+          ),
         ),
         Expanded(
           child: Stack(
