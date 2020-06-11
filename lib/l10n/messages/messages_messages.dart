@@ -73,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hardnessSoft" : MessageLookupByLibrary.simpleMessage("Soft"),
     "heightLabel" : MessageLookupByLibrary.simpleMessage("Height"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("Home"),
-    "hour" : MessageLookupByLibrary.simpleMessage("Hours"),
+    "hours" : MessageLookupByLibrary.simpleMessage("Hours"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("Invitation Code"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("Expiration date time(for 5 minutes): \nUntil %s"),
     "invitationCodeInvalid" : MessageLookupByLibrary.simpleMessage("This invitation code isn\'t valid. This may be expired. Please recreate invitation code and read again."),

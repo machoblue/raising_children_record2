@@ -488,8 +488,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "hour": "Hours",
-  "@hour": {
+  "hours": "Hours",
+  "@hours": {
     "type": "text",
     "placeholders": {}
   },

@@ -488,8 +488,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "hour": "時間",
-  "@hour": {
+  "hours": "時間",
+  "@hours": {
     "type": "text",
     "placeholders": {}
   },

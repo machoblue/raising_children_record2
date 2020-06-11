@@ -73,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hardnessSoft" : MessageLookupByLibrary.simpleMessage("やわらかい"),
     "heightLabel" : MessageLookupByLibrary.simpleMessage("身長"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("ホーム"),
-    "hour" : MessageLookupByLibrary.simpleMessage("時間"),
+    "hours" : MessageLookupByLibrary.simpleMessage("時間"),
     "invitationCode" : MessageLookupByLibrary.simpleMessage("招待コード"),
     "invitationCodeExpirationDateFormat" : MessageLookupByLibrary.simpleMessage("有効期限(5分間): %s まで"),
     "invitationCodeInvalid" : MessageLookupByLibrary.simpleMessage("この招待コードは期限が切れているようです。招待コードを発行し直して、再び読み込んでください。"),
