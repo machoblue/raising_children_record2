@@ -67,6 +67,8 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
           }
 
           List<Record> sortedRecords = records.sorted((record1, record2) => record1.dateTime.compareTo(record2.dateTime));
+
+          // Recordのリストを睡眠した期間のリストに変換
           List<SleepTime> sleepTimeList = [];
           DateTime sleepDateTime = sortedRecords.first.runtimeType == AwakeRecord ? fromDateTime : null;
           for (Record record in sortedRecords) {
@@ -81,10 +83,12 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
                   continue;
                 }
                 sleepTimeList.add(SleepTime(sleepDateTime, record.dateTime));
+                sleepDateTime = null;
                 break;
             }
           }
 
+          // 日を跨いだものはバラバラにする
           List<SleepTime> sleepTimeList2 = [];
           for (SleepTime sleepTime in sleepTimeList) {
             final DateTime from = sleepTime.from;
@@ -104,6 +108,7 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
             sleepTimeList2.add(SleepTime(tempFrom, to));
           }
 
+          // 最後に日毎に合算する
           Map<DateTime, int> dateTimeToMilliseconds = {};
           for (SleepTime sleepTime in sleepTimeList2) {
             DateTime dateTime = DateTime(sleepTime.from.year, sleepTime.from.month, sleepTime.from.day);
