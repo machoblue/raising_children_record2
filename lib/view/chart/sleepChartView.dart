@@ -18,7 +18,7 @@ class SleepChartView extends StatefulWidget {
 
 class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel> {
   final _numberFormat = intl.NumberFormat('##0.0');
-  final EdgeInsets chartMargin = EdgeInsets.fromLTRB(24, 12, 24, 24);
+  final EdgeInsets chartMargin = EdgeInsets.fromLTRB(48, 12, 36, 24);
   final int minimumSleepMilliseconds = 0;
   final int maximumSleepMilliseconds = 1000 * 60 * 60 * 24;
 
@@ -161,6 +161,7 @@ class _SleepChartVerticalScalePainter extends CustomPainter {
     _drawLegend(canvas, size);
     _drawXAxisAndYAxis(canvas, size);
     _drawHorizontalLines(canvas, size);
+    _drawXAxisLabels(canvas, size);
   }
 
   void _drawLegend(Canvas canvas, Size size) {
@@ -220,6 +221,22 @@ class _SleepChartVerticalScalePainter extends CustomPainter {
       ..strokeWidth = 1;
 
     canvas.drawPath(horizontalLinePath, horizontalLinePaint);
+  }
+
+  void _drawXAxisLabels(Canvas canvas, Size size) {
+    final double fontSize = 12;
+    final textStyle = TextStyle(color: Colors.black, fontSize: fontSize);
+    final double chartHeight = size.height - (chartMargin.top + chartMargin.bottom);
+    final double yO = size.height - chartMargin.bottom;
+    final double rectLeftOffset = 4;
+    double unitHeight = chartHeight / 24;
+    for (int i = 0; i < 24; i++) {
+      final double y = yO - unitHeight * i - fontSize / 2;
+      canvas.drawText('$i', textStyle, TextAlign.end, Rect.fromLTRB(0, y, chartMargin.left - rectLeftOffset, y + unitHeight));
+    }
+
+    final double unitY = chartMargin.top - fontSize / 2;
+    canvas.drawText('(${chartLegend.unit})', textStyle, TextAlign.end, Rect.fromLTRB(0, unitY , chartMargin.left - rectLeftOffset, unitY + unitHeight));
   }
 
   @override
