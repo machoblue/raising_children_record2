@@ -49,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing data. Please retry later."),
     "dataShareComplete" : MessageLookupByLibrary.simpleMessage("Finished configuration to share data."),
     "degreesCelsius" : MessageLookupByLibrary.simpleMessage("℃"),
-    "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit Baby Bnfo"),
+    "editBabyInfo" : MessageLookupByLibrary.simpleMessage("Edit Baby Info"),
     "editBabyInfoTutorial" : MessageLookupByLibrary.simpleMessage("You can edit and add Baby."),
     "editBabyTitle" : MessageLookupByLibrary.simpleMessage("Edit Baby"),
     "editRecordButtonsOrder" : MessageLookupByLibrary.simpleMessage("Edit Record Buttons Order"),
