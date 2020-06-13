@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-11T22:17:36.143677",
+  "@@last_modified": "2020-06-13T10:26:59.657557",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -390,6 +390,11 @@
   },
   "amountLabel": "Amount",
   "@amountLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hardnessDiarrhea": "Diarrhea",
+  "@hardnessDiarrhea": {
     "type": "text",
     "placeholders": {}
   },

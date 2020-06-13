@@ -136,6 +136,7 @@ class L10n {
 
   String get hardnessLabel => Intl.message('Hardness', name: 'hardnessLabel');
   String get amountLabel => Intl.message('Amount', name: 'amountLabel');
+  String get hardnessDiarrhea => Intl.message('Diarrhea', name: 'hardnessDiarrhea');
   String get hardnessSoft => Intl.message('Soft', name: 'hardnessSoft');
   String get hardnessNormal => Intl.message('Normal', name: 'hardnessNormal');
   String get hardnessHard => Intl.message('Hard', name: 'hardnessHard');

@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("ストレージアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを生成中です..."),
     "growthTab" : MessageLookupByLibrary.simpleMessage("成長"),
+    "hardnessDiarrhea" : MessageLookupByLibrary.simpleMessage("げり"),
     "hardnessHard" : MessageLookupByLibrary.simpleMessage("かたい"),
     "hardnessLabel" : MessageLookupByLibrary.simpleMessage("かたさ"),
     "hardnessNormal" : MessageLookupByLibrary.simpleMessage("ふつう"),

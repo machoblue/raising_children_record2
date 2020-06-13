@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing files. Please retry later."),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("Generating invitation code..."),
     "growthTab" : MessageLookupByLibrary.simpleMessage("Growth"),
+    "hardnessDiarrhea" : MessageLookupByLibrary.simpleMessage("Diarrhea"),
     "hardnessHard" : MessageLookupByLibrary.simpleMessage("Hard"),
     "hardnessLabel" : MessageLookupByLibrary.simpleMessage("Hardness"),
     "hardnessNormal" : MessageLookupByLibrary.simpleMessage("Normal"),

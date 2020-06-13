@@ -393,6 +393,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "hardnessDiarrhea": "Diarrhea",
+  "@hardnessDiarrhea": {
+    "type": "text",
+    "placeholders": {}
+  },
   "hardnessSoft": "Soft",
   "@hardnessSoft": {
     "type": "text",
