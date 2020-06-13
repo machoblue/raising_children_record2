@@ -17,6 +17,10 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;
 
+  StreamSubscription _currentIndexSubscription;
+  StreamSubscription _babySubscription;
+  StreamSubscription _dataSubscription;
+
   final _currentIndexBehaviorSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get currentIndex => _currentIndexBehaviorSubject.stream;
   StreamSink<int> get onSelected => _currentIndexBehaviorSubject.sink;
@@ -31,13 +35,14 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<MilkChartSummary> get milkChartSummary => _milkChartSummaryStreamController.stream;
 
   MilkChartViewModel(this.babyStream, this.recordRepository) {
-    _currentIndexBehaviorSubject.listen((index) {
-      _getData(index).listen((data) {
+    _currentIndexSubscription = _currentIndexBehaviorSubject.listen((index) {
+      _babySubscription?.cancel();
+      _babySubscription = _getData(index).listen((data) {
         _dataStreamController.sink.add(data);
       });
     });
 
-    _dataStreamController.stream.listen((data) {
+    _dataSubscription = _dataStreamController.stream.listen((data) {
       if (data == null) {
         return;
       }
@@ -110,6 +115,11 @@ class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
   @override
   void dispose() {
     super.dispose();
+
+    _babySubscription.cancel();
+    _currentIndexSubscription.cancel();
+    _dataSubscription.cancel();
+
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
     _periodStreamController.close();

@@ -35,9 +35,11 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   SleepChartViewModel(this.babyStream, this.recordRepository) {
     _currentIndexSubscription = _currentIndexBehaviorSubject.stream.listen((index) {
+      _babySubscription?.cancel();
       _babySubscription = _getData(index).listen((data) {
         _dataStreamController.sink.add(data);
       });
+      print("### _babySubscription: $_babySubscription");
     });
 
     _dataSubscription = _dataStreamController.stream.listen((data) {
@@ -127,9 +129,9 @@ class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
   void dispose() {
     super.dispose();
 
+    _dataSubscription.cancel();
     _babySubscription.cancel();
     _currentIndexSubscription.cancel();
-    _dataSubscription.cancel();
 
     _currentIndexBehaviorSubject.close();
     _dataStreamController.close();
