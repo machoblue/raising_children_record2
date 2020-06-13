@@ -390,12 +390,13 @@ class AwakeRecord extends Record {
 }
 
 enum Hardness {
-  soft, normal, hard
+  diarrhea, soft, normal, hard
 }
 
 extension HardnessExtension on Hardness {
   int get rawValue {
     switch (this) {
+      case Hardness.diarrhea: return -1;
       case Hardness.soft: return 0;
       case Hardness.normal: return 1;
       case Hardness.hard: return 2;
@@ -405,6 +406,7 @@ extension HardnessExtension on Hardness {
 
   static Hardness fromRawValue(int rawValue) {
     switch (rawValue) {
+      case -1: return Hardness.diarrhea;
       case 0: return Hardness.soft;
       case 2: return Hardness.hard;
       default: return Hardness.normal;
@@ -413,6 +415,7 @@ extension HardnessExtension on Hardness {
 
   String get localizedName {
     switch (this) {
+      case Hardness.diarrhea: return Intl.message('Diarrhea', name: 'hardnessDiarrhea');
       case Hardness.soft: return Intl.message('Soft', name: 'hardnessSoft');
       case Hardness.normal: return Intl.message('Normal', name: 'hardnessNormal');
       case Hardness.hard: return Intl.message('Hard', name: 'hardnessHard');
