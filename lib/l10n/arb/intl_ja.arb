@@ -513,7 +513,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "poopLegend": "うんちの回数(そのうち下痢の回数",
+  "poopLegend": "うんちの回数(そのうち下痢の回数)",
   "@poopLegend": {
     "type": "text",
     "placeholders": {}

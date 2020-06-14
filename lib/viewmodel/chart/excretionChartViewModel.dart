@@ -56,7 +56,6 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
           List<ExcretionDailyData> dailyDataList = _createEmptyDailyDataList(startOfThisMonth, from, to);
           records.forEach((record) {
             final int index = record.dateTime.difference(from).inDays;
-            print("### record.dateTime: ${record.dateTime}, from: $from, index: $index");
             if (!(index >= 0 && index <= 42)) {
               return;
             }
@@ -108,8 +107,8 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
       poopTotalCount += dailyData.poopCount;
       peeTotalCount += dailyData.peeCount;
     }
-    int dataCount = data.dailyDataList.length;
-    return ExcretionSummary(poopTotalCount / dataCount, peeTotalCount / dataCount);
+    int countOfDayExcretionRecordsExist = data.dailyDataList.where((dailyData) => dailyData.poopCount > 0 || dailyData.peeCount > 0).toList().length;
+    return ExcretionSummary(poopTotalCount / countOfDayExcretionRecordsExist, peeTotalCount / countOfDayExcretionRecordsExist);
   }
 
   @override
