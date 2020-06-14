@@ -9,12 +9,14 @@ import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
+import 'package:raisingchildrenrecord2/view/chart/conditionChartView.dart';
 import 'package:raisingchildrenrecord2/view/chart/excretionChartView.dart';
 import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
 import 'package:raisingchildrenrecord2/view/chart/sleepChartView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/viewmodel/chart/conditionChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/excretionChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/sleepChartViewModel.dart';
@@ -175,8 +177,9 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
               create: (_) => ExcretionChartViewModel(viewModel.baby, FirestoreRecordRepository()),
               child: ExcretionChartView(),
             ),
-            Center(
-              child: Text('Under Implementation'),
+            Provider<ConditionChartViewModel>(
+              create: (_) => ConditionChartViewModel(viewModel.baby, FirestoreRecordRepository()),
+              child: ConditionChartView(),
             ),
             Center(
               child: Text('Under Implementation'),
