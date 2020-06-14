@@ -33,6 +33,8 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
 
   final _summaryValueFormat = NumberFormat('##0.0');
 
+  final _cellBorder = BorderSide(color: Colors.grey, width: 0.25);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -158,7 +160,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
                 children: List<int>.generate(7, (i) => i).map((columnIndex) {
                   return Expanded(
                     flex: 1,
-                    child: _buildCalendarCell(data.dailyDataList[rowIndex * 7 + columnIndex]),
+                    child: _buildCalendarCell(data, rowIndex, columnIndex),
                   );
                 }).toList(),
               )
@@ -169,12 +171,13 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
     );
   }
 
-  Widget _buildCalendarCell(ExcretionDailyData dailyData) {
+  Widget _buildCalendarCell(ExcretionChartData data, int rowIndex, int columnIndex) {
+    final ExcretionDailyData dailyData = data.dailyDataList[rowIndex * 7 + columnIndex];
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey, width: 0.25),
-          right: BorderSide(color: Colors.grey, width: 0.25),
+          bottom: rowIndex == 5 ? BorderSide.none : _cellBorder,
+          right: (columnIndex % 7) == 6 ? BorderSide.none : _cellBorder,
         ),
       ),
       child: Column(
