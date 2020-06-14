@@ -52,6 +52,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
                 : Container();
             }
           ),
+          Container(height: 12),
           StreamBuilder(
             stream: viewModel.summary,
             builder: (context, snapshot) {
@@ -61,6 +62,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
               );
             },
           ),
+          Container(height: 8),
           _buildCalendarHeader(),
           Expanded(
             child: _buildCalendarContent(),
@@ -75,6 +77,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
     return Column(
       children: <Widget>[
         _buildExcretionSummaryRow(RecordType.poop, poopAverage),
+        Container(height: 8),
         _buildExcretionSummaryRow(RecordType.pee, peeAverage),
       ],
     );
@@ -86,6 +89,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Container(width: 8),
         CircleImage(
           AssetImage(recordType.assetName),
           width: 24,
