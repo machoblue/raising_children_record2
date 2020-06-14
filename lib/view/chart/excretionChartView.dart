@@ -43,17 +43,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          StreamBuilder(
-            stream: viewModel.month,
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                ? Text(
-                  _calendarTitleFormat.format(snapshot.data),
-                  style: _calendarTitleStyle,
-                )
-                : Container();
-            }
-          ),
+          _buildCalendarTitle(),
           Container(height: 12),
           StreamBuilder(
             stream: viewModel.summary,
@@ -72,6 +62,38 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
           _buildLegend(),
         ],
       ),
+    );
+  }
+
+  Widget _buildCalendarTitle() {
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () => viewModel.monthDecrement.add(null),
+        ),
+        Expanded(
+          child: Container(),
+        ),
+        StreamBuilder(
+            stream: viewModel.month,
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? Text(
+                _calendarTitleFormat.format(snapshot.data),
+                style: _calendarTitleStyle,
+              )
+                  : Container();
+            }
+        ),
+        Expanded(
+          child: Container(),
+        ),
+        IconButton(
+          icon: Icon(Icons.chevron_right),
+          onPressed: () => viewModel.monthIncrement.add(null),
+        ),
+      ],
     );
   }
 

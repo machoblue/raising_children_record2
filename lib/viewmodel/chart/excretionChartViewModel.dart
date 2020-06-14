@@ -18,9 +18,17 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   StreamSubscription _monthSubscription;
   StreamSubscription _dataSubscription;
+  StreamSubscription _monthIncrementSubscription;
+  StreamSubscription _monthDecrementSubscription;
 
   final _monthBehaviorSubject = BehaviorSubject<DateTime>.seeded(DateTime.now());
   Stream<DateTime> get month => _monthBehaviorSubject.stream;
+
+  final _monthIncrementStreamController = StreamController<void>();
+  StreamSink<void> get monthIncrement => _monthIncrementStreamController.sink;
+
+  final _monthDecrementStreamController = StreamController<void>();
+  StreamSink<void> get monthDecrement => _monthDecrementStreamController.sink;
 
   final _summaryStreamController = StreamController<ExcretionSummary>();
   Stream<ExcretionSummary> get summary => _summaryStreamController.stream;
@@ -45,6 +53,16 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
         _dataStreamController.sink.add(data);
         _summaryStreamController.sink.add(_summarize(data));
       });
+    });
+
+    _monthDecrementSubscription = _monthDecrementStreamController.stream.listen((_) {
+      final DateTime currentMonth = _monthBehaviorSubject.value;
+      _monthBehaviorSubject.add(DateTime(currentMonth.year, currentMonth.month - 1));
+    });
+
+    _monthIncrementSubscription = _monthIncrementStreamController.stream.listen((_) {
+      final DateTime currentMonth = _monthBehaviorSubject.value;
+      _monthBehaviorSubject.add(DateTime(currentMonth.year, currentMonth.month + 1));
     });
   }
 
@@ -115,11 +133,15 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
   void dispose() {
     super.dispose();
     _monthSubscription.cancel();
+    _monthIncrementSubscription.cancel();
+    _monthDecrementSubscription.cancel();
 
     _monthBehaviorSubject.close();
     _summaryStreamController.close();
     _calendarHeaderStreamController.close();
     _dataStreamController.close();
+    _monthIncrementStreamController.close();
+    _monthDecrementStreamController.close();
   }
 }
 
