@@ -34,7 +34,7 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
   ExcretionChartViewModel(this.babyStream, this.recordRepository) {
     _monthSubscription = _monthBehaviorSubject.stream.listen((dateTime) {
       final startOfThisMonth = DateTime(dateTime.year, dateTime.month, 1);
-      final startOfThisWeek = startOfThisMonth.add(Duration(days: -(startOfThisMonth.weekday + 1)));
+      final startOfThisWeek = startOfThisMonth.add(Duration(days: - startOfThisMonth.weekday + 1));
       final fromDateTime = startOfThisWeek;
       final toDateTime = fromDateTime.add(Duration(days: 42));
       
