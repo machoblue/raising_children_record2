@@ -187,30 +187,35 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
             style: dailyData.isMainMonth ? _dayStyle : _dayOfOtherMonthStyle,
           ),
           Container(
+            padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                RichText(
-                  text: TextSpan(
-                    style: _dayContentBaseStyle,
-                    children: <TextSpan>[
-                      TextSpan(text: '● ', style: _dayContentPoopStyle,),
-                      TextSpan(text: '${dailyData.poopCount}',),
-                      TextSpan(text: ' ('),
-                      TextSpan(text: '${dailyData.diarrheaCount}', style: dailyData.diarrheaCount > 0 ? _dayContentDiarrheaStyle : _dayContentBaseStyle,),
-                      TextSpan(text: ')'),
-                    ],
+                dailyData.poopCount == 0
+                  ? Container()
+                  : RichText(
+                    text: TextSpan(
+                      style: _dayContentBaseStyle,
+                      children: <TextSpan>[
+                        TextSpan(text: '● ', style: _dayContentPoopStyle,),
+                        TextSpan(text: '${dailyData.poopCount}',),
+                        TextSpan(text: ' ('),
+                        TextSpan(text: '${dailyData.diarrheaCount}', style: dailyData.diarrheaCount > 0 ? _dayContentDiarrheaStyle : _dayContentBaseStyle,),
+                        TextSpan(text: ')'),
+                      ],
+                    ),
                   ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    style: _dayContentBaseStyle,
-                    children: <TextSpan>[
-                      TextSpan(text: '● ', style: _dayContentPeeStyle,),
-                      TextSpan(text: '${dailyData.peeCount}',),
-                    ],
+                dailyData.peeCount == 0
+                  ? Container()
+                  : RichText(
+                    text: TextSpan(
+                      style: _dayContentBaseStyle,
+                      children: <TextSpan>[
+                        TextSpan(text: '● ', style: _dayContentPeeStyle,),
+                        TextSpan(text: '${dailyData.peeCount}',),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
