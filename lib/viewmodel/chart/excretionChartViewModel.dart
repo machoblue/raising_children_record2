@@ -107,8 +107,8 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
       poopTotalCount += dailyData.poopCount;
       peeTotalCount += dailyData.peeCount;
     }
-    int countOfDayExcretionRecordsExist = data.dailyDataList.where((dailyData) => dailyData.poopCount > 0 || dailyData.peeCount > 0).toList().length;
-    return ExcretionSummary(poopTotalCount / countOfDayExcretionRecordsExist, peeTotalCount / countOfDayExcretionRecordsExist);
+    final int dataCount = data.dailyDataList.length;
+    return ExcretionSummary(poopTotalCount / dataCount, peeTotalCount / dataCount);
   }
 
   @override

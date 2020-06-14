@@ -99,7 +99,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
         ),
         Container(height: 24, width: 4),
         Text(
-          '${recordType.localizedName}: ',
+          '${recordType.localizedName}:',
           style: _summaryLabelStyle,
         ),
         Container(height: 24, width: 8),
