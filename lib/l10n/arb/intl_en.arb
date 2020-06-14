@@ -507,5 +507,20 @@
   "@average": {
     "type": "text",
     "placeholders": {}
+  },
+  "times": "Times",
+  "@times": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "poopLegend": "the number of poops(diarrhea)",
+  "@poopLegend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "peeLegend": "the number of pee",
+  "@peeLegend": {
+    "type": "text",
+    "placeholders": {}
   }
 }

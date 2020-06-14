@@ -163,4 +163,8 @@ class L10n {
   String get hours => Intl.message('Hours', name: 'hours');
   String get total => Intl.message('Total', name: 'total');
   String get average => Intl.message('Average', name: 'average');
+
+  String get times => Intl.message('Times', name: 'times');
+  String get poopLegend => Intl.message('the number of poops(diarrhea)', name: 'poopLegend');
+  String get peeLegend => Intl.message('the number of pee', name: 'peeLegend');
 }

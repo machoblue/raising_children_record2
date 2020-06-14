@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
@@ -80,6 +81,7 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
   }
 
   Widget _buildExcretionSummaryRow(RecordType recordType, double value) {
+    L10n l10n = L10n.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,9 +100,9 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
         RichText(
           text: TextSpan(
             children: <TextSpan>[
-              TextSpan(text: '平均 ', style: _summaryValueSmallStyle,),
+              TextSpan(text: '${l10n.average} ', style: _summaryValueSmallStyle,),
               TextSpan(text: '${value == null ? '' : _summaryValueFormat.format(value)}', style: _summaryValueLargeStyle,),
-              TextSpan(text: ' 回', style: _summaryValueSmallStyle,),
+              TextSpan(text: ' ${l10n.times}', style: _summaryValueSmallStyle,),
             ],
           ),
         ),
@@ -212,14 +214,15 @@ class _ExcretionChartViewState extends BaseState<ExcretionChartView, ExcretionCh
   }
 
   Widget _buildLegend() {
+    L10n l10n = L10n.of(context);
     return RichText(
       text: TextSpan(
         style: _legendBaseStyle,
         children: <TextSpan>[
           TextSpan(text: '●', style: _legendPoopStyle),
-          TextSpan(text: 'うんちの回数(そのうちげりの回数), '),
+          TextSpan(text: '${l10n.poopLegend}, '),
           TextSpan(text: '●', style: _legendPeeStyle),
-          TextSpan(text: 'おしっこの回数'),
+          TextSpan(text: '${l10n.peeLegend}'),
         ],
       ),
     );

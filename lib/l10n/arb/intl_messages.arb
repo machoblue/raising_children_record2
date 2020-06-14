@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-13T10:26:59.657557",
+  "@@last_modified": "2020-06-14T09:07:46.052245",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -505,6 +505,21 @@
   },
   "average": "Average",
   "@average": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "times": "Times",
+  "@times": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "poopLegend": "the number of poops(diarrhea)",
+  "@poopLegend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "peeLegend": "the number of pee",
+  "@peeLegend": {
     "type": "text",
     "placeholders": {}
   }
