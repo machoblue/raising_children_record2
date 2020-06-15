@@ -132,7 +132,9 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
   @override
   void dispose() {
     super.dispose();
+
     _monthSubscription.cancel();
+    _dataSubscription?.cancel();
     _monthIncrementSubscription.cancel();
     _monthDecrementSubscription.cancel();
 

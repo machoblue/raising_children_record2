@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class CalendarLayout extends StatelessWidget {
   final _titleFormat = DateFormat.yM();
-  final _dateFormat = DateFormat.d();
   final _weekdayFormat = DateFormat.E();
 
   final _titleStyle = TextStyle(fontSize: 24);
@@ -33,14 +32,18 @@ class CalendarLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        _buildTitle(),
-        _buildMiddle(),
-        _buildCalendarHeader(),
-        _buildCalendarContent(),
-      ],
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _buildTitle(),
+          _buildMiddle(),
+          _buildCalendarHeader(),
+          Expanded(
+            child: _buildCalendarContent(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -81,10 +84,12 @@ class CalendarLayout extends StatelessWidget {
         children: List.generate(7, (i) {
           final dateTime = _firstDateOfCalendar.add(Duration(days: i));
           final weekdayText = _weekdayFormat.format(dateTime);
-          return Text(
-            weekdayText,
-            style: _headerStyle,
-            textAlign: TextAlign.center,
+          return Expanded(
+            child: Text(
+              weekdayText,
+              style: _headerStyle,
+              textAlign: TextAlign.center,
+            ),
           );
         }),
       ),
@@ -121,13 +126,10 @@ class CalendarLayout extends StatelessWidget {
       child: Column(
           children: <Widget>[
             Text(
-              _dateFormat.format(cellDate),
+              '${cellDate.day}',
               style: cellDate.month == dateTime.month ? _dateStyle : _dateStyleOtherMonth,
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
-              child: dateCellBuilder(cellDate),
-            ),
+            dateCellBuilder(cellDate),
           ]
       ),
     );
