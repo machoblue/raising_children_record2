@@ -33,6 +33,7 @@ class ConditionChartViewModel with ViewModelErrorHandler implements ViewModel {
 
   ConditionChartViewModel(this.babyStream, this.recordRepository) {
     _monthSubscription = _monthBehaviorSubject.stream.listen((dateTime) {
+      _dataBehaviorSubject.add(ConditionChartData(dateTime, {}));
       final startOfThisMonth = DateTime(dateTime.year, dateTime.month, 1);
       final isMondayStart = true;
       final startOfThisWeek = startOfThisMonth.add(Duration(days: isMondayStart ? (- startOfThisMonth.weekday + 1) : (- startOfThisMonth.weekday % 7)));
@@ -86,7 +87,7 @@ class ConditionChartViewModel with ViewModelErrorHandler implements ViewModel {
                 break;
               case PoopRecord:
                 if ((record as PoopRecord).hardness == Hardness.diarrhea) {
-                  diarrheaCount+= 1;
+                  diarrheaCount += 1;
                 }
                 break;
               default:
