@@ -19,8 +19,14 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
 
 class GrowthStaticsGroup {
   String get localizedName {}
-  GrowthStatics get heightGrowthStatics {}
-  GrowthStatics get weightGrowthStatics {}
+  GrowthStaticsSet get maleSet {}
+  GrowthStaticsSet get femaileSet {}
+}
+
+class GrowthStaticsSet {
+  final GrowthStatics heightStatics;
+  final GrowthStatics widthStatics;
+  GrowthStaticsSet({ this.heightStatics, this.widthStatics });
 }
 
 class GrowthStatics {
@@ -30,27 +36,43 @@ class GrowthStatics {
 }
 
 class GrowthData {
-  final int month;
+  final double month;
   final double value;
   GrowthData(this.month, this.value);
 }
 
 class MHLWGrowthStaticsGroup implements GrowthStaticsGroup { // 厚生労働省
   String get localizedName => '厚生労働省'; // TODO: internationalize
-  GrowthStatics get heightGrowthStatics => _heightGrowthStatics;
-  GrowthStatics get weightGrowthStatics => _widthGrowthStatics;
+  GrowthStaticsSet get maleSet => _maleSet;
+  GrowthStaticsSet get femaileSet => _femaleSet;
 
-  final _heightGrowthStatics = GrowthStatics(
-    ceilDataList: [
-    ],
-    floorDataList: [
-    ],
+  final _maleSet = GrowthStaticsSet(
+    heightStatics: GrowthStatics(
+      ceilDataList: [
+      ],
+      floorDataList: [
+      ],
+    ),
+    widthStatics: GrowthStatics(
+      ceilDataList: [
+      ],
+      floorDataList: [
+      ],
+    ),
   );
 
-  final _widthGrowthStatics = GrowthStatics(
-    ceilDataList: [
-    ],
-    floorDataList: [
-    ],
+  final _femaleSet = GrowthStaticsSet(
+    heightStatics: GrowthStatics(
+      ceilDataList: [
+      ],
+      floorDataList: [
+      ],
+    ),
+    widthStatics: GrowthStatics(
+      ceilDataList: [
+      ],
+      floorDataList: [
+      ],
+    ),
   );
 }
