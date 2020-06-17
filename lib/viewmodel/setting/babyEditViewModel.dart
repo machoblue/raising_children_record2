@@ -24,6 +24,8 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
 
   Stream<String> get name => _babyBehaviorSubject.stream.map((baby) => baby?.name ?? '');
 
+  Stream<Sex> get sex => _babyBehaviorSubject.stream.map((baby) => baby?.sex ?? Sex.none);
+
   Stream<DateTime> get birthday => _babyBehaviorSubject.stream.map((baby) => baby?.birthday ?? DateTime.now());
 
   final StreamController<void> _onSaveCompleteStreamController = StreamController<void>();
@@ -34,6 +36,9 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
 
   final _onNameChangedStreamController = StreamController<String>();
   StreamSink<String> get onNameChanged => _onNameChangedStreamController.sink;
+
+  final _onSexChangedStreamController = StreamController<String>();
+  StreamSink<String> get onSexChanged => _onSexChangedStreamController.sink;
 
   final _onBirthdayChangedStreamController = StreamController<DateTime>();
   StreamSink<DateTime> get onBirthdayChanged => _onBirthdayChangedStreamController.sink;
@@ -69,6 +74,12 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
     _onBirthdayChangedStreamController.stream.listen((birthday) {
       Baby baby = _babyBehaviorSubject.value;
       baby.birthday = birthday;
+      _babyBehaviorSubject.add(baby);
+    });
+
+    _onSexChangedStreamController.stream.listen((sex) {
+      Baby baby = _babyBehaviorSubject.value;
+      baby.sex = SexExtension.fromString(sex);
       _babyBehaviorSubject.add(baby);
     });
 
@@ -150,6 +161,7 @@ class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
     _onSaveCompleteStreamController.close();
     _imageBehaviorSubject.close();
     _onNameChangedStreamController.close();
+    _onSexChangedStreamController.close();
     _onBirthdayChangedStreamController.close();
     _onSaveButtonTappedStreamController.close();
     _onDeleteButtonTappedStreamController.close();

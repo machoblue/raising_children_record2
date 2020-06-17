@@ -23,6 +23,7 @@ class BabyEditView extends StatefulWidget {
 }
 
 class _BabyEditViewState extends BaseState<BabyEditView, BabyEditViewModel> {
+  final _radioLabelFont = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black);
   final _birthdayLabelFont = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0x0088000000));
   final _dateButtonFont = const TextStyle(color: Colors.blue, fontSize: 20.0);
   final _deleteButtonFont = const TextStyle(color: Colors.red, fontSize: 20.0);
@@ -118,10 +119,47 @@ class _BabyEditViewState extends BaseState<BabyEditView, BabyEditViewModel> {
               ),
             ),
             StreamBuilder(
+              stream: viewModel.sex,
+              builder: (context, snapshot) {
+                final Sex currentSex = snapshot.data;
+                return Row(
+                    children: Sex.values.map((sex) {
+                      return Container(
+                        child: Row(
+                          children: <Widget>[
+                            Radio(
+                              value: sex.string,
+                              groupValue: currentSex.string,
+                              onChanged: (sexString) => viewModel.onSexChanged.add(sexString),
+                            ),
+                            GestureDetector(
+                              onTap: () => viewModel.onSexChanged.add(sex.string),
+                              child: Text(
+                                sex.localizedName,
+                                style: _radioLabelFont,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList()
+                );
+              },
+            ),
+            Container(
+              height: 36,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _l10n.birthdayLabel,
+                style: _birthdayLabelFont,
+              ),
+            ),
+            StreamBuilder(
               stream: viewModel.birthday,
               builder: (context, snapshot) {
                 final dateTime = snapshot.data ?? DateTime.now();
-                print("### dateTime: $dateTime");
                 return Container(
                   padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
                   alignment: Alignment.centerLeft,
