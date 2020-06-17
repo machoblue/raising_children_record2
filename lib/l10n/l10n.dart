@@ -167,4 +167,8 @@ class L10n {
   String get times => Intl.message('Times', name: 'times');
   String get poopLegend => Intl.message('the number of poops(diarrhea)', name: 'poopLegend');
   String get peeLegend => Intl.message('the number of pee', name: 'peeLegend');
+
+  String get male => Intl.message('Male', name: 'male');
+  String get female => Intl.message('Female', name: 'female');
+  String get none => Intl.message('None', name: 'none');
 }

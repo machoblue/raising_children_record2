@@ -522,5 +522,20 @@
   "@peeLegend": {
     "type": "text",
     "placeholders": {}
+  },
+  "male": "男の子",
+  "@male": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "female": "女の子",
+  "@female": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "none": "指定なし",
+  "@none": {
+    "type": "text",
+    "placeholders": {}
   }
 }
