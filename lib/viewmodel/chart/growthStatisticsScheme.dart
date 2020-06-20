@@ -8,8 +8,8 @@ class GrowthStatisticsScheme {
 
 class GrowthStatisticsSet {
   final GrowthStatistics heightStatistics;
-  final GrowthStatistics widthStatistics;
-  GrowthStatisticsSet({ this.heightStatistics, this.widthStatistics });
+  final GrowthStatistics weightStatistics;
+  GrowthStatisticsSet({ this.heightStatistics, this.weightStatistics });
 }
 
 class GrowthStatistics {
@@ -37,7 +37,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
       floorDataList: [
       ],
     ),
-    widthStatistics: GrowthStatistics(
+    weightStatistics: GrowthStatistics(
       ceilDataList: [
       ],
       floorDataList: [
@@ -52,7 +52,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
       floorDataList: [
       ],
     ),
-    widthStatistics: GrowthStatistics(
+    weightStatistics: GrowthStatistics(
       ceilDataList: [
       ],
       floorDataList: [
