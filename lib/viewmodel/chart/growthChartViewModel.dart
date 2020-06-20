@@ -40,36 +40,55 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
       final Baby baby = tuple.item1;
       final GrowthPeriodType period = GrowthPeriodTypeExtension.fromIndex(tuple.item2);
       print("### baby: ${baby.name}, period: ${period.months}");
+
       _periodBehaviorSubject.add(period);
 
-      final growthStatisticsScheme = MHLWGrowthStatisticsScheme();
-      final growthStatisticsSet = (baby.sex == Sex.female) ? growthStatisticsScheme.femaleSet : growthStatisticsScheme.maleSet;
-      final List<GrowthData> minHeightList = growthStatisticsSet.heightStatistics.floorDataList.where((growData) => growData.month < period.months).toList();
-      final List<GrowthData> maxHeightList = growthStatisticsSet.heightStatistics.ceilDataList.where((growData) => growData.month < period.months).toList();
-      final List<GrowthData> minWeightList = growthStatisticsSet.weightStatistics.floorDataList.where((growData) => growData.month < period.months).toList();
-      final List<GrowthData> maxWeightList = growthStatisticsSet.weightStatistics.ceilDataList.where((growData) => growData.month < period.months).toList();
-      _statisticsDataStreamController.sink.add(GrowthStatisticsData(periodType: period, minHeightList: minHeightList, maxHeightList: maxHeightList, minWeightList: minWeightList, maxWeightList: maxWeightList));
+      _statisticsDataStreamController.sink.add(_createStatisticsData(baby.sex, period));
 
-      SharedPreferences.getInstance().then((sharedPreferences) {
-        final String familyId = sharedPreferences.getString('familyId');
+      _createChartData(baby, period).then((chartData) {
+        _growthChartDataStreamController.sink.add(chartData);
+      })
+      .catchError(handleError);
+    });
+  }
 
-        final from = baby.birthday;
-        final to = DateTime(from.year, from.month + period.months, from.day, from.hour, from.minute);
-        recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.height, RecordType.weight], from: from, to: to).then((records) {
-          List<GrowthData> heightList = [];
-          List<GrowthData> weightList = [];
-          records.forEach((record) {
-            switch (record.runtimeType) {
-              case HeightRecord:
-                break; // TODO create GrowthData of height
-              case WeightRecord:
-                break; // TODO create GrowthData of weight
-              default:
-                throw 'This line should not be reached';
-            }
-          });
-        })
-        .catchError(handleError);
+  GrowthStatisticsData _createStatisticsData(Sex sex, GrowthPeriodType periodType) {
+    final growthStatisticsScheme = MHLWGrowthStatisticsScheme();
+    final growthStatisticsSet = (sex == Sex.female) ? growthStatisticsScheme.femaleSet : growthStatisticsScheme.maleSet;
+    final List<GrowthData> minHeightList = growthStatisticsSet.heightStatistics.floorDataList.where((growData) => growData.month < periodType.months).toList();
+    final List<GrowthData> maxHeightList = growthStatisticsSet.heightStatistics.ceilDataList.where((growData) => growData.month < periodType.months).toList();
+    final List<GrowthData> minWeightList = growthStatisticsSet.weightStatistics.floorDataList.where((growData) => growData.month < periodType.months).toList();
+    final List<GrowthData> maxWeightList = growthStatisticsSet.weightStatistics.ceilDataList.where((growData) => growData.month < periodType.months).toList();
+    return GrowthStatisticsData(periodType: periodType, minHeightList: minHeightList, maxHeightList: maxHeightList, minWeightList: minWeightList, maxWeightList: maxWeightList);
+  }
+
+  Future<GrowthChartData> _createChartData(Baby baby, GrowthPeriodType period) {
+    SharedPreferences.getInstance().then((sharedPreferences) {
+      final String familyId = sharedPreferences.getString('familyId');
+
+      final from = baby.birthday;
+      final to = DateTime(from.year, from.month + period.months, from.day, from.hour, from.minute);
+      recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.height, RecordType.weight], from: from, to: to).then((records) {
+        List<GrowthData> heightList = [];
+        List<GrowthData> weightList = [];
+        records.forEach((record) {
+          final int yearDiff = record.dateTime.year - from.year;
+          final int monthDiff = record.dateTime.month - from.month;
+          final int dayDiff = record.dateTime.day - from.day;
+          final double month = yearDiff * 12 + monthDiff + dayDiff * 30.5; // 30.5 ≒ 1month
+          switch (record.runtimeType) {
+            case HeightRecord:
+              heightList.add(GrowthData(month, (record as HeightRecord).height));
+              break;
+            case WeightRecord:
+              weightList.add(GrowthData(month, (record as WeightRecord).weight));
+              break;
+            default:
+              throw 'This line should not be reached';
+          }
+        });
+
+        return GrowthChartData(periodType: period, heightList: heightList, weightList: weightList);
       });
     });
   }
