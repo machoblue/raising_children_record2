@@ -1,11 +1,11 @@
 # raisingchildrenrecord2
 
-# Usage
+## Usage
 
-## Firebase Configuration
+### Firebase Configuration
 - Download google-services.json(for Android) and GoogleService-Info.plist(for iOS), and put these files in project respectively.
 
-## Add Internationalized Messages
+### Add Internationalized Messages
 
 Add a message to `l10n.dart` like following.
 
@@ -33,7 +33,7 @@ $ flutter packages pub run intl_translation:generate_from_arb \
      lib/l10n/arb/intl_*.arb
 ```
 
-## Edit Firestore Rules
+### Edit Firestore Rules
 
 Execute next command after edit firestore.rules.
 
