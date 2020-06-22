@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
@@ -121,6 +122,19 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
         return 36;
       case GrowthPeriodType.sixYears:
         return 72;
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
+  String getLabel(L10n l10n) {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return l10n.growthLabelOneYear;
+      case GrowthPeriodType.threeYears:
+        return l10n.growthLabelThreeYears;
+      case GrowthPeriodType.sixYears:
+        return l10n.growthLabelSixYears;
       default:
         throw 'This line should not be reached.';
     }

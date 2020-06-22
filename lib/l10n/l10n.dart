@@ -171,4 +171,8 @@ class L10n {
   String get male => Intl.message('Male', name: 'male');
   String get female => Intl.message('Female', name: 'female');
   String get none => Intl.message('None', name: 'none');
+
+  String get growthLabelOneYear => Intl.message('To 1 Year Old', name: 'growthLabelOneYear');
+  String get growthLabelThreeYears => Intl.message('To 3 Years Old', name: 'growthLabelThreeYears');
+  String get growthLabelSixYears => Intl.message('To 6 Years Old', name: 'growthLabelSixYears');
 }
