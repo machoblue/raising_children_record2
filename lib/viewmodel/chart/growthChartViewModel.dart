@@ -64,12 +64,12 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
   }
 
   Future<GrowthChartData> _createChartData(Baby baby, GrowthPeriodType period) {
-    SharedPreferences.getInstance().then((sharedPreferences) {
+    return SharedPreferences.getInstance().then((sharedPreferences) {
       final String familyId = sharedPreferences.getString('familyId');
 
       final from = baby.birthday;
       final to = DateTime(from.year, from.month + period.months, from.day, from.hour, from.minute);
-      recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.height, RecordType.weight], from: from, to: to).then((records) {
+      return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.height, RecordType.weight], from: from, to: to).then((records) {
         List<GrowthData> heightList = [];
         List<GrowthData> weightList = [];
         records.forEach((record) {
