@@ -31,6 +31,7 @@ class _SleepChartViewState extends BaseState<SleepChartView, SleepChartViewModel
     final chartLegend = ChartLegend(Colors.blue, l10n.sleepLabel, l10n.hours);
     return Column(
       children: <Widget>[
+        Container(height: 12),
         StreamBuilder(
           stream: viewModel.currentIndex,
           builder: (context, snapshot) {

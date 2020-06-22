@@ -140,6 +140,35 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
     }
   }
 
+  Range get heightRange {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return Range(15, 80);
+      case GrowthPeriodType.threeYears:
+        return Range(5, 125);
+      case GrowthPeriodType.sixYears:
+        return Range(5, 125);
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
+  double get heightPerOneScale => 5;
+  double get weightPerOneScale => 1;
+
+  Range get weightRange {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return Range(1, 14);
+      case GrowthPeriodType.threeYears:
+        return Range(6, 30);
+      case GrowthPeriodType.sixYears:
+        return Range(6, 30);
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
   static GrowthPeriodType fromIndex(int index) {
     switch (index) {
       case 0:
@@ -152,6 +181,12 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
         throw 'This line should not be reached.';
     }
   }
+}
+
+class Range {
+  final double min;
+  final double max;
+  Range(this.min, this.max);
 }
 
 class GrowthChartData {

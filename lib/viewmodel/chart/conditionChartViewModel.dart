@@ -106,7 +106,7 @@ class ConditionChartViewModel with ViewModelErrorHandler implements ViewModel {
     super.dispose();
 
     _monthSubscription.cancel();
-    _dataSubscription.cancel();
+    _dataSubscription?.cancel();
     _monthIncrementSubscription.cancel();
     _monthDecrementSubscription.cancel();
 
