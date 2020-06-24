@@ -203,7 +203,7 @@ class _SleepChartVerticalScalePainter extends CustomPainter {
     _drawLegend(canvas, size);
     _drawXAxisAndYAxis(canvas, size);
     _drawHorizontalLines(canvas, size);
-    _drawXAxisLabels(canvas, size);
+    _drawYAxisLabels(canvas, size);
   }
 
   void _drawLegend(Canvas canvas, Size size) {
@@ -265,7 +265,7 @@ class _SleepChartVerticalScalePainter extends CustomPainter {
     canvas.drawPath(horizontalLinePath, horizontalLinePaint);
   }
 
-  void _drawXAxisLabels(Canvas canvas, Size size) {
+  void _drawYAxisLabels(Canvas canvas, Size size) {
     final double fontSize = 12;
     final textStyle = TextStyle(color: Colors.black, fontSize: fontSize);
     final double chartHeight = size.height - (chartMargin.top + chartMargin.bottom);

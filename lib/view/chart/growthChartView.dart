@@ -8,6 +8,7 @@ import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/growthChartViewModel.dart';
+import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
 
 class GrowthChartView extends StatefulWidget {
   @override
@@ -84,6 +85,9 @@ class _GrowthChartViewState extends BaseState<GrowthChartView, GrowthChartViewMo
 }
 
 class _GrowthChartFramePainter extends CustomPainter {
+  final labelStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black);
+  final unitStyle = TextStyle(fontSize: 9, fontWeight: FontWeight.normal, color: Colors.black);
+
   final List<ChartLegend> legends;
   final GrowthPeriodType periodType;
   final EdgeInsets margin;
@@ -165,7 +169,22 @@ class _GrowthChartFramePainter extends CustomPainter {
   }
 
   void _drawYAxisLabels(Canvas canvas, Size size) {
+    final int diff = (periodType.weightRange.max - periodType.weightRange.min).toInt();
+    final double unitHeight = (size.height - (margin.top + margin.bottom)) / diff;
+    final double heightPerOneScale = (periodType.heightRange.max - periodType.heightRange.min) / diff;
+    final double weightPerOneScale = (periodType.weightRange.max - periodType.weightRange.min) / diff;
+    final double fontSizeHalf = 6;
+    final double spanX = 2;
+    for (int i = 0; i < diff - 1; i++) {
+      final double y = size.height - margin.bottom - unitHeight * (i + 1);
+      final heightLabelValue = (periodType.heightRange.min + heightPerOneScale * i).toInt();
+      canvas.drawText('$heightLabelValue', labelStyle, TextAlign.end, Rect.fromLTRB(0, y - fontSizeHalf, margin.left - spanX, y + fontSizeHalf));
+      final weightLabelValue = (periodType.weightRange.min + weightPerOneScale * i).toInt();
+      canvas.drawText('$weightLabelValue', labelStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, y - fontSizeHalf, size.width, y + fontSizeHalf));
+    }
 
+    canvas.drawText('(cm)', unitStyle, TextAlign.end, Rect.fromLTRB(0, margin.top - fontSizeHalf, margin.left - spanX, margin.top + fontSizeHalf));
+    canvas.drawText('(kg)', unitStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, margin.top - fontSizeHalf, size.width, margin.top + fontSizeHalf));
   }
 
   void _drawVerticalLines(Canvas canvas, Size size) {
