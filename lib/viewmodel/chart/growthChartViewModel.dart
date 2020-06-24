@@ -169,6 +169,19 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
     }
   }
 
+  double get monthsPerOneScale {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return 1;
+      case GrowthPeriodType.threeYears:
+        return 3;
+      case GrowthPeriodType.sixYears:
+        return 6;
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
   static GrowthPeriodType fromIndex(int index) {
     switch (index) {
       case 0:

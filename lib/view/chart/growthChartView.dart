@@ -188,7 +188,23 @@ class _GrowthChartFramePainter extends CustomPainter {
   }
 
   void _drawVerticalLines(Canvas canvas, Size size) {
+    final double y0 = margin.top;
+    final double y1 = size.height - margin.bottom;
+    final double unitWidth = (size.width - (margin.left + margin.right)) / (periodType.months / periodType.monthsPerOneScale);
+    Path path = Path();
+    for (int i = 0; i < (periodType.months / periodType.monthsPerOneScale) - 1; i++) {
+      final double x = margin.left + unitWidth * (i + 1);
+      path.moveTo(x, y0);
+      path.lineTo(x, y1);
+    }
 
+    Paint paint = Paint()
+      ..color = Colors.grey
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.5;
+
+    canvas.drawPath(path, paint);
   }
 
   void _drawXAxisLabels(Canvas canvas, Size size) {
