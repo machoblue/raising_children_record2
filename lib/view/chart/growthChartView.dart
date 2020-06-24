@@ -208,7 +208,19 @@ class _GrowthChartFramePainter extends CustomPainter {
   }
 
   void _drawXAxisLabels(Canvas canvas, Size size) {
+    final int labelCount = periodType.months ~/ periodType.monthsPerXAxisLabel;
+    final double unitWidth = (size.width - (margin.left + margin.right)) / labelCount;
+    final double spanY = 2;
+    final double textRectTop = size.height - margin.bottom + spanY;
+    final double textRectBottom = textRectTop + 12;
+    for (int i = 0; i < labelCount; i++) {
+      final int labelValue = i;
+      final double centerX = margin.left + unitWidth * i;
+      canvas.drawText('$labelValue', labelStyle, TextAlign.center, Rect.fromLTRB(centerX - unitWidth / 2, textRectTop, centerX + unitWidth / 2, textRectBottom));
+    }
 
+    final double unitLabelCenterX = size.width - margin.right;
+    canvas.drawText('(${periodType.xAxisLabelUnit})', unitStyle, TextAlign.center, Rect.fromLTRB(unitLabelCenterX - unitWidth / 2, textRectTop, unitLabelCenterX + unitWidth / 2, textRectBottom));
   }
 
   @override

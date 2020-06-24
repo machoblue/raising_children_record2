@@ -182,6 +182,31 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
     }
   }
 
+  int get monthsPerXAxisLabel {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return 1;
+      case GrowthPeriodType.threeYears:
+        return 12;
+      case GrowthPeriodType.sixYears:
+        return 12;
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
+  String get xAxisLabelUnit {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return 'か月';
+      case GrowthPeriodType.threeYears:
+      case GrowthPeriodType.sixYears:
+        return '歳';
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
   static GrowthPeriodType fromIndex(int index) {
     switch (index) {
       case 0:
