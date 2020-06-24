@@ -3,12 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/growthChartViewModel.dart';
 import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
+import 'package:raisingchildrenrecord2/viewmodel/chart/growthStatisticsScheme.dart';
 
 class GrowthChartView extends StatefulWidget {
   @override
@@ -231,10 +233,52 @@ class _GrowthStatisticsPainter extends CustomPainter {
   final GrowthStatisticsData statisticsData;
   final EdgeInsets margin;
 
+  Size chartSize;
+
   _GrowthStatisticsPainter(this.statisticsData, this.margin);
 
   @override
   void paint(Canvas canvas, Size size) {
+    chartSize = Size(size.width - (margin.left + margin.right), margin.top + (size.height - (margin.top + margin.bottom)));
+
+    _drawStatisticsChart(canvas, size, statisticsData.minHeightList, statisticsData.maxHeightList, statisticsData.periodType.months, statisticsData.periodType.heightRange, Colors.yellow);
+    _drawStatisticsChart(canvas, size, statisticsData.minWeightList, statisticsData.maxWeightList, statisticsData.periodType.months, statisticsData.periodType.weightRange, Colors.orange);
+  }
+
+  void _drawStatisticsChart(Canvas canvas, Size size, List<GrowthData> minList, List<GrowthData> maxList, int maxMonth, Range valueRange, Color color) {
+    List<Point<double>> minPoints = minList.map((data) => _convert(data, size, maxMonth, valueRange)).toList();
+    List<Point<double>> maxPoints = maxList.map((data) => _convert(data, size, maxMonth, valueRange)).toList();
+
+    Path path = Path();
+    final first = minPoints.first;
+    path.moveTo(first.x, first.y);
+    for (int i = 1; i < minPoints.length; i++) {
+      final point = minPoints[i];
+      path.lineTo(point.x, point.y);
+    }
+
+    List<Point<double>> reversedMaxPoints = maxPoints.reversed.toList();
+    final maxFirst = reversedMaxPoints.first;
+    path.lineTo(maxFirst.x, maxFirst.y);
+    for (int i = 1; i < reversedMaxPoints.length; i++) {
+      final point = reversedMaxPoints[i];
+      path.lineTo(point.x, point.y);
+    }
+
+    path.close();
+
+    Paint paint = Paint()
+      ..color = color
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(path, paint);
+  }
+
+  Point<double> _convert(GrowthData data, Size size, int maxMonth, Range valueRange) {
+    final double x = margin.left + chartSize.width * (data.month / maxMonth);
+    final double y = margin.top + chartSize.height -  chartSize.height * ((data.value - valueRange.min) / (valueRange.max - valueRange.min));
+    return Point(x, y);
   }
 
   @override
