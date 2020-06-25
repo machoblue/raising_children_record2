@@ -179,7 +179,7 @@ class _GrowthChartFramePainter extends CustomPainter {
     final double spanX = 2;
     for (int i = 0; i < diff - 1; i++) {
       final double y = size.height - margin.bottom - unitHeight * (i + 1);
-      final heightLabelValue = (periodType.heightRange.min + heightPerOneScale * i).toInt();
+      final heightLabelValue = (periodType.heightRange.min + heightPerOneScale * (i + 1)).toInt();
       canvas.drawText('$heightLabelValue', labelStyle, TextAlign.end, Rect.fromLTRB(0, y - fontSizeHalf, margin.left - spanX, y + fontSizeHalf));
       final weightLabelValue = (periodType.weightRange.min + weightPerOneScale * i).toInt();
       canvas.drawText('$weightLabelValue', labelStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, y - fontSizeHalf, size.width, y + fontSizeHalf));
@@ -241,8 +241,8 @@ class _GrowthStatisticsPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     chartSize = Size(size.width - (margin.left + margin.right), margin.top + (size.height - (margin.top + margin.bottom)));
 
-    _drawStatisticsChart(canvas, size, statisticsData.minHeightList, statisticsData.maxHeightList, statisticsData.periodType.months, statisticsData.periodType.heightRange, Colors.yellow);
-    _drawStatisticsChart(canvas, size, statisticsData.minWeightList, statisticsData.maxWeightList, statisticsData.periodType.months, statisticsData.periodType.weightRange, Colors.orange);
+    _drawStatisticsChart(canvas, size, statisticsData.minHeightList, statisticsData.maxHeightList, statisticsData.periodType.months, statisticsData.periodType.heightRange, Colors.yellow.withAlpha(64));
+    _drawStatisticsChart(canvas, size, statisticsData.minWeightList, statisticsData.maxWeightList, statisticsData.periodType.months, statisticsData.periodType.weightRange, Colors.orange.withAlpha(64));
   }
 
   void _drawStatisticsChart(Canvas canvas, Size size, List<GrowthData> minList, List<GrowthData> maxList, int maxMonth, Range valueRange, Color color) {

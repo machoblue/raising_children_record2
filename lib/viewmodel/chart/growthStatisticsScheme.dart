@@ -46,6 +46,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 76.2),
         GrowthData(10.5, 77.4),
         GrowthData(11.5, 78.5),
+        GrowthData(12.0, 79.1), // workaround
 
         GrowthData(12.5, 79.6),
         GrowthData(13.5, 80.6),
@@ -62,12 +63,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 92.5),
         GrowthData(33.0, 97.4),
+        GrowthData(36.0, 99.6), // workaround
         GrowthData(39.0, 101.8),
         GrowthData(45.0, 105.8),
         GrowthData(51.0, 109.5),
         GrowthData(57.0, 113.0),
         GrowthData(63.0, 116.5),
         GrowthData(69.0, 119.9),
+        GrowthData(72.0, 121.9), // workaround
         GrowthData(75.0, 123.6),
       ],
       floorDataList: [
@@ -84,6 +87,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 67.4),
         GrowthData(10.5, 68.4),
         GrowthData(11.5, 69.4),
+        GrowthData(12.0, 69.9), // workaround
 
         GrowthData(12.5, 70.3),
         GrowthData(13.5, 71.2),
@@ -100,12 +104,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 81.1),
         GrowthData(33.0, 85.2),
+        GrowthData(36.0, 87.0), // workaround
         GrowthData(39.0, 88.8),
         GrowthData(45.0, 92.0),
         GrowthData(51.0, 95.0),
         GrowthData(57.0, 97.8),
         GrowthData(63.0, 100.5),
         GrowthData(69.0, 103.3),
+        GrowthData(72.0, 104.8), // workaround
         GrowthData(75.0, 106.2),
       ],
     ),
@@ -124,6 +130,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 10.37),
         GrowthData(10.5, 10.59),
         GrowthData(11.5, 10.82),
+        GrowthData(12.0, 10.93), // workaroud
 
         GrowthData(12.5, 11.04),
         GrowthData(13.5, 11.28),
@@ -140,12 +147,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 14.55),
         GrowthData(33.0, 16.01),
+        GrowthData(36.0, 16.72),
         GrowthData(39.0, 17.43),
         GrowthData(45.0, 18.82),
         GrowthData(51.0, 20.24),
         GrowthData(57.0, 21.72),
         GrowthData(63.0, 23.15),
         GrowthData(69.0, 24.33),
+        GrowthData(72.0, 24.79), // workaround
         GrowthData(75.0, 25.25),
       ],
       floorDataList: [
@@ -162,6 +171,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 7.16),
         GrowthData(10.5, 7.34),
         GrowthData(11.5, 7.51),
+        GrowthData(12.0, 7.59), // workaroud
 
         GrowthData(12.5, 7.68),
         GrowthData(13.5, 7.85),
@@ -178,12 +188,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 10.06),
         GrowthData(33.0, 10.94),
+        GrowthData(36.0, 11.33), // workaround
         GrowthData(39.0, 11.72),
         GrowthData(45.0, 12.42),
         GrowthData(51.0, 13.07),
         GrowthData(57.0, 13.71),
         GrowthData(63.0, 14.37),
         GrowthData(69.0, 15.03),
+        GrowthData(72.0, 15.27), // workaround
         GrowthData(75.0, 15.55),
       ],
     ),
@@ -205,6 +217,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 76.2),
         GrowthData(10.5, 77.4),
         GrowthData(11.5, 78.5),
+        GrowthData(12.0, 79.1), // workaround
 
         GrowthData(12.5, 79.6),
         GrowthData(13.5, 80.6),
@@ -221,12 +234,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 92.5),
         GrowthData(33.0, 97.4),
+        GrowthData(36.0, 99.6), // workaround
         GrowthData(39.0, 101.8),
         GrowthData(45.0, 105.8),
         GrowthData(51.0, 109.5),
         GrowthData(57.0, 113.0),
         GrowthData(63.0, 116.5),
         GrowthData(69.0, 119.9),
+        GrowthData(72.0, 121.9), // workaround
         GrowthData(75.0, 123.6),
       ],
       floorDataList: [
@@ -243,6 +258,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 67.4),
         GrowthData(10.5, 68.4),
         GrowthData(11.5, 69.4),
+        GrowthData(12.0, 69.9), // workaround
 
         GrowthData(12.5, 70.3),
         GrowthData(13.5, 71.2),
@@ -259,12 +275,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 81.1),
         GrowthData(33.0, 85.2),
+        GrowthData(36.0, 87.0), // workaround
         GrowthData(39.0, 88.8),
         GrowthData(45.0, 92.0),
         GrowthData(51.0, 95.0),
         GrowthData(57.0, 97.8),
         GrowthData(63.0, 100.5),
         GrowthData(69.0, 103.3),
+        GrowthData(72.0, 104.8), // workaround
         GrowthData(75.0, 106.2),
       ],
     ),
@@ -283,6 +301,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 10.37),
         GrowthData(10.5, 10.59),
         GrowthData(11.5, 10.82),
+        GrowthData(12.0, 10.93), // workaroud
 
         GrowthData(12.5, 11.04),
         GrowthData(13.5, 11.28),
@@ -299,12 +318,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 14.55),
         GrowthData(33.0, 16.01),
+        GrowthData(36.0, 16.72),
         GrowthData(39.0, 17.43),
         GrowthData(45.0, 18.82),
         GrowthData(51.0, 20.24),
         GrowthData(57.0, 21.72),
         GrowthData(63.0, 23.15),
         GrowthData(69.0, 24.33),
+        GrowthData(72.0, 24.79), // workaround
         GrowthData(75.0, 25.25),
       ],
       floorDataList: [
@@ -321,6 +342,7 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
         GrowthData(9.5, 7.16),
         GrowthData(10.5, 7.34),
         GrowthData(11.5, 7.51),
+        GrowthData(12.0, 7.59), // workaroud
 
         GrowthData(12.5, 7.68),
         GrowthData(13.5, 7.85),
@@ -337,12 +359,14 @@ class MHLWGrowthStatisticsScheme implements GrowthStatisticsScheme { // 厚生�
 
         GrowthData(27.0, 10.06),
         GrowthData(33.0, 10.94),
+        GrowthData(36.0, 11.33), // workaround
         GrowthData(39.0, 11.72),
         GrowthData(45.0, 12.42),
         GrowthData(51.0, 13.07),
         GrowthData(57.0, 13.71),
         GrowthData(63.0, 14.37),
         GrowthData(69.0, 15.03),
+        GrowthData(72.0, 15.27), // workaround
         GrowthData(75.0, 15.55),
       ],
     ),

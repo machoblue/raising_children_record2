@@ -56,10 +56,10 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
   GrowthStatisticsData _createStatisticsData(Sex sex, GrowthPeriodType periodType) {
     final growthStatisticsScheme = MHLWGrowthStatisticsScheme();
     final growthStatisticsSet = (sex == Sex.female) ? growthStatisticsScheme.femaleSet : growthStatisticsScheme.maleSet;
-    final List<GrowthData> minHeightList = growthStatisticsSet.heightStatistics.floorDataList.where((growData) => growData.month < periodType.months).toList();
-    final List<GrowthData> maxHeightList = growthStatisticsSet.heightStatistics.ceilDataList.where((growData) => growData.month < periodType.months).toList();
-    final List<GrowthData> minWeightList = growthStatisticsSet.weightStatistics.floorDataList.where((growData) => growData.month < periodType.months).toList();
-    final List<GrowthData> maxWeightList = growthStatisticsSet.weightStatistics.ceilDataList.where((growData) => growData.month < periodType.months).toList();
+    final List<GrowthData> minHeightList = growthStatisticsSet.heightStatistics.floorDataList.where((growData) => growData.month <= periodType.months).toList();
+    final List<GrowthData> maxHeightList = growthStatisticsSet.heightStatistics.ceilDataList.where((growData) => growData.month <= periodType.months).toList();
+    final List<GrowthData> minWeightList = growthStatisticsSet.weightStatistics.floorDataList.where((growData) => growData.month <= periodType.months).toList();
+    final List<GrowthData> maxWeightList = growthStatisticsSet.weightStatistics.ceilDataList.where((growData) => growData.month <= periodType.months).toList();
     return GrowthStatisticsData(periodType: periodType, minHeightList: minHeightList, maxHeightList: maxHeightList, minWeightList: minWeightList, maxWeightList: maxWeightList);
   }
 
@@ -145,9 +145,9 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
       case GrowthPeriodType.oneYear:
         return Range(15, 80);
       case GrowthPeriodType.threeYears:
-        return Range(5, 125);
+        return Range(0, 100);
       case GrowthPeriodType.sixYears:
-        return Range(5, 125);
+        return Range(-20, 125);
       default:
         throw 'This line should not be reached.';
     }
@@ -161,9 +161,9 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
       case GrowthPeriodType.oneYear:
         return Range(1, 14);
       case GrowthPeriodType.threeYears:
-        return Range(6, 30);
+        return Range(1, 21);
       case GrowthPeriodType.sixYears:
-        return Range(6, 30);
+        return Range(1, 30);
       default:
         throw 'This line should not be reached.';
     }
