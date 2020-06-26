@@ -143,9 +143,9 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
   Range get heightRange {
     switch (this) {
       case GrowthPeriodType.oneYear:
-        return Range(15, 80);
+        return Range(15, 85);
       case GrowthPeriodType.threeYears:
-        return Range(0, 100);
+        return Range(0, 105);
       case GrowthPeriodType.sixYears:
         return Range(-20, 125);
       default:
@@ -159,9 +159,9 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
   Range get weightRange {
     switch (this) {
       case GrowthPeriodType.oneYear:
-        return Range(1, 14);
+        return Range(1, 15);
       case GrowthPeriodType.threeYears:
-        return Range(1, 21);
+        return Range(1, 22);
       case GrowthPeriodType.sixYears:
         return Range(1, 30);
       default:

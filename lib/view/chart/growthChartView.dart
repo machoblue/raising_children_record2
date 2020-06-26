@@ -179,10 +179,16 @@ class _GrowthChartFramePainter extends CustomPainter {
     final double spanX = 2;
     for (int i = 0; i < diff - 1; i++) {
       final double y = size.height - margin.bottom - unitHeight * (i + 1);
+
       final heightLabelValue = (periodType.heightRange.min + heightPerOneScale * (i + 1)).toInt();
-      canvas.drawText('$heightLabelValue', labelStyle, TextAlign.end, Rect.fromLTRB(0, y - fontSizeHalf, margin.left - spanX, y + fontSizeHalf));
-      final weightLabelValue = (periodType.weightRange.min + weightPerOneScale * i).toInt();
-      canvas.drawText('$weightLabelValue', labelStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, y - fontSizeHalf, size.width, y + fontSizeHalf));
+      if (heightLabelValue >= 0) {
+        canvas.drawText('$heightLabelValue', labelStyle, TextAlign.end, Rect.fromLTRB(0, y - fontSizeHalf, margin.left - spanX, y + fontSizeHalf));
+      }
+
+      final weightLabelValue = (periodType.weightRange.min + weightPerOneScale * (i + 1)).toInt();
+      if (weightLabelValue >= 0) {
+        canvas.drawText('$weightLabelValue', labelStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, y - fontSizeHalf, size.width, y + fontSizeHalf));
+      }
     }
 
     canvas.drawText('(cm)', unitStyle, TextAlign.end, Rect.fromLTRB(0, margin.top - fontSizeHalf, margin.left - spanX, margin.top + fontSizeHalf));
