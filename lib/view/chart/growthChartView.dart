@@ -100,7 +100,7 @@ class _GrowthChartFramePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    chartSize = Size(size.width - (margin.left + margin.right), margin.top + (size.height - (margin.top + margin.bottom)));
+    chartSize = Size(size.width - (margin.left + margin.right), size.height - (margin.top + margin.bottom));
 
     _drawLegend(canvas, size);
     _drawXAxisAndYAxis(canvas, size);
@@ -249,7 +249,7 @@ class _GrowthStatisticsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    chartSize = Size(size.width - (margin.left + margin.right), margin.top + (size.height - (margin.top + margin.bottom)));
+    chartSize = Size(size.width - (margin.left + margin.right), size.height - (margin.top + margin.bottom));
 
     _drawStatisticsChart(canvas, size, statisticsData.minHeightList, statisticsData.maxHeightList, statisticsData.periodType.months, statisticsData.periodType.heightRange, Colors.yellow.withAlpha(64));
     _drawStatisticsChart(canvas, size, statisticsData.minWeightList, statisticsData.maxWeightList, statisticsData.periodType.months, statisticsData.periodType.weightRange, Colors.orange.withAlpha(64));
