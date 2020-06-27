@@ -94,10 +94,14 @@ class _GrowthChartFramePainter extends CustomPainter {
   final GrowthPeriodType periodType;
   final EdgeInsets margin;
 
+  Size chartSize;
+
   _GrowthChartFramePainter(this.legends, this.periodType, this.margin);
 
   @override
   void paint(Canvas canvas, Size size) {
+    chartSize = Size(size.width - (margin.left + margin.right), margin.top + (size.height - (margin.top + margin.bottom)));
+
     _drawLegend(canvas, size);
     _drawXAxisAndYAxis(canvas, size);
     _drawHorizontalLines(canvas, size);
@@ -154,7 +158,7 @@ class _GrowthChartFramePainter extends CustomPainter {
     final double x0 = margin.left;
     final double x1 = size.width - margin.right;
     final int diff = (periodType.weightRange.max - periodType.weightRange.min).toInt();
-    final double unitHeight = (size.height - (margin.top + margin.bottom)) / diff;
+    final double unitHeight = chartSize.height / diff;
     for (int i = 0; i < diff; i++) {
       final double y = size.height - margin.bottom - unitHeight * (i + 1);
       path.moveTo(x0, y);
@@ -172,13 +176,13 @@ class _GrowthChartFramePainter extends CustomPainter {
 
   void _drawYAxisLabels(Canvas canvas, Size size) {
     final int diff = (periodType.weightRange.max - periodType.weightRange.min).toInt();
-    final double unitHeight = (size.height - (margin.top + margin.bottom)) / diff;
+    final double unitHeight = chartSize.height / diff;
     final double heightPerOneScale = (periodType.heightRange.max - periodType.heightRange.min) / diff;
     final double weightPerOneScale = (periodType.weightRange.max - periodType.weightRange.min) / diff;
     final double fontSizeHalf = 6;
     final double spanX = 2;
     for (int i = 0; i < diff - 1; i++) {
-      final double y = size.height - margin.bottom - unitHeight * (i + 1);
+      final double y = margin.top + chartSize.height - unitHeight * (i + 1);
 
       final heightLabelValue = (periodType.heightRange.min + heightPerOneScale * (i + 1)).toInt();
       if (heightLabelValue >= 0) {
@@ -198,7 +202,7 @@ class _GrowthChartFramePainter extends CustomPainter {
   void _drawVerticalLines(Canvas canvas, Size size) {
     final double y0 = margin.top;
     final double y1 = size.height - margin.bottom;
-    final double unitWidth = (size.width - (margin.left + margin.right)) / (periodType.months / periodType.monthsPerOneScale);
+    final double unitWidth = chartSize.width / (periodType.months / periodType.monthsPerOneScale);
     Path path = Path();
     for (int i = 0; i < (periodType.months / periodType.monthsPerOneScale) - 1; i++) {
       final double x = margin.left + unitWidth * (i + 1);
@@ -217,7 +221,7 @@ class _GrowthChartFramePainter extends CustomPainter {
 
   void _drawXAxisLabels(Canvas canvas, Size size) {
     final int labelCount = periodType.months ~/ periodType.monthsPerXAxisLabel;
-    final double unitWidth = (size.width - (margin.left + margin.right)) / labelCount;
+    final double unitWidth = chartSize.width / labelCount;
     final double spanY = 2;
     final double textRectTop = size.height - margin.bottom + spanY;
     final double textRectBottom = textRectTop + 12;
