@@ -320,30 +320,7 @@ class _SleepChartPainter extends CustomPainter {
     })
         .toList();
 
-    Paint pointPaint = Paint()
-      ..color = data.color
-      ..style = PaintingStyle.fill;
-
-    Path chartPath = Path();
-    chartPath.moveTo(points.first.x, points.first.y);
-
-    canvas.drawCircle(Offset(points.first.x, points.first.y), 3.5, pointPaint);
-
-    if (points.length > 1) {
-      for (int i = 1; i < points.length; i++) {
-        final point = points[i];
-        chartPath.lineTo(point.x, point.y);
-        canvas.drawCircle(Offset(point.x, point.y), 3.5, pointPaint);
-      }
-    }
-
-    Paint chartPaint = Paint()
-      ..color = data.color
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.5;
-
-    canvas.drawPath(chartPath, chartPaint);
+    canvas.drawLines(points, data.color, pointRadius: 2.5, strokeWidth: 1.5);
   }
 
   @override
