@@ -11,8 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
 
-  final _dateFormat = DateFormat.E();
-
   Stream<Baby> babyStream;
   RecordRepository recordRepository;
 
@@ -33,21 +31,19 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
   final _summaryStreamController = StreamController<ExcretionSummary>();
   Stream<ExcretionSummary> get summary => _summaryStreamController.stream;
 
-  final _calendarHeaderStreamController = StreamController<List<String>>();
-  Stream<List<String>> get calendarHeader => _calendarHeaderStreamController.stream;
-
   final _dataStreamController = StreamController<ExcretionChartData>();
   Stream<ExcretionChartData> get data => _dataStreamController.stream;
 
   ExcretionChartViewModel(this.babyStream, this.recordRepository) {
     _monthSubscription = _monthBehaviorSubject.stream.listen((dateTime) {
       final startOfThisMonth = DateTime(dateTime.year, dateTime.month, 1);
+
+      _dataStreamController.sink.add(ExcretionChartData(startOfThisMonth, {}));
+
       final startOfThisWeek = startOfThisMonth.add(Duration(days: - startOfThisMonth.weekday + 1));
       final fromDateTime = startOfThisWeek;
       final toDateTime = fromDateTime.add(Duration(days: 42));
       
-      _calendarHeaderStreamController.sink.add(_createCalendarHeader(fromDateTime));
-
       _dataSubscription?.cancel();
       _dataSubscription = _getData(startOfThisMonth, fromDateTime, toDateTime).listen((data) {
         _dataStreamController.sink.add(data);
@@ -71,61 +67,48 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
       return SharedPreferences.getInstance().then((sharedPreferences) {
         final String familyId = sharedPreferences.getString('familyId');
         return recordRepository.getRecords(familyId, baby.id, recordTypesIn: [RecordType.poop, RecordType.pee], from: from, to: to).then((records) {
-          List<ExcretionDailyData> dailyDataList = _createEmptyDailyDataList(startOfThisMonth, from, to);
+          Map<DateTime, ExcretionDailyData> dailyDataMap = {};
           records.forEach((record) {
-            final int index = record.dateTime.difference(from).inDays;
-            if (!(index >= 0 && index <= 42)) {
-              return;
-            }
+            final recordDate = DateTime(record.dateTime.year, record.dateTime.month, record.dateTime.day);
+            final ExcretionDailyData dailyData = dailyDataMap[recordDate];
+
+            int poopCount = dailyData?.poopCount ?? 0;
+            int diarrheaCount = dailyData?.diarrheaCount ?? 0;
+            int peeCount = dailyData?.peeCount ?? 0;
 
             switch (record.runtimeType) {
               case PeeRecord:
-                dailyDataList[index].peeCount += 1;
+                peeCount += 1;
                 break;
               case PoopRecord:
-                dailyDataList[index].poopCount += 1;
+                poopCount += 1;
                 if ((record as PoopRecord).hardness == Hardness.diarrhea) {
-                  dailyDataList[index].diarrheaCount += 1;
+                  diarrheaCount += 1;
                 }
                 break;
               default:
                 throw 'This line should not be reached.';
             }
+            dailyDataMap[recordDate] = ExcretionDailyData(poopCount, diarrheaCount, peeCount);
           });
-          return ExcretionChartData(dailyDataList);
+          return ExcretionChartData(startOfThisMonth, dailyDataMap);
         });
       });
     });
   }
 
-  List<ExcretionDailyData> _createEmptyDailyDataList(DateTime startOfThisMonth, DateTime from, DateTime to) {
-    List<ExcretionDailyData> dailyDataList = [];
-    DateTime tempDateTime = from;
-    while (!(tempDateTime.isAfter(to))) {
-      dailyDataList.add(ExcretionDailyData(tempDateTime, 0, 0, 0, tempDateTime.month == startOfThisMonth.month));
-      tempDateTime = tempDateTime.add(Duration(days: 1));
-    }
-    return dailyDataList;
-  }
-
-  List<String> _createCalendarHeader(DateTime calendarStartDateTime) {
-    List<String> header = [];
-    DateTime dateTime = calendarStartDateTime;
-    for (int i = 0; i < 7; i++) {
-      header.add(_dateFormat.format(dateTime));
-      dateTime = dateTime.add(Duration(days: 1));
-    }
-    return header;
-  }
-
   ExcretionSummary _summarize(ExcretionChartData data) {
+    final int dataCount = data.dailyDataMap.length;
+    if (dataCount == 0) {
+      return ExcretionSummary(0, 0);
+    }
+
     int poopTotalCount = 0;
     int peeTotalCount = 0;
-    for (ExcretionDailyData dailyData in data.dailyDataList) {
-      poopTotalCount += dailyData.poopCount;
-      peeTotalCount += dailyData.peeCount;
+    for (MapEntry<DateTime, ExcretionDailyData> entry in data.dailyDataMap.entries) {
+      poopTotalCount += entry.value.poopCount;
+      peeTotalCount += entry.value.peeCount;
     }
-    final int dataCount = data.dailyDataList.length;
     return ExcretionSummary(poopTotalCount / dataCount, peeTotalCount / dataCount);
   }
 
@@ -140,7 +123,6 @@ class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
 
     _monthBehaviorSubject.close();
     _summaryStreamController.close();
-    _calendarHeaderStreamController.close();
     _dataStreamController.close();
     _monthIncrementStreamController.close();
     _monthDecrementStreamController.close();
@@ -154,15 +136,14 @@ class ExcretionSummary {
 }
 
 class ExcretionChartData {
-  final List<ExcretionDailyData> dailyDataList;
-  ExcretionChartData(this.dailyDataList);
+  final DateTime month;
+  final Map<DateTime, ExcretionDailyData> dailyDataMap;
+  ExcretionChartData(this.month, this.dailyDataMap);
 }
 
 class ExcretionDailyData {
-  final DateTime dateTime;
   int poopCount;
   int diarrheaCount;
   int peeCount;
-  final bool isMainMonth;
-  ExcretionDailyData(this.dateTime, this.poopCount, this.diarrheaCount, this.peeCount, this.isMainMonth);
+  ExcretionDailyData(this.poopCount, this.diarrheaCount, this.peeCount);
 }

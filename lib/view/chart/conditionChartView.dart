@@ -24,16 +24,16 @@ class _ConditionChartViewState extends BaseState<ConditionChartView, ConditionCh
       padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
       child: Column(
         children: <Widget>[
-          StreamBuilder(
-            stream: viewModel.data,
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Container();
-              }
-              final ConditionChartData data = snapshot.data;
-              final Map<DateTime, ConditionDailyData> dailyDataMap = data.dailyDataMap;
-              return Expanded(
-                child: CalendarLayout(
+          Expanded(
+            child: StreamBuilder(
+              stream: viewModel.data,
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Container();
+                }
+                final ConditionChartData data = snapshot.data;
+                final Map<DateTime, ConditionDailyData> dailyDataMap = data.dailyDataMap;
+                return CalendarLayout(
                   data.month,
                   onPrevPressed: () => viewModel.monthDecrement.add(null),
                   onNextPressed: () => viewModel.monthIncrement.add(null),
@@ -41,10 +41,11 @@ class _ConditionChartViewState extends BaseState<ConditionChartView, ConditionCh
                     final ConditionDailyData dailyData = dailyDataMap[dateTime];
                     return _buildDateCell(dailyData);
                   },
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
+
           Container(height: 8),
           _buildLegend(),
         ],
