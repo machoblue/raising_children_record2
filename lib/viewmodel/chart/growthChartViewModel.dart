@@ -80,7 +80,7 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
           final int yearDiff = record.dateTime.year - from.year;
           final int monthDiff = record.dateTime.month - from.month;
           final int dayDiff = record.dateTime.day - from.day;
-          final double month = yearDiff * 12 + monthDiff + dayDiff * 30.5; // 30.5 ≒ 1month
+          final double month = yearDiff * 12 + monthDiff + dayDiff * (1 / 30.5); // 30.5 ≒ 1month
           switch (record.runtimeType) {
             case HeightRecord:
               heightList.add(GrowthData(month, (record as HeightRecord).height));

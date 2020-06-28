@@ -23,8 +23,8 @@ class _GrowthChartViewState extends BaseState<GrowthChartView, GrowthChartViewMo
   Widget build(BuildContext context) {
     L10n l10n = L10n.of(context);
     final List<ChartLegend> legends = [
-      ChartLegend(Colors.yellow, l10n.heightLabel, l10n.cm),
-      ChartLegend(Colors.orange, l10n.weightLabel, l10n.kg),
+      ChartLegend(Colors.orange, l10n.heightLabel, l10n.cm),
+      ChartLegend(Colors.deepOrange, l10n.weightLabel, l10n.kg),
     ];
     return Column(
       children: <Widget>[
@@ -318,7 +318,7 @@ class _GrowthChartPainter extends CustomPainter {
         );
       }).toList();
 
-      canvas.drawLines(points, Colors.yellow, pointRadius: 3.0);
+      canvas.drawLines(points, Colors.orange, pointRadius: 3.0);
     }
 
     final List<GrowthData> weightDataList = chartData.weightList;
@@ -330,7 +330,7 @@ class _GrowthChartPainter extends CustomPainter {
         );
       }).toList();
 
-      canvas.drawLines(points, Colors.orange, pointRadius: 3.0);
+      canvas.drawLines(points, Colors.deepOrange, pointRadius: 3.0);
     }
   }
 
