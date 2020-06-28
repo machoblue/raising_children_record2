@@ -8,9 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:intl/intl.dart';
-import 'package:raisingchildrenrecord2/shared/utils.dart';
+import 'package:raisingchildrenrecord2/view/shared/utils.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
-import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 
 class BabyEditView extends StatefulWidget {

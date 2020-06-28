@@ -7,9 +7,9 @@ import 'package:flutter/widgets.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
-import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/growthChartViewModel.dart';
-import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
+import 'package:raisingchildrenrecord2/view/shared/canvasExtension.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/growthStatisticsScheme.dart';
 
 class GrowthChartView extends StatefulWidget {
@@ -299,10 +299,39 @@ class _GrowthChartPainter extends CustomPainter {
   final GrowthChartData chartData;
   final EdgeInsets margin;
 
+  Size chartSize;
+
   _GrowthChartPainter(this.chartData, this.margin);
 
   @override
   void paint(Canvas canvas, Size size) {
+    chartSize = Size(size.width - (margin.left + margin.right), size.height - (margin.top + margin.bottom));
+
+    final GrowthPeriodType periodType = chartData.periodType;
+
+    final List<GrowthData> heightDataList = chartData.heightList;
+    if (heightDataList != null && heightDataList.length > 0) {
+      final List<Point<double>> points = heightDataList.map((data) {
+        return Point(
+          margin.left + chartSize.width * (data.month / periodType.months),
+          margin.top + chartSize.height - chartSize.height * ((data.value - periodType.heightRange.min) / (periodType.heightRange.max - periodType.heightRange.min)),
+        );
+      }).toList();
+
+      canvas.drawLines(points, Colors.yellow, pointRadius: 3.0);
+    }
+
+    final List<GrowthData> weightDataList = chartData.weightList;
+    if (weightDataList != null && weightDataList.length > 0) {
+      final List<Point<double>> points = weightDataList.map((data) {
+        return Point(
+          margin.left + chartSize.width * (data.month / periodType.months),
+          margin.top + chartSize.width - chartSize.width * ((data.value - periodType.weightRange.min) / (periodType.weightRange.max - periodType.weightRange.min)),
+        );
+      }).toList();
+
+      canvas.drawLines(points, Colors.orange, pointRadius: 3.0);
+    }
   }
 
   @override

@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyEditView.dart';
-import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyEditViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 

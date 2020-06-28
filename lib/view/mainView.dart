@@ -16,7 +16,7 @@ import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
 import 'package:raisingchildrenrecord2/view/chart/sleepChartView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
 import 'package:raisingchildrenrecord2/view/mainViewTutorial.dart';
-import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/circleImage.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/conditionChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/excretionChartViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/growthChartViewModel.dart';

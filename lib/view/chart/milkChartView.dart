@@ -7,10 +7,10 @@ import 'package:raisingchildrenrecord2/model/chartLegend.dart';
 import 'package:raisingchildrenrecord2/model/period.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
-import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
-import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/milkChartViewModel.dart';
-import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
+import 'package:raisingchildrenrecord2/view/shared/canvasExtension.dart';
 
 class MilkChartView extends StatefulWidget {
   @override

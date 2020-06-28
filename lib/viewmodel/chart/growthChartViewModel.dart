@@ -32,6 +32,7 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<GrowthChartData> get growthChartData => _growthChartDataStreamController.stream;
 
   GrowthChartViewModel(this.babyStream, this.recordRepository) {
+    print("### GrowthChartViewMOdel.init");
     _babyAndCurrentIndexSubscription = CombineLatestStream.combine2(
       babyStream,
       _currentIndexBehaviorSubject.stream,
@@ -47,6 +48,9 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
       _statisticsDataStreamController.sink.add(_createStatisticsData(baby.sex, period));
 
       _createChartData(baby, period).then((chartData) {
+        for (var data in chartData.heightList) {
+          print("### $data");
+        }
         _growthChartDataStreamController.sink.add(chartData);
       })
       .catchError(handleError);

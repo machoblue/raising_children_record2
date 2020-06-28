@@ -9,10 +9,10 @@ import 'package:raisingchildrenrecord2/model/period.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/chart/milkChartView.dart';
-import 'package:raisingchildrenrecord2/view/widget/circleImage.dart';
-import 'package:raisingchildrenrecord2/view/widget/simpleSegmentedControl.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/circleImage.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/simpleSegmentedControl.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/sleepChartViewModel.dart';
-import 'package:raisingchildrenrecord2/view/chart/canvasExtension.dart';
+import 'package:raisingchildrenrecord2/view/shared/canvasExtension.dart';
 
 class SleepChartView extends StatefulWidget {
   @override

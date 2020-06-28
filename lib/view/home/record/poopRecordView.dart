@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/home/record/baseRecordView.dart';
-import 'package:raisingchildrenrecord2/view/widget/simpleDropdownButton.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/simpleDropdownButton.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/record/poopMilkRecordViewModel.dart';
 
 class PoopRecordView extends BaseRecordView<PoopRecordViewModel> {

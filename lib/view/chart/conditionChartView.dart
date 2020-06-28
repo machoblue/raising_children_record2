@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
-import 'package:raisingchildrenrecord2/view/widget/calendarLayout.dart';
+import 'package:raisingchildrenrecord2/view/shared/widget/calendarLayout.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/conditionChartViewModel.dart';
 
 class ConditionChartView extends StatefulWidget {

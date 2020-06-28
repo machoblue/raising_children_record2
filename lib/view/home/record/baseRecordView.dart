@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
-import 'package:raisingchildrenrecord2/shared/utils.dart';
+import 'package:raisingchildrenrecord2/view/shared/utils.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/record/baseRecordViewModel.dart';
 import 'package:intl/intl.dart';
