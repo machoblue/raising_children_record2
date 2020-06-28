@@ -175,4 +175,7 @@ class L10n {
   String get growthLabelOneYear => Intl.message('To 1 Year Old', name: 'growthLabelOneYear');
   String get growthLabelThreeYears => Intl.message('To 3 Years Old', name: 'growthLabelThreeYears');
   String get growthLabelSixYears => Intl.message('To 6 Years Old', name: 'growthLabelSixYears');
+
+  String get monthsOld => Intl.message('mos.', name: 'monthsOld');
+  String get yearsOld => Intl.message('yrs.', name: 'yearsOld');
 }

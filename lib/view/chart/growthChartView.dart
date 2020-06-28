@@ -195,8 +195,8 @@ class _GrowthChartFramePainter extends CustomPainter {
       }
     }
 
-    canvas.drawText('(cm)', unitStyle, TextAlign.end, Rect.fromLTRB(0, margin.top - fontSizeHalf, margin.left - spanX, margin.top + fontSizeHalf));
-    canvas.drawText('(kg)', unitStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, margin.top - fontSizeHalf, size.width, margin.top + fontSizeHalf));
+    canvas.drawText('(${legends[0].unit})', unitStyle, TextAlign.end, Rect.fromLTRB(0, margin.top - fontSizeHalf, margin.left - spanX, margin.top + fontSizeHalf));
+    canvas.drawText('(${legends[1].unit})', unitStyle, TextAlign.start, Rect.fromLTRB(size.width - margin.right + spanX, margin.top - fontSizeHalf, size.width, margin.top + fontSizeHalf));
   }
 
   void _drawVerticalLines(Canvas canvas, Size size) {

@@ -67,6 +67,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "female" : MessageLookupByLibrary.simpleMessage("女の子"),
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("ストレージアクセス中にエラーが発生しました。しばらくしてから、もう一度お試しください。"),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("招待コードを生成中です..."),
+    "growthLabelOneYear" : MessageLookupByLibrary.simpleMessage("1歳まで"),
+    "growthLabelSixYears" : MessageLookupByLibrary.simpleMessage("6歳まで"),
+    "growthLabelThreeYears" : MessageLookupByLibrary.simpleMessage("3歳まで"),
     "growthTab" : MessageLookupByLibrary.simpleMessage("成長"),
     "hardnessDiarrhea" : MessageLookupByLibrary.simpleMessage("げり"),
     "hardnessHard" : MessageLookupByLibrary.simpleMessage("かたい"),
@@ -93,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "minuteUnit" : m0,
     "minutes" : MessageLookupByLibrary.simpleMessage("分"),
     "ml" : MessageLookupByLibrary.simpleMessage("ml"),
+    "monthsOld" : MessageLookupByLibrary.simpleMessage("ヶ月"),
     "mothersMilkLabel" : MessageLookupByLibrary.simpleMessage("母乳"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("名前"),
     "no" : MessageLookupByLibrary.simpleMessage("いいえ、消去しません"),
@@ -129,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("スキップ"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("おうと"),
     "weightLabel" : MessageLookupByLibrary.simpleMessage("体重"),
+    "yearsOld" : MessageLookupByLibrary.simpleMessage("歳"),
     "yes" : MessageLookupByLibrary.simpleMessage("はい、消去します")
   };
 }

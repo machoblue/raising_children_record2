@@ -537,5 +537,30 @@
   "@none": {
     "type": "text",
     "placeholders": {}
+  },
+  "growthLabelOneYear": "To 1 Year Old",
+  "@growthLabelOneYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelThreeYears": "To 3 Years Old",
+  "@growthLabelThreeYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelSixYears": "To 6 Years Old",
+  "@growthLabelSixYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthsOld": "mos.",
+  "@monthsOld": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yearsOld": "yrs.",
+  "@yearsOld": {
+    "type": "text",
+    "placeholders": {}
   }
 }

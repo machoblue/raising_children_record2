@@ -537,5 +537,30 @@
   "@none": {
     "type": "text",
     "placeholders": {}
+  },
+  "growthLabelOneYear": "1歳まで",
+  "@growthLabelOneYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelThreeYears": "3歳まで",
+  "@growthLabelThreeYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelSixYears": "6歳まで",
+  "@growthLabelSixYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthsOld": "ヶ月",
+  "@monthsOld": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yearsOld": "歳",
+  "@yearsOld": {
+    "type": "text",
+    "placeholders": {}
   }
 }

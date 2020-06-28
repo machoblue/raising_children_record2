@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-17T22:33:44.928944",
+  "@@last_modified": "2020-06-28T23:25:38.285174",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -535,6 +535,31 @@
   },
   "none": "None",
   "@none": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelOneYear": "To 1 Year Old",
+  "@growthLabelOneYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelThreeYears": "To 3 Years Old",
+  "@growthLabelThreeYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "growthLabelSixYears": "To 6 Years Old",
+  "@growthLabelSixYears": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthsOld": "mos.",
+  "@monthsOld": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yearsOld": "yrs.",
+  "@yearsOld": {
     "type": "text",
     "placeholders": {}
   }

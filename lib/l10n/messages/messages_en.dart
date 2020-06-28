@@ -67,6 +67,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "female" : MessageLookupByLibrary.simpleMessage("Female"),
     "fileAccessError" : MessageLookupByLibrary.simpleMessage("Error has occured on accessing files. Please retry later."),
     "generatingInvitationCode" : MessageLookupByLibrary.simpleMessage("Generating invitation code..."),
+    "growthLabelOneYear" : MessageLookupByLibrary.simpleMessage("To 1 Year Old"),
+    "growthLabelSixYears" : MessageLookupByLibrary.simpleMessage("To 6 Years Old"),
+    "growthLabelThreeYears" : MessageLookupByLibrary.simpleMessage("To 3 Years Old"),
     "growthTab" : MessageLookupByLibrary.simpleMessage("Growth"),
     "hardnessDiarrhea" : MessageLookupByLibrary.simpleMessage("Diarrhea"),
     "hardnessHard" : MessageLookupByLibrary.simpleMessage("Hard"),
@@ -93,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "minuteUnit" : m0,
     "minutes" : MessageLookupByLibrary.simpleMessage("minutes"),
     "ml" : MessageLookupByLibrary.simpleMessage("ml"),
+    "monthsOld" : MessageLookupByLibrary.simpleMessage("mos."),
     "mothersMilkLabel" : MessageLookupByLibrary.simpleMessage("Mothers Milk"),
     "nameLabel" : MessageLookupByLibrary.simpleMessage("Name"),
     "no" : MessageLookupByLibrary.simpleMessage("No."),
@@ -129,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tutorialSkip" : MessageLookupByLibrary.simpleMessage("Skip"),
     "vomitLabel" : MessageLookupByLibrary.simpleMessage("Vomit"),
     "weightLabel" : MessageLookupByLibrary.simpleMessage("Weight"),
+    "yearsOld" : MessageLookupByLibrary.simpleMessage("yrs."),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes.")
   };
 }

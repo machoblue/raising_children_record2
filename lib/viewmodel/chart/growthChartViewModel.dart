@@ -10,6 +10,7 @@ import 'package:raisingchildrenrecord2/viewmodel/chart/growthStatisticsScheme.da
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
+import 'package:intl/intl.dart';
 
 class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
 
@@ -32,7 +33,6 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<GrowthChartData> get growthChartData => _growthChartDataStreamController.stream;
 
   GrowthChartViewModel(this.babyStream, this.recordRepository) {
-    print("### GrowthChartViewMOdel.init");
     _babyAndCurrentIndexSubscription = CombineLatestStream.combine2(
       babyStream,
       _currentIndexBehaviorSubject.stream,
@@ -41,16 +41,12 @@ class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
     .listen((tuple) {
       final Baby baby = tuple.item1;
       final GrowthPeriodType period = GrowthPeriodTypeExtension.fromIndex(tuple.item2);
-      print("### baby: ${baby.name}, period: ${period.months}");
 
       _periodBehaviorSubject.add(period);
 
       _statisticsDataStreamController.sink.add(_createStatisticsData(baby.sex, period));
 
       _createChartData(baby, period).then((chartData) {
-        for (var data in chartData.heightList) {
-          print("### $data");
-        }
         _growthChartDataStreamController.sink.add(chartData);
       })
       .catchError(handleError);
@@ -202,10 +198,10 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
   String get xAxisLabelUnit {
     switch (this) {
       case GrowthPeriodType.oneYear:
-        return 'か月';
+        return Intl.message('months', name: 'monthsOld');
       case GrowthPeriodType.threeYears:
       case GrowthPeriodType.sixYears:
-        return '歳';
+        return Intl.message('years', name: 'yearsOld');
       default:
         throw 'This line should not be reached.';
     }
