@@ -207,6 +207,32 @@ extension GrowthPeriodTypeExtension on GrowthPeriodType {
     }
   }
 
+  double get strokeWidth {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return 2.5;
+      case GrowthPeriodType.threeYears:
+        return 1.5;
+      case GrowthPeriodType.sixYears:
+        return 1;
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
+  double get pointCircleRadius {
+    switch (this) {
+      case GrowthPeriodType.oneYear:
+        return 3.5;
+      case GrowthPeriodType.threeYears:
+        return 2;
+      case GrowthPeriodType.sixYears:
+        return 1.5;
+      default:
+        throw 'This line should not be reached.';
+    }
+  }
+
   static GrowthPeriodType fromIndex(int index) {
     switch (index) {
       case 0:

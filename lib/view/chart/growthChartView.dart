@@ -318,7 +318,7 @@ class _GrowthChartPainter extends CustomPainter {
         );
       }).toList();
 
-      canvas.drawLines(points, Colors.orange, pointRadius: 3.0);
+      canvas.drawLines(points, Colors.orange, pointRadius: periodType.pointCircleRadius, strokeWidth: periodType.strokeWidth);
     }
 
     final List<GrowthData> weightDataList = chartData.weightList;
@@ -330,7 +330,7 @@ class _GrowthChartPainter extends CustomPainter {
         );
       }).toList();
 
-      canvas.drawLines(points, Colors.deepOrange, pointRadius: 3.0);
+      canvas.drawLines(points, Colors.deepOrange, pointRadius: periodType.pointCircleRadius, strokeWidth: periodType.strokeWidth);
     }
   }
 
