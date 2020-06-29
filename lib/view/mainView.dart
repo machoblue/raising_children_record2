@@ -82,7 +82,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         final selectedIndex = snapshot.data ?? 0;
         return Scaffold(
           appBar: AppBar(
-            leading: selectedIndex == 0 ? _babyButton() : null,
+            leading: selectedIndex != 2 ? _babyButton() : null,
             title: Text(appBarTitles[selectedIndex]),
             bottom: selectedIndex == 1 ? _buildTabBar() : null,
           ),
