@@ -505,8 +505,9 @@ class BodyTemperatureRecord extends Record {
     return superMap;
   }
 
+  // Workaround to 39.90000000001
   @override
-  String get mainDescription => "${this.temperature} ${Intl.message('℃', name: 'degreesCelsius')}";
+  String get mainDescription => "${(this.temperature * 10).round() / 10} ${Intl.message('℃', name: 'degreesCelsius')}";
 
   @override
   String get subDescription => note;
@@ -532,8 +533,9 @@ class HeightRecord extends Record {
     return superMap;
   }
 
+  // Workaround to 39.90000000001
   @override
-  String get mainDescription => "${this.height} ${Intl.message('cm', name: 'cm')}";
+  String get mainDescription => "${(this.height * 10).round() / 10} ${Intl.message('cm', name: 'cm')}";
 
   @override
   String get subDescription => note;
@@ -559,8 +561,9 @@ class WeightRecord extends Record {
     return superMap;
   }
 
+  // Workaround to 39.90000000001
   @override
-  String get mainDescription => "${this.weight} ${Intl.message('kg', name: 'kg')}";
+  String get mainDescription => "${((this.weight * 10).round() / 10)} ${Intl.message('kg', name: 'kg')}";
 
   @override
   String get subDescription => note;
