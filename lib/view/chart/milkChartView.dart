@@ -38,80 +38,75 @@ class _MilkChartViewState extends BaseState<MilkChartView, MilkChartViewModel> {
             );
           },
         ),
-        StreamBuilder(
-          stream: viewModel.milkChartSummary,
-          builder: (context, snapshot) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(32, 8, 8, 0),
-                  child: Row(
-                    children: <Widget>[
-                      CircleImage(
-                        AssetImage(RecordType.milk.assetName),
-                        width: 24,
-                        height: 24,
-                      ),
-                      Container(height: 24, width: 4),
-                      Text(
-                        '${RecordType.milk.localizedName}: ',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Container(height: 24, width: 8),
-                      Expanded(
-                          child: StreamBuilder(
-                              stream: viewModel.milkChartSummary,
-                              builder: (context, snapshot) {
-                                return snapshot.hasData
-                                    ? CustomPaint(
-                                  painter: MilkChartSummaryTextPainter(l10n.ml, snapshot.data.milkSum.toString(), snapshot.data.milkAverage.toString()),
-                                )
-                                    : Container();
-                              }
-                          )
-                      ),
-                    ],
+        Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(32, 8, 8, 0),
+              child: Row(
+                children: <Widget>[
+                  CircleImage(
+                    AssetImage(RecordType.milk.assetName),
+                    width: 24,
+                    height: 24,
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(32, 16, 8, 0),
-                  child: Row(
-                    children: <Widget>[
-                      CircleImage(
-                        AssetImage(RecordType.mothersMilk.assetName),
-                        width: 24,
-                        height: 24,
-                      ),
-                      Container(height: 24, width: 4),
-                      Text(
-                        '${RecordType.mothersMilk.localizedName}: ',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Container(height: 24, width: 8),
-                      Expanded(
-                        child: StreamBuilder(
+                  Container(height: 24, width: 4),
+                  Text(
+                    '${RecordType.milk.localizedName}: ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Container(height: 24, width: 8),
+                  Expanded(
+                      child: StreamBuilder(
                           stream: viewModel.milkChartSummary,
                           builder: (context, snapshot) {
                             return snapshot.hasData
-                              ? CustomPaint(
-                                painter: MilkChartSummaryTextPainter(l10n.hours, _numberFormat.format(snapshot.data.mothersMilkSum), _numberFormat.format(snapshot.data.mothersMilkAverage)),
-                              )
-                              : Container();
+                                ? CustomPaint(
+                              painter: MilkChartSummaryTextPainter(l10n.ml, snapshot.data.milkSum.toString(), snapshot.data.milkAverage.toString()),
+                            )
+                                : Container();
                           }
-                        )
-                      ),
-                    ],
+                      )
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(32, 16, 8, 0),
+              child: Row(
+                children: <Widget>[
+                  CircleImage(
+                    AssetImage(RecordType.mothersMilk.assetName),
+                    width: 24,
+                    height: 24,
+                  ),
+                  Container(height: 24, width: 4),
+                  Text(
+                    '${RecordType.mothersMilk.localizedName}: ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Container(height: 24, width: 8),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream: viewModel.milkChartSummary,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                          ? CustomPaint(
+                            painter: MilkChartSummaryTextPainter(l10n.hours, _numberFormat.format(snapshot.data.mothersMilkSum), _numberFormat.format(snapshot.data.mothersMilkAverage)),
+                          )
+                          : Container();
+                      }
+                    )
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Container(
