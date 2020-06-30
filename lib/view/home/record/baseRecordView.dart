@@ -154,13 +154,29 @@ class _BaseRecordViewState<VM extends BaseRecordViewModel> extends BaseState<Bas
             Container(
               height: 24,
             ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: l10n.recordLabelNote,
-              ),
-              onChanged: (text) => viewModel.onNoteChanged.add(text),
-              controller: _noteController,
+            StreamBuilder(
+              stream: viewModel.note,
+              builder: (context, snapshot) {
+                return TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: l10n.recordLabelNote,
+                    suffixIcon: snapshot.hasData && ((snapshot.data as String)?.isNotEmpty ?? false)
+                      ? IconButton(
+                        onPressed: () {
+                          Future.delayed(Duration(milliseconds: 50)).then((_) {
+                            _noteController.clear();
+                          });
+                          viewModel.onNoteChanged.add('');
+                        },
+                        icon: Icon(Icons.clear),
+                      )
+                      : null,
+                  ),
+                  onChanged: (text) => viewModel.onNoteChanged.add(text),
+                  controller: _noteController,
+                );
+              },
             ),
             Container(
               height: 24,
