@@ -16,7 +16,7 @@ class MothersMilkRecordViewModel extends BaseRecordViewModel<MothersMilkRecord> 
   final StreamController<int> _onRightMinutesSelectedStreamController = StreamController<int>();
   StreamSink<int> get onRightMinutesSelected => _onRightMinutesSelectedStreamController.sink;
 
-  MothersMilkRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository): super(record, user, baby, recordRepository) {
+  MothersMilkRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository, { bool isNew = false }): super(record, user, baby, recordRepository, isNew: isNew) {
 
     _onLeftMinutesSelectedStreamController.stream.listen((leftMinutes) {
       MothersMilkRecord record = recordBehaviorSubject.value;

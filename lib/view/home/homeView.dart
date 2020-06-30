@@ -186,7 +186,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       case RecordType.mothersMilk:
         MothersMilkRecord record = MothersMilkRecord.newInstance(DateTime.now(), null, user);
         return Provider<MothersMilkRecordViewModel>(
-          create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository(), isNew: true),
           child: MothersMilkRecordView(
             isNew: true,
             onComplete: widget.onComplete,

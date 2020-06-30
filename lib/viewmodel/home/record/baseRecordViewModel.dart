@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implements ViewModel {
   BehaviorSubject<R> recordBehaviorSubject;
@@ -33,8 +34,14 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
   final StreamController<void> _onDeleteButtonTappedStreamController = StreamController<void>();
   StreamSink<void> get onDeleteButtonTapped => _onDeleteButtonTappedStreamController.sink;
 
-  BaseRecordViewModel(record, this.user, this.baby, this.recordRepository) {
+  BaseRecordViewModel(R record, this.user, this.baby, this.recordRepository, { bool isNew = false }) {
     recordBehaviorSubject = BehaviorSubject.seeded(record);
+
+    if (isNew) {
+      _applyDefaultValues(baby.id, record).then((record) {
+        recordBehaviorSubject.add(record);
+      });
+    }
 
     _onDateTimeSelectedStreamController.stream.listen((date) {
       Record record = recordBehaviorSubject.value;
@@ -68,6 +75,8 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
       .save(user.familyId, baby.id, record)
       .catchError(handleError);
 
+    _saveDefaultValues(baby.id, record);
+
     _onSaveCompleteStreamController.sink.add(null);
   }
 
@@ -86,5 +95,33 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
     _onNoteChangedStreamController.close();
     _onSaveCompleteStreamController.close();
     _onDeleteButtonTappedStreamController.close();
+  }
+
+  void _saveDefaultValues(String babyId, Record record) {
+    // record_default_${baby.id}_${recordType.string}_${fieldName}
+    SharedPreferences.getInstance().then((sharedPreference) {
+      switch (record.runtimeType) {
+        case MothersMilkRecord:
+          final mothersMilkRecord = record as MothersMilkRecord;
+          sharedPreference.setInt('record_default_${babyId}_${RecordType.mothersMilk.string}_leftMilliseconds', mothersMilkRecord.leftMilliseconds);
+          sharedPreference.setInt('record_default_${babyId}_${RecordType.mothersMilk.string}_rightMilliseconds', mothersMilkRecord.rightMilliseconds);
+      }
+    });
+  }
+
+  Future<R> _applyDefaultValues(String babyId, R record) {
+    return SharedPreferences.getInstance().then((sharedPreference) {
+      switch (record.runtimeType) {
+        case MothersMilkRecord:
+          MothersMilkRecord mothersMilkRecord = record as MothersMilkRecord;
+          mothersMilkRecord.leftMilliseconds = sharedPreference.getInt('record_default_${babyId}_${RecordType.mothersMilk.string}_leftMilliseconds');
+          mothersMilkRecord.rightMilliseconds = sharedPreference.getInt('record_default_${babyId}_${RecordType.mothersMilk.string}_rightMilliseconds');
+          break;
+        default:
+          break; // do nothing
+      }
+
+      return record;
+    });
   }
 }
