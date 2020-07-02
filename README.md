@@ -5,6 +5,11 @@
 ### Firebase Configuration
 - Download google-services.json(for Android) and GoogleService-Info.plist(for iOS), and put these files in project respectively.
 
+|Platform|Configuration File|
+|-|-|
+|iOS|ios/Runner/GoogleService-Info.plist|
+|Android|android/app/google-services.json|
+
 ### Add Internationalized Messages
 
 Add a message to `l10n.dart` like following.
