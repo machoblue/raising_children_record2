@@ -159,7 +159,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         return Provider<HomeViewModel>(
           create: (_) => HomeViewModel(viewModel.userBehaviorSubject, viewModel.babyBehaviorSubject),
           child: HomeView(
-            onComplete: showTutorial,
+            onCreateRecordComplete: showTutorial,
           ),
         );
       }

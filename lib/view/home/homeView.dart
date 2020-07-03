@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
@@ -25,12 +26,13 @@ import 'package:raisingchildrenrecord2/viewmodel/home/record/mothersMilkRecordVi
 import 'package:raisingchildrenrecord2/viewmodel/home/record/plainRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/record/poopMilkRecordViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/record/weightRecordViewModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
 
-  final void Function() onComplete;
+  final void Function() onCreateRecordComplete;
 
-  HomeView({Key key, this.onComplete}): super(key: key);
+  HomeView({Key key, this.onCreateRecordComplete}): super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomeViewState();
@@ -174,7 +176,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => MilkRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: MilkRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       case RecordType.snack:
@@ -189,7 +191,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => MothersMilkRecordViewModel(record, user, baby, FirestoreRecordRepository(), isNew: true),
           child: MothersMilkRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       case RecordType.vomit:
@@ -222,7 +224,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => PoopRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: PoopRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       case RecordType.bodyTemperature:
@@ -231,7 +233,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => BodyTemperatureRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: BodyTemperatureRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       case RecordType.height:
@@ -240,7 +242,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => HeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: HeightRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       case RecordType.weight:
@@ -249,7 +251,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           create: (_) => WeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
           child: WeightRecordView(
             isNew: true,
-            onComplete: widget.onComplete,
+            onComplete: _onCreateRecordComplete,
           ),
         );
       default:
@@ -262,9 +264,31 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       create: (_) => PlainRecordViewModel(record, user, baby, FirestoreRecordRepository()),
       child: PlainRecordView(
         isNew: true,
-        onComplete: widget.onComplete,
+        onComplete: _onCreateRecordComplete,
       ),
     );
+  }
+
+  void _onCreateRecordComplete() {
+    widget.onCreateRecordComplete();
+    _requestReviewIfNeeded();
+  }
+
+  void _requestReviewIfNeeded() {
+    SharedPreferences.getInstance().then((sharedPreferences) {
+      final bool reviewRequestComplete = sharedPreferences.getBool('review_request_complete') ?? false;
+      if (reviewRequestComplete) {
+        return;
+      }
+
+      final int count = (sharedPreferences.getInt('record_count') ?? 0) + 1;
+      sharedPreferences.setInt('record_count', count);
+      if (count > 99) {
+        AppReview.requestReview.then((value) {
+          sharedPreferences.setBool('review_request_complete', true);
+        });
+      }
+    });
   }
 }
 
