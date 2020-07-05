@@ -178,4 +178,9 @@ class L10n {
 
   String get monthsOld => Intl.message('mos.', name: 'monthsOld');
   String get yearsOld => Intl.message('yrs.', name: 'yearsOld');
+
+  String get requestReviewDialogTitle => Intl.message('Please rate this app.', name: 'requestReviewDialogTitle');
+  String get requestReviewDialogContent => Intl.message('Would you rate this app?', name: 'requestReviewDialogTitle');
+  String get requestReviewDialogNo => Intl.message('No.', name: 'requestReviewDialogNo');
+  String get requestReviewDialogOK => Intl.message('OK', name: 'requestReviewDialogOK');
 }

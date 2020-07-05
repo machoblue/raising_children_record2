@@ -3,6 +3,7 @@ import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/recordRepository.dart';
+import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -16,6 +17,7 @@ import 'package:raisingchildrenrecord2/view/home/record/plainRecordView.dart';
 import 'package:raisingchildrenrecord2/view/home/record/milkRecordView.dart';
 import 'package:raisingchildrenrecord2/view/home/record/poopRecordView.dart';
 import 'package:raisingchildrenrecord2/view/home/record/weightRecordView.dart';
+import 'package:raisingchildrenrecord2/view/shared/utils.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/homePageViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/home/homeViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
@@ -284,9 +286,22 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       final int count = (sharedPreferences.getInt('record_count') ?? 0) + 1;
       sharedPreferences.setInt('record_count', count);
       if (count > 99) {
-        AppReview.requestReview.then((value) {
-          sharedPreferences.setBool('review_request_complete', true);
-        });
+        L10n l10n = L10n.of(context);
+        showSimpleDialog(
+          context,
+          title: l10n.requestReviewDialogTitle,
+          content: l10n.requestReviewDialogContent,
+          leftButtonTitle: l10n.requestReviewDialogNo,
+          onLeftButtonPressed: () {
+            sharedPreferences.setBool('review_request_complete', true);
+          },
+          rightButtonTitle: l10n.requestReviewDialogOK,
+          onRightButtonPressed: () {
+            AppReview.requestReview.then((value) {
+              sharedPreferences.setBool('review_request_complete', true);
+            });
+          },
+        );
       }
     });
   }
