@@ -31,3 +31,33 @@ Future<DateTime> onDateTimeButtonPressed(BuildContext context, DateTime currentD
   DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
   return selectedDateTime;
 }
+
+
+Future<void> showSimpleDialog(BuildContext context, {
+  String title,
+  String content,
+  String leftButtonTitle,
+  void Function() onLeftButtonPressed,
+  String rightButtonTitle,
+  void Function() onRightButtonPressed, }) {
+
+  return showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(leftButtonTitle),
+            onPressed: onLeftButtonPressed,
+          ),
+          FlatButton(
+            child: Text(rightButtonTitle),
+            onPressed: onRightButtonPressed,
+          ),
+        ],
+      );
+    }
+  );
+}
