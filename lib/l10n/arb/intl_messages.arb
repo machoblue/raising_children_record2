@@ -1,6 +1,6 @@
 {
   "@@locale": "messages",
-  "@@last_modified": "2020-06-28T23:25:38.285174",
+  "@@last_modified": "2020-07-06T23:20:31.496095",
   "loginTitle": "Login",
   "@loginTitle": {
     "type": "text",
@@ -560,6 +560,26 @@
   },
   "yearsOld": "yrs.",
   "@yearsOld": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogTitle": "Please rate this app.",
+  "@requestReviewDialogTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogContent": "Would you rate this app?",
+  "@requestReviewDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogNo": "No, Thank you.",
+  "@requestReviewDialogNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogOK": "OK",
+  "@requestReviewDialogOK": {
     "type": "text",
     "placeholders": {}
   }

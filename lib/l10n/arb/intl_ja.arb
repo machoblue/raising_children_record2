@@ -562,5 +562,25 @@
   "@yearsOld": {
     "type": "text",
     "placeholders": {}
+  },
+  "requestReviewDialogTitle": "アプリの評価のお願い",
+  "@requestReviewDialogTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogContent": "よろしければ、アプリを評価していただけませんか？",
+  "@requestReviewDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogNo": "いいえ",
+  "@requestReviewDialogNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogOK": "はい、評価します",
+  "@requestReviewDialogOK": {
+    "type": "text",
+    "placeholders": {}
   }
 }

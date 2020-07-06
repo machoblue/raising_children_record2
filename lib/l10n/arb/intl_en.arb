@@ -562,5 +562,25 @@
   "@yearsOld": {
     "type": "text",
     "placeholders": {}
+  },
+  "requestReviewDialogTitle": "Please rate this app.",
+  "@requestReviewDialogTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogContent": "Would you rate this app?",
+  "@requestReviewDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogNo": "No, Thank you.",
+  "@requestReviewDialogNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestReviewDialogOK": "OK",
+  "@requestReviewDialogOK": {
+    "type": "text",
+    "placeholders": {}
   }
 }
