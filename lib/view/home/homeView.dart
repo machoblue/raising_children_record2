@@ -294,11 +294,13 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           leftButtonTitle: l10n.requestReviewDialogNo,
           onLeftButtonPressed: () {
             sharedPreferences.setBool('review_request_complete', true);
+            Navigator.pop(context);
           },
           rightButtonTitle: l10n.requestReviewDialogOK,
           onRightButtonPressed: () {
             AppReview.requestReview.then((value) {
               sharedPreferences.setBool('review_request_complete', true);
+              Navigator.pop(context);
             });
           },
         );
