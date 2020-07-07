@@ -12,7 +12,7 @@ class MilkRecordViewModel extends BaseRecordViewModel<MilkRecord> {
   final StreamController<int> _onAmountSelectedStreamController = StreamController<int>();
   StreamSink<int> get onAmountSelected => _onAmountSelectedStreamController.sink;
 
-  MilkRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository): super(record, user, baby, recordRepository) {
+  MilkRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository, { bool isNew = false }): super(record, user, baby, recordRepository, isNew: isNew) {
 
     _onAmountSelectedStreamController.stream.listen((amount) {
       MilkRecord record = recordBehaviorSubject.value;

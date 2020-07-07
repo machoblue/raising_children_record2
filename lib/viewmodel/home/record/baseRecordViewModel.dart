@@ -105,6 +105,13 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
           final mothersMilkRecord = record as MothersMilkRecord;
           sharedPreference.setInt('record_default_${babyId}_${RecordType.mothersMilk.string}_leftMilliseconds', mothersMilkRecord.leftMilliseconds);
           sharedPreference.setInt('record_default_${babyId}_${RecordType.mothersMilk.string}_rightMilliseconds', mothersMilkRecord.rightMilliseconds);
+          break;
+        case MilkRecord:
+          final milkRecord = record as MilkRecord;
+          sharedPreference.setInt('record_default_${babyId}_${RecordType.milk.string}_amount', milkRecord.amount);
+          break;
+        default:
+          break; // do nothing
       }
     });
   }
@@ -116,6 +123,10 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
           MothersMilkRecord mothersMilkRecord = record as MothersMilkRecord;
           mothersMilkRecord.leftMilliseconds = sharedPreference.getInt('record_default_${babyId}_${RecordType.mothersMilk.string}_leftMilliseconds');
           mothersMilkRecord.rightMilliseconds = sharedPreference.getInt('record_default_${babyId}_${RecordType.mothersMilk.string}_rightMilliseconds');
+          break;
+        case MilkRecord:
+          MilkRecord milkRecord = record as MilkRecord;
+          milkRecord.amount = sharedPreference.getInt('record_default_${babyId}_${RecordType.milk.string}_amount');
           break;
         default:
           break; // do nothing
