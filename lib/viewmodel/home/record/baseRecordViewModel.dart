@@ -99,6 +99,7 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
 
   void _saveDefaultValues(String babyId, Record record) {
     // record_default_${baby.id}_${recordType.string}_${fieldName}
+    print("### _saveDefaultValues");
     SharedPreferences.getInstance().then((sharedPreference) {
       switch (record.runtimeType) {
         case MothersMilkRecord:
@@ -109,6 +110,11 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
         case MilkRecord:
           final milkRecord = record as MilkRecord;
           sharedPreference.setInt('record_default_${babyId}_${RecordType.milk.string}_amount', milkRecord.amount);
+          break;
+        case HeightRecord:
+          final heightRecord = record as HeightRecord;
+          sharedPreference.setDouble('record_default_${babyId}_${RecordType.height.string}_height', heightRecord.height);
+          print("#### ${heightRecord.height}");
           break;
         default:
           break; // do nothing
@@ -127,6 +133,10 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
         case MilkRecord:
           MilkRecord milkRecord = record as MilkRecord;
           milkRecord.amount = sharedPreference.getInt('record_default_${babyId}_${RecordType.milk.string}_amount');
+          break;
+        case HeightRecord:
+          final heightRecord = record as HeightRecord;
+          heightRecord.height = sharedPreference.getDouble('record_default_${babyId}_${RecordType.height.string}_height');
           break;
         default:
           break; // do nothing

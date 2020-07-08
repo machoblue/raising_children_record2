@@ -241,7 +241,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
       case RecordType.height:
         HeightRecord record = HeightRecord.newInstance(DateTime.now(), null, user, 50.0);
         return Provider<HeightRecordViewModel>(
-          create: (_) => HeightRecordViewModel(record, user, baby, FirestoreRecordRepository()),
+          create: (_) => HeightRecordViewModel(record, user, baby, FirestoreRecordRepository(), isNew: true),
           child: HeightRecordView(
             isNew: true,
             onComplete: _onCreateRecordComplete,
