@@ -335,7 +335,7 @@ class RecordButtonState extends State<RecordButton> {
           Text(
             widget.recordType.localizedName,
             style: TextStyle(
-              fontSize: min(12, 12 / (widget.recordType.localizedName.length / 10)),
+              fontSize: min(12, 12 / (widget.recordType.localizedName.length / 8)),
               color: Color(0x00FF888888),
             ),
           )
