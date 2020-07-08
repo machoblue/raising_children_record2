@@ -5,6 +5,7 @@ import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/shared/widget/calendarLayout.dart';
 import 'package:raisingchildrenrecord2/viewmodel/chart/conditionChartViewModel.dart';
+import 'package:tuple/tuple.dart';
 
 class ConditionChartView extends StatefulWidget {
   @override
@@ -58,6 +59,26 @@ class _ConditionChartViewState extends BaseState<ConditionChartView, ConditionCh
       return Container();
     }
 
+    List<Tuple2<TextStyle, int>> columnDataList = [];
+    if (dailyData.vomitCount > 0) {
+      columnDataList.add(Tuple2(_vomitStyle, dailyData.vomitCount));
+    }
+    if (dailyData.coughCount > 0) {
+      columnDataList.add(Tuple2(_coughStyle, dailyData.coughCount));
+    }
+    if (dailyData.rashCount > 0) {
+      columnDataList.add(Tuple2(_rashStyle, dailyData.rashCount));
+    }
+    if (dailyData.diarrheaCount > 0) {
+      columnDataList.add(Tuple2(_diarrheaStyle, dailyData.diarrheaCount));
+    }
+
+    List<List<Tuple2<TextStyle, int>>> rowDataList = [[], []];
+    for (int i = 0; i < columnDataList.length; i++) {
+      final int rowIndex = i ~/ 2;
+      rowDataList[rowIndex].add(columnDataList[i]);
+    }
+
     L10n l10n = L10n.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -68,45 +89,22 @@ class _ConditionChartViewState extends BaseState<ConditionChartView, ConditionCh
           '${dailyData.bodyTemperature}${l10n.degreesCelsius}',
           style: dailyData.bodyTemperature >= 37.5 ? _bodyTemperatureStyle : _baseStyle,
         ),
-        dailyData.vomitCount == 0
-            ? Container()
-            : RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(text: '●', style: _vomitStyle),
-              TextSpan(text: '${dailyData.vomitCount}', style: _baseStyle),
-            ],
-          ),
-        ),
-        dailyData.coughCount == 0
-            ? Container()
-            : RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(text: '●', style: _coughStyle),
-              TextSpan(text: '${dailyData.coughCount}', style: _baseStyle),
-            ],
-          ),
-        ),
-        dailyData.rashCount == 0
-            ? Container()
-            : RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(text: '●', style: _rashStyle),
-              TextSpan(text: '${dailyData.rashCount}', style: _baseStyle),
-            ],
-          ),
-        ),
-        dailyData.diarrheaCount == 0
-            ? Container()
-            : RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(text: '●', style: _diarrheaStyle),
-              TextSpan(text: '${dailyData.diarrheaCount}', style: _baseStyle),
-            ],
-          ),
+
+        Column(
+          children: rowDataList.map((rowData) {
+            return Row(
+              children: rowData.map((columnData) {
+                return RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(text: ' ●', style: columnData.item1),
+                      TextSpan(text: '${columnData.item2}', style: _baseStyle),
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }).toList(),
         ),
       ],
     );
