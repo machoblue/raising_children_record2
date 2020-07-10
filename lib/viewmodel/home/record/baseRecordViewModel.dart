@@ -114,6 +114,10 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
           final heightRecord = record as HeightRecord;
           sharedPreference.setDouble('record_default_${babyId}_${RecordType.height.string}_height', heightRecord.height);
           break;
+        case WeightRecord:
+          final weightRecord = record as WeightRecord;
+          sharedPreference.setDouble('record_default_${babyId}_${RecordType.weight.string}_weight', weightRecord.weight);
+          break;
         default:
           break; // do nothing
       }
@@ -135,6 +139,10 @@ class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implement
         case HeightRecord:
           final heightRecord = record as HeightRecord;
           heightRecord.height = sharedPreference.getDouble('record_default_${babyId}_${RecordType.height.string}_height') ?? 50.0;
+          break;
+        case WeightRecord:
+          final weightRecord = record as WeightRecord;
+          weightRecord.weight = sharedPreference.getDouble('record_default_${babyId}_${RecordType.weight.string}_weight') ?? 5.0;
           break;
         default:
           break; // do nothing

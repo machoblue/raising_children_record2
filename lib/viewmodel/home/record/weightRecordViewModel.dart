@@ -12,7 +12,7 @@ class WeightRecordViewModel extends BaseRecordViewModel<WeightRecord> {
   final StreamController<double> _onWeightSelectedStreamController = StreamController<double>();
   StreamSink<double> get onWeightSelected => _onWeightSelectedStreamController.sink;
 
-  WeightRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository): super(record, user, baby, recordRepository) {
+  WeightRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository, { bool isNew = false }): super(record, user, baby, recordRepository, isNew: isNew) {
 
     _onWeightSelectedStreamController.stream.listen((weight) {
       WeightRecord record = recordBehaviorSubject.value;
