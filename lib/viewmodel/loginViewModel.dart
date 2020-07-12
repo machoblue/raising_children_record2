@@ -95,7 +95,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
     if (firebaseUser == null) {
       _signInUserStreamController.sink.add(null);
-      errorMessageStreamController.sink.add(ErrorMessage(Intl.message('Error', name: 'error'),
+      errorMessageSink.add(ErrorMessage(Intl.message('Error', name: 'error'),
                                                           Intl.message('Failed to sign in.', name: 'failedToSignIn')));
       _showIndicatorStreamController.sink.add(false);
       return;
@@ -140,7 +140,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
         .catchError((error) {
           final title = Intl.message('Error', name: 'error');
           final message = Intl.message('This invitation code isn\'t valid. This may be expired. Please recreate invitation code and read again.', name: 'invitationCodeInvalid');
-          errorMessageStreamController.sink.add(ErrorMessage(title, message));
+          errorMessageSink.add(ErrorMessage(title, message));
         }, test: (error) => error is PermissionException)
         .catchError(_handleError);
     }
