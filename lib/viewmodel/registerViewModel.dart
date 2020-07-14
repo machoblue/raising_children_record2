@@ -34,6 +34,7 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
   Stream<bool> get showIndicator => _showIndicatorStreamController.stream;
 
   StreamSubscription _onAppearSubscription;
+  StreamSubscription _onGoogleButtonTappedSubscription;
 
   RegisterViewModel() {
     _onAppearSubscription = _onAppearStream.stream.listen((_) {
@@ -47,6 +48,10 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
           _showIndicatorStreamController.sink.add(false);
         })
         .catchError(_handleError);
+    });
+
+    _onGoogleButtonTappedSubscription = _onGoogleButtonTappedStream.stream.listen((_) {
+      _showIndicatorStreamController.sink.add(true);
     });
   }
 
@@ -73,6 +78,7 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
     super.dispose();
 
     _onAppearSubscription.cancel();
+    _onGoogleButtonTappedSubscription.cancel();
 
     _onAppearStream.close();
     _onGoogleButtonTappedStream.close();
