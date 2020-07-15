@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +48,13 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
 
   TabController _chartTabController;
 
+  StreamSubscription _logoutCompleteSubscription;
+
   @override
   void initState() {
     super.initState();
     viewModel.onInitState.add(null);
-    viewModel.logoutComplete.listen((_) {
+    _logoutCompleteSubscription = viewModel.logoutComplete.listen((_) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -67,6 +71,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
 
   @override
   void dispose() {
+    _logoutCompleteSubscription.cancel();
     _chartTabController.dispose();
     super.dispose();
   }

@@ -20,9 +20,9 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
-  StreamSubscription signInUserSubscription;
-  StreamSubscription messageSubscription;
-  StreamSubscription needConfirmInvitationCodeSubscription;
+  StreamSubscription _signInUserSubscription;
+  StreamSubscription _messageSubscription;
+  StreamSubscription _needConfirmInvitationCodeSubscription;
 
   @override
   void initState() {
@@ -30,9 +30,9 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
     viewModel.onLoginPageAppear.add(null);
 
-    signInUserSubscription = viewModel.signInUser.listen(_onSignedIn);
-    messageSubscription = viewModel.message.listen((String errorMessage) => Fluttertoast.showToast(msg: errorMessage));
-    needConfirmInvitationCodeSubscription = viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
+    _signInUserSubscription = viewModel.signInUser.listen(_onSignedIn);
+    _messageSubscription = viewModel.message.listen((String errorMessage) => Fluttertoast.showToast(msg: errorMessage));
+    _needConfirmInvitationCodeSubscription = viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
   }
 
   @override
@@ -54,9 +54,9 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
   void dispose() {
     super.dispose();
 
-    signInUserSubscription.cancel();
-    messageSubscription.cancel();
-    needConfirmInvitationCodeSubscription.cancel();
+    _signInUserSubscription.cancel();
+    _messageSubscription.cancel();
+    _needConfirmInvitationCodeSubscription.cancel();
   }
 
   Widget _buildLoginButton() {
