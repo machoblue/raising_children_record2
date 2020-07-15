@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -18,15 +20,19 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
+  StreamSubscription signInUserSubscription;
+  StreamSubscription messageSubscription;
+  StreamSubscription needConfirmInvitationCodeSubscription;
+
   @override
   void initState() {
     super.initState();
 
     viewModel.onLoginPageAppear.add(null);
 
-    viewModel.signInUser.listen(_onSignedIn);
-    viewModel.message.listen((String errorMessage) => Fluttertoast.showToast(msg: errorMessage));
-    viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
+    signInUserSubscription = viewModel.signInUser.listen(_onSignedIn);
+    messageSubscription = viewModel.message.listen((String errorMessage) => Fluttertoast.showToast(msg: errorMessage));
+    needConfirmInvitationCodeSubscription = viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
   }
 
   @override
@@ -42,6 +48,15 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
         ]
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    signInUserSubscription.cancel();
+    messageSubscription.cancel();
+    needConfirmInvitationCodeSubscription.cancel();
   }
 
   Widget _buildLoginButton() {
