@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
@@ -8,11 +10,13 @@ class BaseState<W extends StatefulWidget, VM extends ViewModel> extends State<W>
 
   VM viewModel;
 
+  StreamSubscription _errorMessageSubscription;
+
   @override
   void initState() {
     super.initState();
     viewModel = Provider.of<VM>(context, listen: false);
-    viewModel.errorMessage.listen((ErrorMessage errorMessage) {
+    _errorMessageSubscription = viewModel.errorMessage.listen((ErrorMessage errorMessage) {
       _showErrorMessage(errorMessage);
     });
   }
@@ -20,7 +24,10 @@ class BaseState<W extends StatefulWidget, VM extends ViewModel> extends State<W>
   @override
   void dispose() {
     super.dispose();
+
     viewModel.dispose();
+
+    _errorMessageSubscription.cancel();
   }
 
   @override
