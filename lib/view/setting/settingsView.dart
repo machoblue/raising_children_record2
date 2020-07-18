@@ -39,11 +39,13 @@ class _SettingsViewState extends BaseState<SettingsView, SettingsViewModel> with
 
   List<SettingElement> settingElements = [];
 
+  StreamSubscription _logoutSubscription;
+
   @override
   void initState() {
     super.initState();
     settingElements = createSettingElements();
-    viewModel.logoutComplete.listen((_) {
+    _logoutSubscription = viewModel.logoutComplete.listen((_) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -67,6 +69,13 @@ class _SettingsViewState extends BaseState<SettingsView, SettingsViewModel> with
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _logoutSubscription.cancel();
   }
 
   Widget _buildListView(BuildContext context) {
