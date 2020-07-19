@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/data/firestoreErrorHandler.dart';
+import 'package:raisingchildrenrecord2/model/authenticatedUser.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
@@ -149,7 +150,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
   Future<String> _createUserAndFamily() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final familyId = Uuid().v1();
-    User user = User.fromFirebaseUser(firebaseUser, familyId);
+    User user = User.fromFirebaseUser(firebaseUser, familyId, SignInMethod.google);
     return userRepository.createOrUpdateUser(user).then((_) {
       return userRepository.createFamily(familyId, user).then((_) {
         sharedPreferences.setString('userId', user.id);
@@ -166,7 +167,7 @@ class LoginViewModel with ViewModelErrorHandler implements ViewModel {
 
   Future<String> _createUserAndJoinFamily(InvitationCode invitationCode) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    final User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, invitationCode);
+    final User user = User.fromFirebaseUserAndInvitationCode(firebaseUser, SignInMethod.google, invitationCode);
     return userRepository.createOrUpdateUser(user).then((_) {
       String familyId = invitationCode.familyId;
       return userRepository.joinFamily(familyId, user).then((_) {

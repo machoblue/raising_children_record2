@@ -24,7 +24,7 @@ class GoogleAuthenticator implements Authenticator {
       return account.authentication.then((GoogleSignInAuthentication auth) async {
         final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
         return firebaseAuth.signInWithCredential(credential).then((AuthResult result) {
-          return AuthenticatedUser.fromFirebaseUser(result.user);
+          return AuthenticatedUser.fromFirebaseUser(result.user, SignInMethod.google);
         });
       });
     });
