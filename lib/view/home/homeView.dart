@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
@@ -45,12 +46,14 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
   AnimationController _animationController;
   Animation _animation;
 
+  StreamSubscription _navigationToAddRecordSubscription;
+
   @override
   void initState() {
     super.initState();
 
     viewModel = Provider.of<HomeViewModel>(context, listen: false);
-    viewModel.navigationToAddRecord.listen((tuple3) => _addRecord(tuple3.item1, tuple3.item2, tuple3.item3));
+    _navigationToAddRecordSubscription = viewModel.navigationToAddRecord.listen((tuple3) => _addRecord(tuple3.item1, tuple3.item2, tuple3.item3));
 
     _animationController = AnimationController(duration: Duration(milliseconds: 250), vsync: this);
     _animation = IntTween(begin: 1, end: 4).animate(_animationController);
@@ -133,6 +136,12 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel> with TickerProvi
           ],
         )
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _navigationToAddRecordSubscription.cancel();
   }
 
   Widget _buildPage(context, position) {
