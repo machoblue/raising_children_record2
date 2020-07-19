@@ -2,13 +2,22 @@
 import 'dart:async';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:raisingchildrenrecord2/data/userRepository.dart';
+import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  final Authenticator googleAuthenticator;
+  final Authenticator guestAuthenticator;
+  final UserRepository userRepository;
 
   // Input
   final _onAppearStream = StreamController<void>();
@@ -27,6 +36,9 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
   final _onSignInStreamController = StreamController<void>();
   Stream get onSignIn => _onSignInStreamController.stream;
 
+  final _needConfirmInvitationCode = StreamController<void>();
+  Stream<void> get needConfirmInvitationCode => _needConfirmInvitationCode.stream;
+
   final _alreadyRegisteredStreamController = StreamController<void>();
   Stream get alreadyRegistered => _alreadyRegisteredStreamController.stream;
 
@@ -36,7 +48,7 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
   StreamSubscription _onAppearSubscription;
   StreamSubscription _onGoogleButtonTappedSubscription;
 
-  RegisterViewModel() {
+  RegisterViewModel(this.googleAuthenticator, this.guestAuthenticator, this.userRepository) {
     _onAppearSubscription = _onAppearStream.stream.listen((_) {
       _showIndicatorStreamController.sink.add(true);
 
@@ -52,10 +64,25 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
 
     _onGoogleButtonTappedSubscription = _onGoogleButtonTappedStream.stream.listen((_) {
       _showIndicatorStreamController.sink.add(true);
+
+      googleAuthenticator.authenticate().then((authenticatedUser) {
+        userRepository.getUser(authenticatedUser.id).then((user) async {
+          if (user == null) {
+            _needConfirmInvitationCode.sink.add(null);
+            return;
+          }
+
+          _saveUserIdAndFamilyId(user.id, user.familyId);
+          _alreadyRegisteredStreamController.sink.add(null);
+        });
+      })
+      .catchError(_handleError)
+      .whenComplete(() => _showIndicatorStreamController.sink.add(false));
     });
   }
 
   Future<bool> _isSignIn() {
+    /*
     return googleSignIn.isSignedIn().then((isSignIn) {
       if (!isSignIn) {
         return false;
@@ -66,11 +93,46 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
         return userId?.isNotEmpty ?? false;
       });
     });
+     */
+//    final FirebaseUser firebaseUser = firebaseAuth.currentUser();
+    return firebaseAuth.currentUser().then((firebaseUser) {
+      if (firebaseUser == null) {
+        return false;
+      }
+
+      return SharedPreferences.getInstance().then((sharedPreferences) {
+        final userId = sharedPreferences.getString("userId");
+        return userId?.isNotEmpty ?? false;
+      });
+    });
+  }
+
+  Future<void> _saveUserIdAndFamilyId(String userId, String familyId) {
+    SharedPreferences.getInstance().then((sharedPreferences) async {
+      await sharedPreferences.setString('userId', userId);
+      await sharedPreferences.setString('familyId', familyId);
+      return;
+    });
   }
 
   void _handleError(Object error) {
     _showIndicatorStreamController.sink.add(false);
-    handleError(error);
+
+    String title = Intl.message('Error', name: 'error');
+    String message = "";
+
+    switch (error.runtimeType) {
+      case AuthenticateCancelledException:
+        message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
+        errorMessageStreamController.sink.add(ErrorMessage(title, message));
+        return;
+      case AuthenticateFailedException:
+        message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
+        errorMessageStreamController.sink.add(ErrorMessage(title, message));
+        return;
+      default:
+        handleError(error);
+    }
   }
 
   @override
@@ -85,6 +147,7 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
     _onAnonymousButtonTappedStream.close();
     _onDialogSignInButtonTappedStream.close();
     _onSignInStreamController.close();
+    _needConfirmInvitationCode.close();
     _alreadyRegisteredStreamController.close();
     _showIndicatorStreamController.close();
   }

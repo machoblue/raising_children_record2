@@ -16,9 +16,9 @@ class ErrorMessage {
 }
 
 mixin ViewModelErrorHandler {
-  final _errorMessageStreamController = StreamController<ErrorMessage>();
-  Stream<ErrorMessage> get errorMessage => _errorMessageStreamController.stream;
-  StreamSink<ErrorMessage> get errorMessageSink => _errorMessageStreamController.sink;
+  final errorMessageStreamController = StreamController<ErrorMessage>();
+  Stream<ErrorMessage> get errorMessage => errorMessageStreamController.stream;
+  StreamSink<ErrorMessage> get errorMessageSink => errorMessageStreamController.sink;
 
   void handleError(Object error) {
     print("### ViewModelErrorHandler.error: $error");
@@ -39,10 +39,10 @@ mixin ViewModelErrorHandler {
         break;
     }
 
-    _errorMessageStreamController.sink.add(ErrorMessage(title, message));
+    errorMessageStreamController.sink.add(ErrorMessage(title, message));
   }
 
   void dispose() {
-    _errorMessageStreamController.close();
+    errorMessageStreamController.close();
   }
 }
