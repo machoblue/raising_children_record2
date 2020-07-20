@@ -36,8 +36,8 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
   final _onGoogleButtonTappedStream = StreamController<void>();
   StreamSink get onGoogleButtonTapped => _onGoogleButtonTappedStream.sink;
 
-  final _onAnonymousButtonTappedStream = StreamController<void>();
-  StreamSink get onAnonymousButtonTapped => _onAnonymousButtonTappedStream.sink;
+  final _onGuestButtonTappedStream = StreamController<void>();
+  StreamSink get onGuestButtonTapped => _onGuestButtonTappedStream.sink;
 
   final _onDialogSignInButtonTappedStream = StreamController<void>();
   StreamSink get onDialogSignInButtonTapped => _onDialogSignInButtonTappedStream.sink;
@@ -60,6 +60,7 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
 
   StreamSubscription _onAppearSubscription;
   StreamSubscription _onGoogleButtonTappedSubscription;
+  StreamSubscription _onGuestButtonTappedSubscription;
   StreamSubscription _onDialogSignInButtonTappedSubscription;
   StreamSubscription _onInvitationCodeReadSubscription;
 
@@ -81,6 +82,25 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
       _showIndicatorStreamController.sink.add(true);
 
       googleAuthenticator.authenticate().then((authenticatedUser) {
+        userRepository.getUser(authenticatedUser.id).then((user) async {
+          if (user == null) {
+            _authenticatedUser = authenticatedUser;
+            _needConfirmInvitationCode.sink.add(null);
+            return;
+          }
+
+          _saveUserIdAndFamilyId(user.id, user.familyId);
+          _alreadyRegisteredStreamController.sink.add(null);
+        });
+      })
+      .catchError(_handleError)
+      .whenComplete(() => _showIndicatorStreamController.sink.add(false));
+    });
+
+    _onGuestButtonTappedSubscription = _onGuestButtonTappedStream.stream.listen((_) {
+      _showIndicatorStreamController.sink.add(true);
+
+      guestAuthenticator.authenticate().then((authenticatedUser) {
         userRepository.getUser(authenticatedUser.id).then((user) async {
           if (user == null) {
             _authenticatedUser = authenticatedUser;
@@ -227,12 +247,13 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
 
     _onAppearSubscription.cancel();
     _onGoogleButtonTappedSubscription.cancel();
+    _onGuestButtonTappedSubscription.cancel();
     _onDialogSignInButtonTappedSubscription.cancel();
     _onInvitationCodeReadSubscription.cancel();
 
     _onAppearStream.close();
     _onGoogleButtonTappedStream.close();
-    _onAnonymousButtonTappedStream.close();
+    _onGuestButtonTappedStream.close();
     _onDialogSignInButtonTappedStream.close();
     _onSignInStreamController.close();
     _onInvitationCodeReadStreamController.close();

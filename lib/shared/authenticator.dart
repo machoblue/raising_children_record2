@@ -34,3 +34,17 @@ class GoogleAuthenticator implements Authenticator {
     });
   }
 }
+
+class GuestAuthenticator implements Authenticator {
+  final firebaseAuth = FirebaseAuth.instance;
+
+  Future<AuthenticatedUser> authenticate() {
+    return firebaseAuth.signInAnonymously().then((AuthResult result) {
+      final FirebaseUser firebaseUser = result.user;
+      if (firebaseUser == null) {
+        throw AuthenticateFailedException();
+      }
+      return AuthenticatedUser.fromFirebaseUser(firebaseUser, SignInMethod.guest);
+    });
+  }
+}
