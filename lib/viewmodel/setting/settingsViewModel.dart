@@ -11,7 +11,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsViewModel with ViewModelErrorHandler implements ViewModel {
+class SettingsViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final User user;

@@ -6,10 +6,9 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/record.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ExcretionChartViewModel with ViewModelErrorHandler implements ViewModel {
+class ExcretionChartViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   Stream<Baby> babyStream;
   RecordRepository recordRepository;

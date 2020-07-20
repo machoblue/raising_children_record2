@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 import 'package:intl/intl.dart';
 
-class GrowthChartViewModel with ViewModelErrorHandler implements ViewModel {
+class GrowthChartViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   Stream<Baby> babyStream;
   RecordRepository recordRepository;

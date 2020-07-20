@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
-class HomeViewModel with ViewModelErrorHandler implements ViewModel {
+class HomeViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;
 

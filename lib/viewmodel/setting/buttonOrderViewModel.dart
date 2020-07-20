@@ -6,7 +6,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ButtonOrderViewModel with ViewModelErrorHandler implements ViewModel {
+class ButtonOrderViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   final _onButtonOrderChangedStreamController = StreamController<List<String>>();
   StreamSink<List<String>> get onButtonOrderChanged => _onButtonOrderChangedStreamController.sink;
 

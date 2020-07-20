@@ -15,7 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
-class LoginViewModel with ViewModelErrorHandler implements ViewModel {
+class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

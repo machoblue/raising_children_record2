@@ -17,7 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
+class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -157,8 +157,7 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
     } else {
       return _createUserAndJoinFamily(invitationCode)
         .then((_) {
-          // TODO: toast
-//          _messageStreamController.sink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
+          infoMessageSink.add(Intl.message('Finished configuration to share data.', name: 'dataShareComplete'));
         })
         .catchError((error) {
           final title = Intl.message('Error', name: 'error');
@@ -211,11 +210,11 @@ class RegisterViewModel with ViewModelErrorHandler implements ViewModel {
     switch (error.runtimeType) {
       case AuthenticateCancelledException:
         message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
-        errorMessageStreamController.sink.add(ErrorMessage(title, message));
+        errorMessageSink.add(ErrorMessage(title, message));
         return;
       case AuthenticateFailedException:
         message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
-        errorMessageStreamController.sink.add(ErrorMessage(title, message));
+        errorMessageSink.add(ErrorMessage(title, message));
         return;
       default:
         handleError(error);

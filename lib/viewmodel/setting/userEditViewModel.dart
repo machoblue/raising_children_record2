@@ -11,7 +11,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
-class UserEditViewModel with ViewModelErrorHandler implements ViewModel {
+class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final UserRepository userRepository;
   final StorageUtil storageUtil;

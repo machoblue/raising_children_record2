@@ -9,7 +9,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ConditionChartViewModel with ViewModelErrorHandler implements ViewModel {
+class ConditionChartViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;

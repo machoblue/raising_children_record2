@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
-class BabyEditViewModel with ViewModelErrorHandler implements ViewModel {
+class BabyEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final BabyRepository babyRepository;
   final StorageUtil storageUtil;

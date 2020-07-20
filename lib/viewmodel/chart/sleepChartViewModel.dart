@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:raisingchildrenrecord2/shared/listExtension.dart';
 
-class SleepChartViewModel with ViewModelErrorHandler implements ViewModel {
+class SleepChartViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;

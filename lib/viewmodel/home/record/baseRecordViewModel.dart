@@ -8,7 +8,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler implements ViewModel {
+class BaseRecordViewModel<R extends Record> with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   BehaviorSubject<R> recordBehaviorSubject;
   User user;
   Baby baby;

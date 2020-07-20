@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
-class HomePageViewModel with ViewModelErrorHandler implements ViewModel {
+class HomePageViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   DateTime dateTime;
   BehaviorSubject<User> userBehaviorSubject;
   BehaviorSubject<Baby> babyBehaviorSubject;

@@ -2,7 +2,7 @@
 import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 
-class BabyListViewModel with ViewModelErrorHandler implements ViewModel {
+class BabyListViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   Stream<List<Baby>> babiesStream;
 

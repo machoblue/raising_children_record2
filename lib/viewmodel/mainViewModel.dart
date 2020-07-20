@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainViewModel with ViewModelErrorHandler implements ViewModel {
+class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

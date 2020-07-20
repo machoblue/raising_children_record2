@@ -6,7 +6,7 @@ import 'package:raisingchildrenrecord2/model/invitationCode.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InvitationCodeViewModel with ViewModelErrorHandler implements ViewModel {
+class InvitationCodeViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final FamilyRepository familyRepository;
 

@@ -6,6 +6,7 @@ import 'package:raisingchildrenrecord2/storage/firebaseStorageErrorHandler.dart'
 
 class ViewModel {
   Stream<ErrorMessage> get errorMessage {}
+  Stream<String> get infoMessage {}
   dispose() {}
 }
 
@@ -16,9 +17,9 @@ class ErrorMessage {
 }
 
 mixin ViewModelErrorHandler {
-  final errorMessageStreamController = StreamController<ErrorMessage>();
-  Stream<ErrorMessage> get errorMessage => errorMessageStreamController.stream;
-  StreamSink<ErrorMessage> get errorMessageSink => errorMessageStreamController.sink;
+  final _errorMessageStreamController = StreamController<ErrorMessage>();
+  Stream<ErrorMessage> get errorMessage => _errorMessageStreamController.stream;
+  StreamSink<ErrorMessage> get errorMessageSink => _errorMessageStreamController.sink;
 
   void handleError(Object error) {
     print("### ViewModelErrorHandler.error: $error");
@@ -39,10 +40,22 @@ mixin ViewModelErrorHandler {
         break;
     }
 
-    errorMessageStreamController.sink.add(ErrorMessage(title, message));
+    _errorMessageStreamController.sink.add(ErrorMessage(title, message));
   }
 
   void dispose() {
-    errorMessageStreamController.close();
+    print("### ViewModelErrorHandler.dispose()");
+    _errorMessageStreamController.close();
+  }
+}
+
+mixin ViewModelInfoMessageHandler {
+  final _infoMessageStreamController = StreamController<String>();
+  Stream<String> get infoMessage => _infoMessageStreamController.stream;
+  StreamSink<String> get infoMessageSink => _infoMessageStreamController.sink;
+
+  void dispose() {
+    print("### ViewModelInfoMessageHandler.dispose()");
+    _infoMessageStreamController.close();
   }
 }

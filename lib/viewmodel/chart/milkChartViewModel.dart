@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
-class MilkChartViewModel with ViewModelErrorHandler implements ViewModel {
+class MilkChartViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final Stream<Baby> babyStream;
   final RecordRepository recordRepository;
