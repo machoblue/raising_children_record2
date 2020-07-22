@@ -63,27 +63,47 @@ class _RegisterViewState extends BaseState<RegisterView, RegisterViewModel>{
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        RaisedButton(
-                          onPressed: () => viewModel.onGoogleButtonTapped.add(null),
-                          child: Text(
-                            "Googleで登録する",
-                            style: TextStyle(fontSize: 16.0),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(48, 0, 48, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: RaisedButton(
+                              onPressed: () => viewModel.onGoogleButtonTapped.add(null),
+                              child: Text(
+                                "Googleで登録する",
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
                           ),
                         ),
-                        RaisedButton(
-                          onPressed: () => viewModel.onGuestButtonTapped.add(null),
-                          child: Text(
-                            "ゲストとして利用する",
-                            style: TextStyle(fontSize: 16.0),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(48, 0, 48, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: OutlineButton(
+                              color: Colors.white,
+                              textColor: Colors.black,
+                              onPressed: () => viewModel.onGuestButtonTapped.add(null),
+                              child: Text(
+                                "ゲストとして利用する",
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
                           ),
                         ),
-                        FlatButton(
-                          onPressed: () => _showLoginView(),
-                          child: Text(
-                            "登録済みのアカウントにログインする",
-                            style: TextStyle(fontSize: 16.0),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(48, 0, 48, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: FlatButton(
+                              onPressed: () => _showLoginView(),
+                              child: Text(
+                                "登録済みのアカウントにログインする",
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
