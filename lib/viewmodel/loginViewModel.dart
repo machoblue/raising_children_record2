@@ -24,6 +24,10 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
   final UserRepository userRepository;
   final BabyRepository babyRepository;
 
+  StreamSubscription _onLoginPageAppearStreamSubscription;
+  StreamSubscription _onSignInButtonTappedStreamSubscription;
+  StreamSubscription _onInvitationCodeReadStreamSubscription;
+
   // input
   final _onLoginPageAppearStreamController = StreamController<void>();
   StreamSink<void> get onLoginPageAppear => _onLoginPageAppearStreamController.sink;
@@ -52,15 +56,14 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
   }
 
   void _bindInputAndOutput() {
-    _onLoginPageAppearStreamController.stream.listen(_getUserIdIfSignIn);
-    _onSignInButtonTappedStreamController.stream.listen(_signIn);
-    _onInvitationCodeReadStreamController.stream.listen((invitationCode) {
+    _onLoginPageAppearStreamSubscription = _onLoginPageAppearStreamController.stream.listen(_getUserIdIfSignIn);
+    _onSignInButtonTappedStreamSubscription = _onSignInButtonTappedStreamController.stream.listen(_signIn);
+    _onInvitationCodeReadStreamSubscription = _onInvitationCodeReadStreamController.stream.listen((invitationCode) {
       _handleInvitationCode(invitationCode);
     });
   }
 
   void _getUserIdIfSignIn(_) async {
-    print("### getUserIdIfSignIn");
     _showIndicatorStreamController.sink.add(true);
     bool isSignIn = await googleSignIn.isSignedIn();
     if (isSignIn) {
@@ -197,6 +200,10 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
 
   void dispose() {
     super.dispose();
+    _onLoginPageAppearStreamSubscription.cancel();
+    _onSignInButtonTappedStreamSubscription.cancel();
+    _onInvitationCodeReadStreamSubscription.cancel();
+
     _onLoginPageAppearStreamController.close();
     _onSignInButtonTappedStreamController.close();
     _signInUserStreamController.close();
