@@ -81,13 +81,10 @@ class _UserEditViewState extends BaseState<UserEditView, UserEditViewModel> {
             StreamBuilder(
               stream: _viewModel.userIconImageProvider,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
                 return GestureDetector(
                   onTap: _pickImage,
                   child: CircleImage(
-                    snapshot.data,
+                    snapshot.data ?? AssetImage("assets/default_baby_icon.png"),
                     width: 84,
                     height: 84,
                   ),

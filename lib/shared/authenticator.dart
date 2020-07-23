@@ -44,7 +44,7 @@ class GuestAuthenticator implements Authenticator {
       if (firebaseUser == null) {
         throw AuthenticateFailedException();
       }
-      return AuthenticatedUser.fromFirebaseUser(firebaseUser, SignInMethod.guest);
+      return AuthenticatedUser(firebaseUser.uid, "ゲストユーザー", null, SignInMethod.guest);
     });
   }
 }

@@ -236,7 +236,9 @@ class _RecordListTile extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   fit: BoxFit.fitHeight,
-                                  image: CachedNetworkImageProvider(record.user.photoUrl),
+                                  image: record.user.photoUrl == null
+                                    ? AssetImage("assets/default_baby_icon.png")
+                                    : CachedNetworkImageProvider(record.user.photoUrl),
                                 ),
                               ),
                               height: 24,
@@ -245,7 +247,7 @@ class _RecordListTile extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(
-                                record.user.name,
+                                record.user.name ?? "",
                                 style: _userNameFont,
                               ),
                             ),

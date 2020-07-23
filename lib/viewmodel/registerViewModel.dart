@@ -132,18 +132,6 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
   }
 
   Future<bool> _isSignIn() {
-    /*
-    return googleSignIn.isSignedIn().then((isSignIn) {
-      if (!isSignIn) {
-        return false;
-      }
-
-      return SharedPreferences.getInstance().then((sharedPreferences) {
-        final userId = sharedPreferences.getString("userId");
-        return userId?.isNotEmpty ?? false;
-      });
-    });
-     */
     return firebaseAuth.currentUser().then((firebaseUser) {
       if (firebaseUser == null) {
         return false;

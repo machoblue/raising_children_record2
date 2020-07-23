@@ -47,7 +47,11 @@ class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
     CombineLatestStream.combine2(
       _userBehaviorSubject,
       _imageBehaviorSubject,
-      (user, image) => image == null ? CachedNetworkImageProvider(user.photoUrl) : FileImage(image),
+      (user, image) => image != null
+          ? FileImage(image)
+          : user.photoUrl != null
+            ? CachedNetworkImageProvider(user.photoUrl)
+            : AssetImage("assets/default_baby_icon.png"),
     )
     .listen((imageProvider) => _userIconImageProviderStreamController.sink.add(imageProvider));
 
