@@ -39,7 +39,8 @@ Future<void> showSimpleDialog(BuildContext context, {
   String leftButtonTitle,
   void Function() onLeftButtonPressed,
   String rightButtonTitle,
-  void Function() onRightButtonPressed, }) {
+  void Function() onRightButtonPressed,
+}) {
 
   return showDialog(
     context: context,
@@ -59,5 +60,28 @@ Future<void> showSimpleDialog(BuildContext context, {
         ],
       );
     }
+  );
+}
+
+Future<void> showSingleButtonDialog(BuildContext context, {
+  String title,
+  String content,
+  String buttonTitle,
+  void Function() onButtonPressed,
+}) {
+  return showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(buttonTitle),
+              onPressed: onButtonPressed,
+            ),
+          ],
+        );
+      }
   );
 }

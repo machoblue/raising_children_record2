@@ -7,9 +7,8 @@ import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
-import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/mainView.dart';
-import 'package:raisingchildrenrecord2/viewmodel/invitationCodeReadViewModel.dart';
+import 'package:raisingchildrenrecord2/view/shared/utils.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
 
@@ -22,7 +21,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
   StreamSubscription _signInUserSubscription;
   StreamSubscription _messageSubscription;
-  StreamSubscription _needConfirmInvitationCodeSubscription;
+  StreamSubscription _userNotExistsSubscription;
 
   @override
   void initState() {
@@ -32,7 +31,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
     _signInUserSubscription = viewModel.signInUser.listen(_onSignedIn);
     _messageSubscription = viewModel.message.listen((String errorMessage) => Fluttertoast.showToast(msg: errorMessage));
-    _needConfirmInvitationCodeSubscription = viewModel.needConfirmInvitationCode.listen((_) => _showInvitationReadView());
+    _userNotExistsSubscription = viewModel.userNotExists.listen((_) => _showUserNotExistsDialog());
   }
 
   @override
@@ -56,7 +55,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
     _signInUserSubscription.cancel();
     _messageSubscription.cancel();
-    _needConfirmInvitationCodeSubscription.cancel();
+    _userNotExistsSubscription.cancel();
   }
 
   Widget _buildLoginButton() {
@@ -94,19 +93,13 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
     viewModel.onSignInButtonTapped.add(null);
   }
 
-  void _showInvitationReadView() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return Provider<InvitationCodeReadViewModel>(
-            create: (_) => InvitationCodeReadViewModel(),
-            child: InvitationCodeReadView(
-              onInvitationCodeRead: viewModel.onInvitationCodeRead.add,
-            ),
-          );
-        }
-      )
+  void _showUserNotExistsDialog() {
+    showSingleButtonDialog(
+        context,
+        title: "ログイン失敗",
+        content: "ユーザーが存在しません。",
+        buttonTitle: "OK",
+        onButtonPressed: null,
     );
   }
 
