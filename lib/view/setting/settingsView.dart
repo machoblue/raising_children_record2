@@ -10,6 +10,7 @@ import 'package:raisingchildrenrecord2/model/baby.dart';
 import 'package:raisingchildrenrecord2/model/settingElement.dart';
 import 'package:intl/intl.dart';
 import 'package:raisingchildrenrecord2/model/user.dart';
+import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
@@ -50,7 +51,7 @@ class _SettingsViewState extends BaseState<SettingsView, SettingsViewModel> with
         context,
         MaterialPageRoute(
           builder: (context) => Provider(
-            create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+            create: (_) => LoginViewModel(GoogleAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
             child: LoginView(),
           ),
         ),

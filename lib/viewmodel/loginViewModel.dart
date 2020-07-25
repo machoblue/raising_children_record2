@@ -2,18 +2,17 @@ import 'dart:async';
 
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
+import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 
 class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FirebaseUser firebaseUser;
+
+  final Authenticator googleAuthenticator;
 
   final UserRepository userRepository;
   final BabyRepository babyRepository;
@@ -41,7 +40,7 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
   final _userNotExistsStreamController = StreamController<void>();
   Stream<void> get userNotExists => _userNotExistsStreamController.stream;
 
-  LoginViewModel(this.userRepository, this.babyRepository) {
+  LoginViewModel(this.googleAuthenticator, this.userRepository, this.babyRepository) {
     _bindInputAndOutput();
   }
 
@@ -63,52 +62,34 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
     _showIndicatorStreamController.sink.add(false);
   }
 
-  void _signIn(_) async {
+  Future<void> _signIn(_) async {
     if (_showIndicatorStreamController.value) {
       return;
     }
 
     _showIndicatorStreamController.sink.add(true);
 
-    firebaseUser = await googleSignIn.signIn().then((GoogleSignInAccount account) {
-      if (account == null) {
-        _showIndicatorStreamController.sink.add(false);
-        return null;
-      }
-
-      return account.authentication.then((GoogleSignInAuthentication auth) async {
-        final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: auth.idToken, accessToken: auth.accessToken);
-        return firebaseAuth.signInWithCredential(credential).then((AuthResult result) {
-          return result.user;
-        });
-      });
-    });
-
-    if (firebaseUser == null) {
-      _signInUserStreamController.sink.add(null);
-      errorMessageSink.add(ErrorMessage(Intl.message('Error', name: 'error'),
-                                                          Intl.message('Failed to sign in.', name: 'failedToSignIn')));
-      _showIndicatorStreamController.sink.add(false);
-      return;
-    }
-
-    userRepository
-      .getUser(firebaseUser.uid)
-      .then((user) async {
+    return googleAuthenticator.authenticate().then((authenticatedUser) {
+      return userRepository.getUser(authenticatedUser.id).then((user) async {
         if (user == null) {
           _userNotExistsStreamController.sink.add(null);
-          _showIndicatorStreamController.sink.add(false);
           return;
         }
 
-        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        await sharedPreferences.setString('userId', user.id);
-        await sharedPreferences.setString('familyId', user.familyId);
-
+        _saveUserIdAndFamilyId(user.id, user.familyId);
         _signInUserStreamController.sink.add(user.id);
-        _showIndicatorStreamController.sink.add(false);
-      })
-      .catchError(_handleError);
+      });
+    })
+    .catchError(_handleError)
+    .whenComplete(() => _showIndicatorStreamController.sink.add(false));
+  }
+
+  Future<void> _saveUserIdAndFamilyId(String userId, String familyId) {
+    return SharedPreferences.getInstance().then((sharedPreferences) async {
+      await sharedPreferences.setString('userId', userId);
+      await sharedPreferences.setString('familyId', familyId);
+      return;
+    });
   }
 
   void _handleError(Object error) {

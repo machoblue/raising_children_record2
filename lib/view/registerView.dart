@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/data/babyRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
+import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/invitationCodeReadView.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
@@ -175,7 +176,7 @@ class _RegisterViewState extends BaseState<RegisterView, RegisterViewModel>{
         MaterialPageRoute(
             builder: (context) {
               return Provider(
-                create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+                create: (_) => LoginViewModel(GoogleAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
                 child: LoginView(),
               );
             }

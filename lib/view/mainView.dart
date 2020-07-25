@@ -10,6 +10,7 @@ import 'package:raisingchildrenrecord2/data/recordRepository.dart';
 import 'package:raisingchildrenrecord2/data/userRepository.dart';
 import 'package:raisingchildrenrecord2/l10n/l10n.dart';
 import 'package:raisingchildrenrecord2/model/baby.dart';
+import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/chart/conditionChartView.dart';
 import 'package:raisingchildrenrecord2/view/chart/excretionChartView.dart';
@@ -59,7 +60,7 @@ class _MainViewState extends BaseState<MainView, MainViewModel> with MainViewTut
         context,
         MaterialPageRoute(
           builder: (context) => Provider(
-            create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
+            create: (_) => LoginViewModel(GoogleAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
             child: LoginView(),
           ),
         ),
