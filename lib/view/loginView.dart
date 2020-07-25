@@ -81,7 +81,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
                   child: SizedBox(
                     width: double.infinity,
                     child: RaisedButton(
-                      onPressed: () => _onLoginButtonTapped,
+                      onPressed: () => _onLoginButtonTapped(),
                       child: Text(
                         L10n.of(context).loginButtonLabel,
                         style: TextStyle(fontSize: 16.0),
@@ -117,6 +117,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
   }
 
   void _onLoginButtonTapped() {
+    print("### _onLoginButtonTapped");
     viewModel.onSignInButtonTapped.add(null);
   }
 
