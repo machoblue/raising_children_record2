@@ -127,7 +127,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
         title: "ログイン失敗",
         content: "ユーザーが存在しません。",
         buttonTitle: "OK",
-        onButtonPressed: null,
+        onButtonPressed: () => Navigator.pop(context),
     );
   }
 
