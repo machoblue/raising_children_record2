@@ -32,25 +32,6 @@ class User {
     SignInMethodExtension.fromRawValue(snapshot['signInMethod']),
   );
 
-  // TODO: remove
-  User.fromFirebaseUser(FirebaseUser firebaseUser, String familyId, SignInMethod signInMethod): this(
-    firebaseUser.uid,
-    firebaseUser.displayName,
-    firebaseUser.photoUrl,
-    familyId,
-    signInMethod,
-  );
-
-  // TODO: remove
-  User.fromFirebaseUserAndInvitationCode(FirebaseUser firebaseUser, SignInMethod signInMethod, InvitationCode invitationCode): this(
-      firebaseUser.uid,
-      firebaseUser.displayName,
-      firebaseUser.photoUrl,
-      invitationCode.familyId,
-      signInMethod,
-      invitationCode: invitationCode.code,
-  );
-
   User.fromAuthenticatedUser(AuthenticatedUser authenticatedUser, String familyId): this(
     authenticatedUser.id,
     authenticatedUser.name,
