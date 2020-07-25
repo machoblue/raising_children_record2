@@ -60,12 +60,39 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
 
   Widget _buildLoginButton() {
     return Center(
-      child: RaisedButton(
-        onPressed: _onLoginButtonTapped,
-        child: Text(
-          L10n.of(context).loginButtonLabel,
-          style: TextStyle(fontSize: 16.0),
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Text(
+                  "ログイン",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blueGrey)
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(48, 0, 48, 0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: RaisedButton(
+                      onPressed: () => _onLoginButtonTapped,
+                      child: Text(
+                        L10n.of(context).loginButtonLabel,
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
