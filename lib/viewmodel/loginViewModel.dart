@@ -20,7 +20,6 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
 
   StreamSubscription _onLoginPageAppearStreamSubscription;
   StreamSubscription _onSignInButtonTappedStreamSubscription;
-  StreamSubscription _onInvitationCodeReadStreamSubscription;
 
   // input
   final _onLoginPageAppearStreamController = StreamController<void>();
@@ -121,7 +120,6 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
     super.dispose();
     _onLoginPageAppearStreamSubscription.cancel();
     _onSignInButtonTappedStreamSubscription.cancel();
-    _onInvitationCodeReadStreamSubscription.cancel();
 
     _onLoginPageAppearStreamController.close();
     _onSignInButtonTappedStreamController.close();
