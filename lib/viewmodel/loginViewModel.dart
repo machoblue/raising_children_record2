@@ -7,6 +7,7 @@ import 'package:raisingchildrenrecord2/viewmodel/baseViewModel.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 
 class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler implements ViewModel {
 
@@ -94,7 +95,22 @@ class LoginViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler imp
 
   void _handleError(Object error) {
     _showIndicatorStreamController.sink.add(false);
-    super.handleError(error);
+
+    String title = Intl.message('Error', name: 'error');
+    String message = "";
+
+    switch (error.runtimeType) {
+      case AuthenticateCancelledException:
+        message = Intl.message('Authentication was canceled.', name: 'authenticationCanceled');
+        errorMessageSink.add(ErrorMessage(title, message));
+        return;
+      case AuthenticateFailedException:
+        message = Intl.message('Authentication was failed.', name: 'authenticationFailed');
+        errorMessageSink.add(ErrorMessage(title, message));
+        return;
+      default:
+        handleError(error);
+    }
   }
 
   void dispose() {
