@@ -582,5 +582,55 @@
   "@requestReviewDialogOK": {
     "type": "text",
     "placeholders": {}
+  },
+  "signUpTitle": "Sign Up",
+  "@signUpTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "appName": "Raising Children Records 2",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpWithGoogle": "Sign up with Google",
+  "@signUpWithGoogle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "useAsGuest": "Use as guest",
+  "@useAsGuest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithExistingAccount": "Sign in",
+  "@signInWithExistingAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "alreadyRegistered": "Your account has already exist. Sign in with the account?",
+  "@alreadyRegistered": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationCanceled": "Authentication was canceled.",
+  "@authenticationCanceled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationFailed": "Authentication was failed.",
+  "@authenticationFailed": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -582,5 +582,55 @@
   "@requestReviewDialogOK": {
     "type": "text",
     "placeholders": {}
+  },
+  "signUpTitle": "ユーザー登録",
+  "@signUpTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "appName": "赤ちゃん日記2",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpWithGoogle": "Googleで登録する",
+  "@signUpWithGoogle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "useAsGuest": "ゲストとして利用する",
+  "@useAsGuest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithExistingAccount": "登録済みのアカウントでログインする",
+  "@signInWithExistingAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "確認",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "alreadyRegistered": ""既に登録済みです。ログインしますか？",
+  "@alreadyRegistered": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "キャンセル",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationCanceled": "ログインがキャンセルされました。",
+  "@authenticationCanceled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationFailed": "ログインに失敗しました。",
+  "@authenticationFailed": {
+    "type": "text",
+    "placeholders": {}
   }
 }

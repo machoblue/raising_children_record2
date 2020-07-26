@@ -217,11 +217,11 @@ class RegisterViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
 
     switch (error.runtimeType) {
       case AuthenticateCancelledException:
-        message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
+        message = Intl.message('Authentication was canceled.', name: 'authenticationCanceled');
         errorMessageSink.add(ErrorMessage(title, message));
         return;
       case AuthenticateFailedException:
-        message = Intl.message('Cannot access data. This operation is unexpected. Please tell us what did you do.', name: 'permissionError');
+        message = Intl.message('Authentication was failed.', name: 'authenticationFailed');
         errorMessageSink.add(ErrorMessage(title, message));
         return;
       default:

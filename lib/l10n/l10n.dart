@@ -183,4 +183,18 @@ class L10n {
   String get requestReviewDialogContent => Intl.message('Would you rate this app?', name: 'requestReviewDialogContent');
   String get requestReviewDialogNo => Intl.message('No, Thank you.', name: 'requestReviewDialogNo');
   String get requestReviewDialogOK => Intl.message('OK', name: 'requestReviewDialogOK');
+
+  String get signUpTitle => Intl.message('Sign Up', name: 'signUpTitle');
+  String get appName => Intl.message('Raising Children Records 2', name: 'appName');
+  String get signUpWithGoogle => Intl.message('Sign up with Google', name: 'signUpWithGoogle');
+  String get useAsGuest => Intl.message('Use as guest', name: 'useAsGuest');
+  String get signInWithExistingAccount => Intl.message('Sign in', name: 'signInWithExistingAccount');
+  String get confirm => Intl.message('Confirm', name: 'confirm');
+  String get alreadyRegistered => Intl.message('Your account has already exist. Sign in with the account?', name: "alreadyRegistered");
+  String get cancel => Intl.message('Cancel', name: 'cancel');
+  String get authenticationCanceled => Intl.message('Authentication was canceled.', name: 'authenticationCanceled');
+  String get authenticationFailed => Intl.message('Authentication was failed.', name: 'authenticationFailed');
+
+  String get loginError => Intl.message('Login Error', name: 'loginError');
+  String get userNotExists => Intl.message('User does not exist', name: 'userNotExists');
 }

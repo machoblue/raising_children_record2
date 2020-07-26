@@ -59,6 +59,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
   }
 
   Widget _buildLoginButton() {
+    L10n l10n = L10n.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +68,7 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
             flex: 1,
             child: Center(
               child: Text(
-                  "ログイン",
+                  l10n.loginTitle,
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blueGrey)
               ),
             ),
@@ -117,16 +118,16 @@ class _LoginViewState extends BaseState<LoginView, LoginViewModel> {
   }
 
   void _onLoginButtonTapped() {
-    print("### _onLoginButtonTapped");
     viewModel.onSignInButtonTapped.add(null);
   }
 
   void _showUserNotExistsDialog() {
+    L10n l10n = L10n.of(context);
     showSingleButtonDialog(
         context,
-        title: "ログイン失敗",
-        content: "ユーザーが存在しません。",
-        buttonTitle: "OK",
+        title: l10n.loginError,
+        content: l10n.userNotExists,
+        buttonTitle: l10n.ok,
         onButtonPressed: () => Navigator.pop(context),
     );
   }
