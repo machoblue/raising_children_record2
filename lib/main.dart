@@ -26,10 +26,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-//      home: Provider(
-//        create: (_) => LoginViewModel(FirestoreUserRepository(), FirestoreBabyRepository()),
-//        child: LoginView(),
-//      ),
       home: Provider(
         create: (_) => RegisterViewModel(GoogleAuthenticator(), GuestAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
         child: RegisterView(),

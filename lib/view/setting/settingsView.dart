@@ -14,6 +14,7 @@ import 'package:raisingchildrenrecord2/shared/authenticator.dart';
 import 'package:raisingchildrenrecord2/storage/storageUtil.dart';
 import 'package:raisingchildrenrecord2/view/baseState.dart';
 import 'package:raisingchildrenrecord2/view/loginView.dart';
+import 'package:raisingchildrenrecord2/view/registerView.dart';
 import 'package:raisingchildrenrecord2/view/setting/babyListView.dart';
 import 'package:raisingchildrenrecord2/view/setting/buttonOrderView.dart';
 import 'package:raisingchildrenrecord2/view/setting/invitationCodeView.dart';
@@ -21,6 +22,7 @@ import 'package:raisingchildrenrecord2/view/setting/settingsViewTutorial.dart';
 import 'package:raisingchildrenrecord2/view/setting/userEditView.dart';
 import 'package:raisingchildrenrecord2/viewmodel/loginViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/mainViewModel.dart';
+import 'package:raisingchildrenrecord2/viewmodel/registerViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/babyListViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/buttonOrderViewModel.dart';
 import 'package:raisingchildrenrecord2/viewmodel/setting/invitationCodeViewModel.dart';
@@ -28,9 +30,6 @@ import 'package:raisingchildrenrecord2/viewmodel/setting/userEditViewModel.dart'
 import 'package:raisingchildrenrecord2/viewmodel/setting/settingsViewModel.dart';
 
 class SettingsView extends StatefulWidget {
-
-
-
   @override
   State<StatefulWidget> createState() => _SettingsViewState();
 }
@@ -51,8 +50,8 @@ class _SettingsViewState extends BaseState<SettingsView, SettingsViewModel> with
         context,
         MaterialPageRoute(
           builder: (context) => Provider(
-            create: (_) => LoginViewModel(GoogleAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
-            child: LoginView(),
+            create: (_) => RegisterViewModel(GoogleAuthenticator(), GuestAuthenticator(), FirestoreUserRepository(), FirestoreBabyRepository()),
+            child: RegisterView(),
           ),
         ),
       );
