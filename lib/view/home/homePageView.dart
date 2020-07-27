@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -43,11 +44,13 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
   final TextStyle _emptyMessageFont = TextStyle(fontSize: 14, color: Color(0x00FFAAAAAA));
   final DateFormat _timeFormat = DateFormat('HH:mm');
 
+  StreamSubscription _navigationToEditRecordSubscription;
+
   @override
   void initState() {
     super.initState();
     viewModel.initState.add(null);
-    viewModel.navigationToEditRecord.listen((tuple3) => _editRecord(tuple3.item1, tuple3.item2, tuple3.item3));
+    _navigationToEditRecordSubscription = viewModel.navigationToEditRecord.listen((tuple3) => _editRecord(tuple3.item1, tuple3.item2, tuple3.item3));
   }
 
   @override
@@ -93,6 +96,12 @@ class _HomePageViewState extends BaseState<HomePageView, HomePageViewModel> {
           ],
         )
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _navigationToEditRecordSubscription.cancel();
   }
 
   void _editRecord(Record record, User user, Baby baby) {
