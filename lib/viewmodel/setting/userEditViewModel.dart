@@ -16,6 +16,10 @@ class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
   final UserRepository userRepository;
   final StorageUtil storageUtil;
 
+  StreamSubscription _userAndImageSubscription;
+  StreamSubscription _onNameChangedSubscription;
+  StreamSubscription _onSaveButtonTappedSubscription;
+
   final _userBehaviorSubject = BehaviorSubject<User>.seeded(null);
 
   final StreamController<ImageProvider> _userIconImageProviderStreamController = StreamController<ImageProvider>();
@@ -44,7 +48,7 @@ class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
   }
 
   void _bindInputAndOutput() {
-    CombineLatestStream.combine2(
+    _userAndImageSubscription = CombineLatestStream.combine2(
       _userBehaviorSubject,
       _imageBehaviorSubject,
       (user, image) => image != null
@@ -55,13 +59,13 @@ class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
     )
     .listen((imageProvider) => _userIconImageProviderStreamController.sink.add(imageProvider));
 
-    _onNameChangedStreamController.stream.listen((name) {
+    _onNameChangedSubscription = _onNameChangedStreamController.stream.listen((name) {
       User user = _userBehaviorSubject.value;
       user.name = name;
       _userBehaviorSubject.add(user);
     });
 
-    CombineLatestStream.combine3(
+    _onSaveButtonTappedSubscription = CombineLatestStream.combine3(
       _onSaveButtonTappedStreamController.stream,
       _userBehaviorSubject,
       _imageBehaviorSubject,
@@ -110,6 +114,11 @@ class UserEditViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler 
 
   void dispose() {
     super.dispose();
+
+    _userAndImageSubscription.cancel();
+    _onNameChangedSubscription.cancel();
+    _onSaveButtonTappedSubscription.cancel();
+
     _userIconImageProviderStreamController.close();
     _userBehaviorSubject.close();
     _onSaveCompleteStreamController.close();
