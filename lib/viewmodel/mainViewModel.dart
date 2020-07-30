@@ -19,6 +19,11 @@ class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler impl
   final BabyRepository _babyRepository;
 
   StreamSubscription<List<Baby>> _subscription;
+  StreamSubscription<Baby> _babySubscription;
+  StreamSubscription<void> _onInitStateSubscription;
+  StreamSubscription<int> _onTabItemTappedSubscription;
+  StreamSubscription<Baby> _onBabySelectedSubscription;
+  StreamSubscription<List<Baby>> _babiesSubscription;
 
   // INPUT
   final _onInitStateStreamController = StreamController<void>();
@@ -54,7 +59,7 @@ class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler impl
   }
 
   void bindInputAndOutput() {
-    _onInitStateStreamController.stream.listen((_) {
+    _onInitStateSubscription = _onInitStateStreamController.stream.listen((_) {
       _getBabies()
         .then((babies) => _babiesBehaviorSubject.add(babies))
         .catchError(handleError);
@@ -64,24 +69,24 @@ class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler impl
       _getUser();
     });
 
-    babyBehaviorSubject.stream.listen((baby) {
+    _babySubscription = babyBehaviorSubject.stream.listen((baby) {
       if (baby == null) {
         return;
       }
       _babyIconImageProvider.sink.add(CachedNetworkImageProvider(baby.photoUrl));
     });
 
-    _onTabItemTappedStreamController.stream.listen((index) {
+    _onTabItemTappedSubscription = _onTabItemTappedStreamController.stream.listen((index) {
       _selectedIndex.sink.add(index);
     });
 
-    _onBabySelectedStreamController.stream.listen((baby) async {
+    _onBabySelectedSubscription = _onBabySelectedStreamController.stream.listen((baby) async {
       babyBehaviorSubject.sink.add(baby);
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('selectedBabyId', baby.id);
     });
 
-    _babiesBehaviorSubject.stream.listen((babies) async {
+    _babiesSubscription = _babiesBehaviorSubject.stream.listen((babies) async {
       final Baby baby = await _pickSelectedBaby(babies);
       babyBehaviorSubject.sink.add(baby);
     });
@@ -171,6 +176,14 @@ class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler impl
 
   void dispose() {
     super.dispose();
+
+    _subscription.cancel();
+    _babySubscription.cancel();
+    _onInitStateSubscription.cancel();
+    _onTabItemTappedSubscription.cancel();
+    _onBabySelectedSubscription.cancel();
+    _babiesSubscription.cancel();
+
     _onInitStateStreamController.close();
     _onTabItemTappedStreamController.close();
     _onBabySelectedStreamController.close();
@@ -180,6 +193,5 @@ class MainViewModel with ViewModelErrorHandler, ViewModelInfoMessageHandler impl
     _selectedIndex.close();
     userBehaviorSubject.close();
     _logoutCompleteStreamController.close();
-    _subscription.cancel();
   }
 }
