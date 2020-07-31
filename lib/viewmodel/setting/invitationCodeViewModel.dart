@@ -10,6 +10,8 @@ class InvitationCodeViewModel with ViewModelErrorHandler, ViewModelInfoMessageHa
 
   final FamilyRepository familyRepository;
 
+  StreamSubscription<void> _onInitStateSubscription;
+
   final StreamController<void> _onInitStateStreamController = StreamController<void>();
   StreamSink<void> get onInitState => _onInitStateStreamController.sink;
 
@@ -20,7 +22,7 @@ class InvitationCodeViewModel with ViewModelErrorHandler, ViewModelInfoMessageHa
   Stream<DateTime> get expirationDate => _expirationDateStreamController.stream;
 
   InvitationCodeViewModel(this.familyRepository) {
-    _onInitStateStreamController.stream.listen((_) {
+    _onInitStateSubscription = _onInitStateStreamController.stream.listen((_) {
       _generateInvitationCode().then((invitationCode) {
         _invitationCodeJSONStreamController.sink.add(invitationCode.json);
         _expirationDateStreamController.sink.add(invitationCode.expirationDate);
@@ -42,6 +44,9 @@ class InvitationCodeViewModel with ViewModelErrorHandler, ViewModelInfoMessageHa
 
   void dispose() {
     super.dispose();
+
+    _onInitStateSubscription.cancel();
+
     _onInitStateStreamController.close();
     _invitationCodeJSONStreamController.close();
     _expirationDateStreamController.close();
