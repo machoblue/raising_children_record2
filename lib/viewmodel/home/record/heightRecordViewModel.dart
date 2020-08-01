@@ -8,13 +8,15 @@ import 'package:raisingchildrenrecord2/viewmodel/home/record/baseRecordViewModel
 
 class HeightRecordViewModel extends BaseRecordViewModel<HeightRecord> {
 
+  StreamSubscription _onHeightSelectedSubscription;
+
   Stream<double> get height => recordBehaviorSubject.stream.map((record) => record.height ?? 0);
   final StreamController<double> _onHeightSelectedStreamController = StreamController<double>();
   StreamSink<double> get onHeightSelected => _onHeightSelectedStreamController.sink;
 
   HeightRecordViewModel(Record record, User user, Baby baby, RecordRepository recordRepository, { bool isNew = false }): super(record, user, baby, recordRepository, isNew: isNew) {
 
-    _onHeightSelectedStreamController.stream.listen((height) {
+    _onHeightSelectedSubscription = _onHeightSelectedStreamController.stream.listen((height) {
       HeightRecord record = recordBehaviorSubject.value;
       record.height = height;
       recordBehaviorSubject.add(record);
@@ -22,6 +24,8 @@ class HeightRecordViewModel extends BaseRecordViewModel<HeightRecord> {
   }
 
   void dispose() {
+    super.dispose();
+    _onHeightSelectedSubscription.cancel();
     _onHeightSelectedStreamController.close();
   }
 }
